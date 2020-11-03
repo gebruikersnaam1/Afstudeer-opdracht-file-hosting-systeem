@@ -1,0 +1,31 @@
+<div class="form-group">
+    <label>{{ label }}</label>
+    
+
+    <textarea (change)="updateEmitter($event)" *ngIf="inputType == 'textarea'" class="form-control" [formControl]="controller"></textarea>
+
+    <input  (change)="updateEmitter($event)" *ngIf="inputType != 'textarea'" class="form-control" [formControl]="controller" [type]="inputType">
+    <small *ngIf="formHelper" class="form-text text-muted">We'll never share your email with anyone else.</small>
+
+    <ng-container *ngIf="Errors()">
+        <div class="alert alert-danger-custom" role="alert">
+            <p *ngIf="controller.errors?.minlength">
+                Er moet een lengte van {{controller.errors?.minlength.requiredLength}} worden ingevuld.
+                U heeft momenteel een lengte van {{ controller.value.length }}.
+            </p>
+            <p *ngIf="controller.errors?.maxlength">
+                U mag maximaal een lengte hebben van {{controller.errors?.maxlength.requiredLength}}.
+                U heeft momenteel een lengte van {{ controller.value.length }}.
+            </p>
+            <p *ngIf="controller.errors?.required">
+                Dit veld is verplicht!
+            </p> 
+            <p *ngIf="controller.errors?.email">
+                De ingevulde waarde lijkt een ongeldige e-mail te zijn. 
+            </p>
+            <p *ngIf="controller.errors?.pattern">
+                Er zijn invalide karakters ingevuld.
+            </p>
+        </div>
+    </ng-container>
+</div>

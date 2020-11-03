@@ -1,0 +1,5 @@
+<div class="form-group">
+    <label *ngIf="label != undefined">{{label}}</label>
+    <input  class="form-control " (change)="searchValue($event.target.value)" [placeholder]="placeholder">
+</div>
+ 

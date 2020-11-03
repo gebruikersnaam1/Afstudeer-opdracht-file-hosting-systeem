@@ -1,0 +1,25 @@
+<h1>Overzicht</h1>
+
+<div class="d-flex justify-content-center" *ngIf="!this.filesLoaded">
+    <div class="spinner-border text-secondary custom-spinner" role="status">
+        <span class="sr-only ">Loading...</span>
+    </div>
+</div>
+
+<ng-container *ngIf="this.filesLoaded && !this.errorExist">
+    
+    <app-searchbalk placeholder="Zoek op bestandsnaam" (SearchValueChange)="searchForFile($event)"></app-searchbalk>
+    
+    <cloud-table [rows]="rows"></cloud-table>
+    
+    <app-pagination 
+        [totalItems]="pageData.totalItems" [itemsPerPages]="pageData.itemsPerPages" url="/cloud/overzicht/" (updatePage)="updateCurrentPage($event)">
+    </app-pagination>
+    
+</ng-container>
+
+<ng-container *ngIf="this.errorExist">
+    <div class="alert alert-danger">
+        Er is fout opgetreden. Hierdoor kunnen er geen bestanden getoond worden. 
+    </div>
+</ng-container>

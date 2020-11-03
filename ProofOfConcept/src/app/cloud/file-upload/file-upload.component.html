@@ -1,0 +1,10 @@
+<h1>Upload file</h1>
+
+<form [formGroup]="fileGroup" (ngSubmit)="uploadFile()">
+    <app-input [controller]="fileGroup.get('fileName')" (changeInput)="fileSelected($event)"label="Selecteer bestand" inputType="file" ></app-input>
+    <app-input [controller]="fileGroup.get('description')"  label="Beschrijving" inputType="textarea"></app-input>
+    <button class="btn btn-custom mb-2" [disabled]="fileGroup.invalid">
+        <span class="fa fa-upload  fa-2x"></span>
+    </button>
+</form>
+

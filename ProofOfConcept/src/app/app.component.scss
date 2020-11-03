@@ -1,0 +1,16 @@
+@import 'globals.scss';
+
+
+
+.style-container{
+    border: 2px solid $primary-colour;
+    border-bottom: 0px;
+    border-top: 0px;
+    background-color: $plane-colour;
+}
+
+.jumbotron{
+    background-color: rgba($secondary-colour,0.1);
+    padding: 2rem 2rem !important;
+    min-height: 400px;
+}

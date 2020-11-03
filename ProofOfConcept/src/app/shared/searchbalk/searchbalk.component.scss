@@ -1,0 +1,7 @@
+@import '../../globals.scss';
+
+input{
+    border: 1px solid $primary-colour;
+    max-width: 450px;
+    border-radius: 10px;
+}

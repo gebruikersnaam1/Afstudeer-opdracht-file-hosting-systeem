@@ -1,0 +1,24 @@
+@import '../../../globals.scss';
+
+
+.table-striped > thead{
+    color: $plane-colour;
+    background-color: $primary-colour;
+}
+
+.table-striped > tbody > tr{
+    color: $plane-colour;
+}
+.table-striped > tbody > tr:nth-child(2n+1) > td, .table-striped > tbody > tr:nth-child(2n+1) > th {
+    background-color: $secondary-colour;
+ }
+
+ .table-striped > tbody > tr:nth-child(2n) > td, .table-striped > tbody > tr:nth-child(2n) > th {
+    background-color: $flair-colour;
+ }
+
+ tbody > tr:hover{
+    cursor: pointer;
+    font-size: 110%;
+    border: 5px solid $primary-colour;
+}

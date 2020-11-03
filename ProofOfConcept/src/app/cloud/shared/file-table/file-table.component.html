@@ -1,0 +1,24 @@
+<table class="table table-striped ">
+    <thead>
+      <tr>
+        <th scope="col" *ngFor="let h of headers"> {{h}}</th>
+      </tr>
+    </thead>
+    <tbody *ngIf="rows.length > 0">
+      <!-- <ng-container *ngFor="let columns of rows"> -->
+        <!-- <a routerLink="/cloud/file/{{ columns?.fileId }}"> -->
+            <tr *ngFor="let columns of rows" (click)="ShowFile(columns.fileId)">
+              <td>{{ columns?.fileName }}</td>
+              <td>{{ columns?.date }}</td>
+              <td>{{ columns?.userId }}</td>
+              <td>{{ columns?.fileSize }}</td>
+            </tr>
+    </tbody>
+  </table>
+
+
+  <div class="alert alert-warning" *ngIf="rows.length < 1">
+    Er is geen data om te laten zien op dit moment.
+  </div>
+
+  

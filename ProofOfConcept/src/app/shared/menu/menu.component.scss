@@ -1,0 +1,7 @@
+@import '../../globals.scss';
+
+.bg-custom{
+    background-color: $secondary-colour;
+    color: $plane-colour;
+    border-bottom: 2px solid $primary-colour;
+}

@@ -1,0 +1,10 @@
+@import '../../globals.scss';
+
+.page-link {
+    background-color: $flair-colour;
+    color: $plane-colour;
+}
+
+.page-link-selected {
+    background-color: $secondary-colour !important;
+}

@@ -1,0 +1,17 @@
+@import '../../globals.scss';
+
+input, textarea{
+    background-color: rgba($flair-colour, 0.1);
+    border: 1px solid $secondary-colour;
+}
+
+input:focus, textarea:focus  {
+    background-color: rgba($flair-colour, 0.1);
+    border: 1px solid $primary-colour;
+    font-size: 110%;
+}
+
+label{
+    font-weight: bold;
+    margin-top: 5px;
+}

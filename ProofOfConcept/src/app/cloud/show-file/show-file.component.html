@@ -1,0 +1,51 @@
+<ng-container *ngIf="!fileDeleted">
+    <ng-container *ngIf="fileLoaded | async">
+        <h1>{{ file.fileName }}</h1>
+        <div class="alert alert-success" *ngIf="fileUpdated">
+            <p>
+                Uw bestand is succesvol geüpdatet! 
+            </p>
+        </div>
+        <div class="form-group">
+            <label>Uploader: </label>
+            <span>{{ GetUsername(file.userId) }}</span>
+        </div>
+        <div class="form-group">
+            <label>Datum: </label>
+            <span>{{ file.date }}</span>
+        </div>
+        <div class="form-group">
+            <label>Bestandsgroten: </label>
+            <span>{{ file.fileSize }}</span>
+        </div>
+        
+        <form [formGroup]="fileGroup" >
+        
+            <app-input [controller]="fileGroup?.get('fileName')" label="Bestandsnaam" inputType="text"></app-input>
+            <app-input [controller]="fileGroup?.get('description')" label="Beschrijving" inputType="textarea"></app-input>
+        </form>
+    </ng-container>
+    
+    
+    
+    
+    <button class="btn btn-custom mb-2" (click)="downloadFile()">
+        <span class="fa fa-download  fa-2x"></span>
+    </button>
+    
+    <button class="btn btn-custom mb-2" title="Wijzig" (click)="updateFile()">
+        <span class="fas fa-edit  fa-2x"></span>
+    </button>
+    
+    <button class="btn btn-custom mb-2" title="verwijderen" (click)="deleteFile()">
+        <span class="fa fa-trash-alt  fa-2x"></span>
+    </button>
+</ng-container>
+
+
+<ng-container *ngIf="fileDeleted">
+    <h1>Succesvol verwijderd!</h1>
+    <p>
+        Er is één bestand minder op de cloud.
+    </p>
+</ng-container>
