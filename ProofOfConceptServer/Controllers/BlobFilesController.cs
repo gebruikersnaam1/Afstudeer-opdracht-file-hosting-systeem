@@ -7,14 +7,20 @@ using System.Web.Http.Cors;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
-using ProofOfConceptServer.models.Factory;
+using ProofOfConceptServer.entities.Factory;
 
-using ProofOfConceptServer.models.helpers;
+using ProofOfConceptServer.entities.helpers;
 
 using ProofOfConceptServer.database;
 using Microsoft.WindowsAzure.Storage.Blob;
 using System.IO;
 using Azure.Storage.Blobs.Models;
+using ProofOfConceptServer.entities;
+using ProofOfConceptServer.entities.dummy_data;
+using ProofOfConceptServer.entities.Factory;
+using ProofOfConceptServer.entities.helpers;
+
+
 
 namespace ProofOfConceptServer.Controllers
 {
@@ -26,7 +32,7 @@ namespace ProofOfConceptServer.Controllers
     public class BlobFilesController : ControllerBase
     {
 
-        private static List<BlobItem> FilesStorage = DummyDataBlobfiles.GetDummyData();
+        private static List<BlobEntity> FilesStorage = DummyDataBlobfiles.GetDummyData();
         private string blobItemsPath;
 
         public BlobFilesController()
@@ -45,13 +51,13 @@ namespace ProofOfConceptServer.Controllers
 
         [HttpGet]
         [Authorize]
-        public ActionResult<List<BlobItem>> GetPages([FromQuery]int itemsPerPage, [FromQuery]int currentPage)
+        public ActionResult<List<BlobEntity>> GetPages([FromQuery]int itemsPerPage, [FromQuery]int currentPage)
         {
             if(itemsPerPage < 1 || currentPage <= 0)
                 Conflict("Wrong values where given!");
             
-            IEnumerable<BlobItem> sorted = FilesStorage.Skip((itemsPerPage * currentPage)).Take(itemsPerPage);
-            List<BlobItem> newList = sorted.ToList();
+            IEnumerable<BlobEntity> sorted = FilesStorage.Skip((itemsPerPage * currentPage)).Take(itemsPerPage);
+            List<BlobEntity> newList = sorted.ToList();
 
             if(newList.Count() == 0)
                 NotFound("No values where found");
@@ -63,7 +69,7 @@ namespace ProofOfConceptServer.Controllers
         [HttpGet]
         [Route("file/{term}")]
         [Authorize]
-        public ActionResult<BlobItem> GetSingleFile(string term)
+        public ActionResult<BlobEntity> GetSingleFile(string term)
         {
             var blobItem = FilesStorage.Find(item =>
                     item.fileId.Equals(term, StringComparison.InvariantCultureIgnoreCase));
@@ -96,7 +102,7 @@ namespace ProofOfConceptServer.Controllers
             CloudBlockBlob blockBob = AzureConnection.Container.GetBlockBlobReference(postData.file.FileName);
 
             string id = this.GenerateId().ToString();
-            BlobItem blobItem = BlobItemFactory.Create(postData, id, blobItemsPath);
+            BlobEntity blobItem = BlobItemFactory.Create(postData, id, blobItemsPath);
 
             if (blobItem == null)
                 return Conflict("Error! Maybe you did not gave us all the needed info?");
@@ -127,7 +133,7 @@ namespace ProofOfConceptServer.Controllers
         [HttpPut]
         [Route("update")]
         [Authorize]
-        public ActionResult Put(BlobItem BlobFile)
+        public ActionResult Put(BlobEntity BlobFile)
         {
             var existingBlobFile = FilesStorage.Find(
                 item => item.fileId.Equals
@@ -144,7 +150,7 @@ namespace ProofOfConceptServer.Controllers
         [HttpDelete]
         [Route("delete/{id}")]
         [Authorize]
-        public ActionResult Delete(string id)
+        public async Task<ActionResult> Delete(string id)
         {
             var blobItem = FilesStorage.Find(item =>
                    item.fileId.Equals(id, StringComparison.InvariantCultureIgnoreCase));
@@ -153,16 +159,16 @@ namespace ProofOfConceptServer.Controllers
                 return NotFound();
 
             try{
-                CloudBlockBlob blockBob = AzureConnection.Container.GetBlockBlobReference(blobItem.fileName);
-                blockBob.DeleteIfExistsAsync();
-                FilesStorage.Remove(blobItem);
-                return Ok("File was removed from the blobstorage");
-            }
+                    CloudBlockBlob blockBob = AzureConnection.Container.GetBlockBlobReference(blobItem.fileName);
+                    await blockBob.DeleteIfExistsAsync();
+                    FilesStorage.Remove(blobItem);
+                    return NoContent();
+                }
             catch (ArgumentException e)
-            {
-                return Conflict("File delete went wrong. Error: " + e);
+                {
+                    return Conflict("File delete went wrong. Error: " + e);
+                }
             }
-        }
 
        
 
@@ -182,7 +188,7 @@ namespace ProofOfConceptServer.Controllers
             };
         }
 
-        private async Task DownloadBlobFileToServer(BlobItem blobItem)
+        private async Task DownloadBlobFileToServer(BlobEntity blobItem)
         {
             try{
                 CloudBlockBlob blockBob = AzureConnection.Container.GetBlockBlobReference(blobItem.fileName);
@@ -201,9 +207,9 @@ namespace ProofOfConceptServer.Controllers
         [HttpGet]
         [Route("download/{id}")]
         [Authorize]
-        public async Task<ActionResult<BlobItem>> DownloadFile(string id)
+        public async Task<ActionResult<BlobEntity>> DownloadFile(string id)
         {
-            BlobItem blobItem = FilesStorage.Find(item =>
+            BlobEntity blobItem = FilesStorage.Find(item =>
                     item.fileId.Equals(id, StringComparison.InvariantCultureIgnoreCase));
 
             if (blobItem == null)
@@ -217,7 +223,10 @@ namespace ProofOfConceptServer.Controllers
             {
                 var data = net.DownloadData(blobItem.pathFile);
                 var content = new System.IO.MemoryStream(data);
-                System.IO.File.Delete(blobItem.pathFile);
+                
+                if (System.IO.File.Exists(blobItem.pathFile))
+                    System.IO.File.Delete(blobItem.pathFile);
+                
                 return File(data, "application/octet-stream", blobItem.fileName);
             }
             catch

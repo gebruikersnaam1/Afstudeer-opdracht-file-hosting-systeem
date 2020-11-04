@@ -3,17 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ProofOfConceptServer
+namespace ProofOfConceptServer.entities.dummy_data
 {
     public class DummyDataBlobfiles
     {
 
-        public static List<BlobItem> GetDummyData () {
+        public static List<BlobEntity> GetDummyData () {
             return DummyDataBlobfiles.FilesStorage; 
         }
 
-        private static List<BlobItem> FilesStorage = new List<BlobItem> {
-            new BlobItem
+        private static List<BlobEntity> FilesStorage = new List<BlobEntity> {
+            new BlobEntity
             {
                 fileId = "1",
                 fileName="Technisch ontwerp",
@@ -23,7 +23,7 @@ namespace ProofOfConceptServer
                 userId="1",
                 description = "Een  ontwerp gemaakt door een UI-expert!"
             },
-             new BlobItem
+             new BlobEntity
             {
                 fileId = "2",
                 fileName="Notules",
@@ -33,7 +33,7 @@ namespace ProofOfConceptServer
                 userId="2",
                 description = "Belangrijke notules van een belangrijk gesprek!"
             },
-              new BlobItem
+              new BlobEntity
             {
                 fileId = "3",
                 fileName="Wetenschappelijk tijdschrift",
@@ -43,7 +43,7 @@ namespace ProofOfConceptServer
                 userId="3",
                 description = "Gemaakt door iemand die VWO heeft gedaan en te goed was voor TU Delft"
             },
-               new BlobItem
+               new BlobEntity
             {
                 fileId = "4",
                 fileName="Functioneel ontwerp",
@@ -53,7 +53,7 @@ namespace ProofOfConceptServer
                 userId="4",
                 description = "Heel functioneel! Iemand zal het wellicht eens kunnen gebruiken!"
             },
-            new BlobItem
+            new BlobEntity
             {
                 fileId = "5",
                 fileName="Verslag",
@@ -63,7 +63,7 @@ namespace ProofOfConceptServer
                 userId="5",
                 description = "Een wild verslag van dingen van dingen!"
             },
-             new BlobItem
+             new BlobEntity
             {
                 fileId = "6",
                 fileName="Contract",
@@ -73,7 +73,7 @@ namespace ProofOfConceptServer
                 userId="6",
                 description = "UFC contract voor het gevecht van het jaar!"
             },
-             new BlobItem
+             new BlobEntity
             {
                 fileId = "7",
                 fileName="Feedback",

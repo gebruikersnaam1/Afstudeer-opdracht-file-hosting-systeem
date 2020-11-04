@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ProofOfConceptServer.models.helpers
+namespace ProofOfConceptServer.entities.helpers
 {
     public class DownloadAssistent
     {

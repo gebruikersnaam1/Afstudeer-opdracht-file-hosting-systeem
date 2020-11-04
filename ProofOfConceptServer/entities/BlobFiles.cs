@@ -4,11 +4,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ProofOfConceptServer
+namespace ProofOfConceptServer.entities
 {
 
     //TODO: adjust the datatype
-    public class BlobItem
+    public class BlobEntity
     {
         public string fileId { get; set; }
         public string fileName { get; set; }

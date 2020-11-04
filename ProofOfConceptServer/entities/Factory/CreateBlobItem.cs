@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using ProofOfConceptServer.models.helpers;
+using ProofOfConceptServer.entities.helpers;
 
-namespace ProofOfConceptServer.models.Factory
+namespace ProofOfConceptServer.entities.Factory
 {
     public class BlobItemFactory
     {
@@ -27,11 +27,11 @@ namespace ProofOfConceptServer.models.Factory
             return Path.Combine(uploadRoot, (name + id + e));
         }
 
-        public static BlobItem Create(CreateBlob postInfo,string id, string uploadRoot)
+        public static BlobEntity Create(CreateBlob postInfo,string id, string uploadRoot)
         {
             try
             {
-                return new BlobItem
+                return new BlobEntity
                 {
                     fileId = id,
                     fileName = postInfo.file.FileName,

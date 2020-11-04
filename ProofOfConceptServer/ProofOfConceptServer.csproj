@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="models\Configurations\" />
+    <Folder Include="entities\Configurations\" />
     <Folder Include="handlers\" />
     <Folder Include="validators\" />
   </ItemGroup>
