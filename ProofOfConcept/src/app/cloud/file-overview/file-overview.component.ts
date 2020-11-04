@@ -60,7 +60,7 @@ export class FileOverviewComponent implements OnInit {
 
   ngOnInit(): void {
     this.cloudService.getFileCount().subscribe(
-      result => this.pageData.totalItems = (result-1),
+      result => console.log(result),
       _ => console.log("The file count = 0; that is a problem?")
     );
     this.setCurrentPage();

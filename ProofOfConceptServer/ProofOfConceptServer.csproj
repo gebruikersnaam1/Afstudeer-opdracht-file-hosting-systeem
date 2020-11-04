@@ -25,8 +25,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Models\entities\Configurations\" />
-    <Folder Include="Services\Handlers\" />
+    <Folder Include="Repositories\entities\Configurations\" />
   </ItemGroup>
 
 

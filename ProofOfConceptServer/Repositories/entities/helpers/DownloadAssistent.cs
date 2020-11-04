@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace ProofOfConceptServer.entities.helpers
 {
-    public class DownloadAssistent
+    public class FileInformation
     {
         public string fileName { get; set; }
         public string extension { get; set; }
