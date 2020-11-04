@@ -12,7 +12,7 @@
   "include": [
     "src/**/*.d.ts"
   ],
-  // "angularCompilerOptions": {
+  // "angularCompilerOptions": { 
     // "strictTemplates": true
     // "fullTemplateTypeCheck": true
   // }
