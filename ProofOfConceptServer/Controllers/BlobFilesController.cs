@@ -154,12 +154,9 @@ namespace ProofOfConceptServer.Controllers
 
             try{
                 CloudBlockBlob blockBob = AzureConnection.Container.GetBlockBlobReference(blobItem.fileName);
-
                 blockBob.DeleteIfExistsAsync();
-                if (System.IO.File.Exists(blobItem.pathFile))
-                    System.IO.File.Delete(blobItem.pathFile);
                 FilesStorage.Remove(blobItem);
-                return NoContent();
+                return Ok("File was removed from the blobstorage");
             }
             catch (ArgumentException e)
             {
@@ -174,7 +171,6 @@ namespace ProofOfConceptServer.Controllers
         [Authorize]
         public ActionResult<DownloadAssistent> DownloadFileAssistent(string id)
         {
-            //get the data as ".png"
             var blobItem = FilesStorage.Find(item =>
                     item.fileId.Equals(id, StringComparison.InvariantCultureIgnoreCase));
             string extension = Path.GetExtension(blobItem.pathFile);
@@ -221,6 +217,7 @@ namespace ProofOfConceptServer.Controllers
             {
                 var data = net.DownloadData(blobItem.pathFile);
                 var content = new System.IO.MemoryStream(data);
+                System.IO.File.Delete(blobItem.pathFile);
                 return File(data, "application/octet-stream", blobItem.fileName);
             }
             catch
