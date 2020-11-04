@@ -7,6 +7,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="handlers\**" />
+    <Compile Remove="validators\**" />
+    <Content Remove="handlers\**" />
+    <Content Remove="validators\**" />
+    <EmbeddedResource Remove="handlers\**" />
+    <EmbeddedResource Remove="validators\**" />
+    <None Remove="handlers\**" />
+    <None Remove="validators\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Azure.Storage.Blobs" Version="12.6.0" />
     <PackageReference Include="Microsoft.AspNet.WebApi.Cors" Version="5.2.7" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.9" />
@@ -14,9 +25,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="entities\Configurations\" />
-    <Folder Include="handlers\" />
-    <Folder Include="validators\" />
+    <Folder Include="Models\entities\Configurations\" />
+    <Folder Include="Services\Handlers\" />
   </ItemGroup>
 
 

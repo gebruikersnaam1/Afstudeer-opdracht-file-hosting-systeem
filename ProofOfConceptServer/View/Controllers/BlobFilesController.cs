@@ -34,7 +34,7 @@ namespace ProofOfConceptServer.Controllers
         public BlobFilesController()
         {
             //create filepath
-            blobItemsPath = Path.Combine(Startup.apiRoot, "uploads");
+            blobItemsPath = Path.Combine(Startup.apiRoot, "Models/uploads");
         }
 
         [HttpGet]
