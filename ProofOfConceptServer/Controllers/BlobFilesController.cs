@@ -146,16 +146,19 @@ namespace ProofOfConceptServer.Controllers
         [Authorize]
         public ActionResult Delete(string id)
         {
-            var blobFileItem = FilesStorage.Find(item =>
+            var blobItem = FilesStorage.Find(item =>
                    item.fileId.Equals(id, StringComparison.InvariantCultureIgnoreCase));
 
-            if (blobFileItem == null)
+            if (blobItem == null)
                 return NotFound();
 
             try{
-                if (System.IO.File.Exists(blobFileItem.pathFile))
-                    System.IO.File.Delete(blobFileItem.pathFile);
-                FilesStorage.Remove(blobFileItem);
+                CloudBlockBlob blockBob = AzureConnection.Container.GetBlockBlobReference(blobItem.fileName);
+
+                blockBob.DeleteIfExistsAsync();
+                if (System.IO.File.Exists(blobItem.pathFile))
+                    System.IO.File.Delete(blobItem.pathFile);
+                FilesStorage.Remove(blobItem);
                 return NoContent();
             }
             catch (ArgumentException e)
@@ -222,7 +225,7 @@ namespace ProofOfConceptServer.Controllers
             }
             catch
             {
-                return Conflict("The wanted file couldn't be found");
+                return Conflict("The wanted file couldn't be found or accessed!");
             }
         }
     }
