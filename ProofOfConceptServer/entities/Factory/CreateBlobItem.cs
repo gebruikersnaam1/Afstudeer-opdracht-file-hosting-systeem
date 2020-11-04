@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.WindowsAzure.Storage.Blob;
+using ProofOfConceptServer.database;
 using ProofOfConceptServer.entities.helpers;
 
 namespace ProofOfConceptServer.entities.Factory
@@ -10,18 +12,22 @@ namespace ProofOfConceptServer.entities.Factory
     public class BlobItemFactory
     {
 
-        private static string CreatePathFile(string uploadRoot, string fileName)
+        private static async Task<string> CreatePathFile(string uploadRoot, string fileName)
         {
-            if (!File.Exists(Path.Combine(uploadRoot, fileName)))
-                return Path.Combine(uploadRoot, fileName);
+            CloudBlobContainer c =  AzureConnection.Container;
+            bool fileExist = await c.GetBlockBlobReference(fileName).ExistsAsync();
+            
+            if(!fileExist)
+                return Path.Combine(uploadRoot, fileName).ToString();
 
             string e = Path.GetExtension(fileName);
             string name = Path.GetFileNameWithoutExtension(fileName);
 
             int id = 0;
-            while (id < 1000) {
+            while(fileExist) {
                 id++;
-                if (!File.Exists(Path.Combine(uploadRoot, (name+id+e))))
+                fileExist = await c.GetBlockBlobReference((name + id + e)).ExistsAsync();
+                if(!fileExist)
                     break;
             }
             return Path.Combine(uploadRoot, (name + id + e));
@@ -36,7 +42,7 @@ namespace ProofOfConceptServer.entities.Factory
                     fileId = id,
                     fileName = postInfo.file.FileName,
                     date = DateTime.Today.ToString("dd-MM-yyyy"),
-                    pathFile = BlobItemFactory.CreatePathFile(uploadRoot, postInfo.file.FileName),
+                    pathFile = BlobItemFactory.CreatePathFile(uploadRoot, postInfo.file.FileName).Result,
                     fileSize = (postInfo.file.Length.ToString()),
                     userId = postInfo.userId,
                     description = postInfo.description

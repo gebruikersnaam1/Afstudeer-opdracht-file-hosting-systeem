@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 using System.Web.Http.Cors;
 
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using ProofOfConceptServer.entities.Factory;
 
 using ProofOfConceptServer.entities.helpers;
@@ -17,9 +16,6 @@ using System.IO;
 using Azure.Storage.Blobs.Models;
 using ProofOfConceptServer.entities;
 using ProofOfConceptServer.entities.dummy_data;
-using ProofOfConceptServer.entities.Factory;
-using ProofOfConceptServer.entities.helpers;
-
 
 
 namespace ProofOfConceptServer.Controllers
@@ -99,7 +95,6 @@ namespace ProofOfConceptServer.Controllers
         [Authorize]
         public async Task<IActionResult> CreateBlobItem([FromForm] CreateBlob postData )
         {
-            CloudBlockBlob blockBob = AzureConnection.Container.GetBlockBlobReference(postData.file.FileName);
 
             string id = this.GenerateId().ToString();
             BlobEntity blobItem = BlobItemFactory.Create(postData, id, blobItemsPath);
@@ -107,7 +102,10 @@ namespace ProofOfConceptServer.Controllers
             if (blobItem == null)
                 return Conflict("Error! Maybe you did not gave us all the needed info?");
 
-            using (var fileStream = postData.file.OpenReadStream())
+            string fileName = Path.GetFileName(blobItem.pathFile);
+
+            CloudBlockBlob blockBob = AzureConnection.Container.GetBlockBlobReference(fileName);
+            using (Stream fileStream = postData.file.OpenReadStream())
             {
                 await blockBob.UploadFromStreamAsync(fileStream);
                 FilesStorage.Add(blobItem); //set file in the "db"
@@ -119,7 +117,7 @@ namespace ProofOfConceptServer.Controllers
         [HttpGet]
         [Route("search/{term}")]
         [Authorize]
-        public ActionResult<List<BlobItem>> SearchFiles(string term)
+        public ActionResult<List<BlobEntity>> SearchFiles(string term)
         {
             if (term == "" || term == null)
                 return Conflict("No value given");
@@ -129,21 +127,20 @@ namespace ProofOfConceptServer.Controllers
                 ).ToList());
         }
 
-
         [HttpPut]
         [Route("update")]
         [Authorize]
-        public ActionResult Put(BlobEntity BlobFile)
+        public ActionResult Update(BlobEntity newFile)
         {
-            var existingBlobFile = FilesStorage.Find(
+            var oldFile = FilesStorage.Find(
                 item => item.fileId.Equals
-                            (BlobFile.fileId, StringComparison.InvariantCultureIgnoreCase));
+                            (newFile.fileId, StringComparison.InvariantCultureIgnoreCase));
 
-            if (existingBlobFile == null)
+            if (oldFile == null)
                 return BadRequest("Cannot update as blob doesn't exist!");
-       
-            existingBlobFile.fileName = BlobFile.fileName;
-            existingBlobFile.description = BlobFile.description;
+
+            oldFile.fileName = newFile.fileName;
+            oldFile.description = newFile.description;
             return Ok();
         }
 
@@ -191,7 +188,8 @@ namespace ProofOfConceptServer.Controllers
         private async Task DownloadBlobFileToServer(BlobEntity blobItem)
         {
             try{
-                CloudBlockBlob blockBob = AzureConnection.Container.GetBlockBlobReference(blobItem.fileName);
+                string fileName = Path.GetFileName(blobItem.pathFile);
+                CloudBlockBlob blockBob = AzureConnection.Container.GetBlockBlobReference(fileName);
                 var rootDir = new FileInfo(blobItem.pathFile).Directory;
                 if (!rootDir.Exists) //make sure the parent directory exists
                     rootDir.Create();
@@ -199,9 +197,8 @@ namespace ProofOfConceptServer.Controllers
                 await blockBob.DownloadToFileAsync(blobItem.pathFile, FileMode.Create);
             }
             catch{
-                System.Diagnostics.Debug.WriteLine("File couldn't be downloaded from the file!");
-            }
-            
+                System.Diagnostics.Debug.WriteLine("File couldn't be downloaded from the Azure!");
+            }         
         }
 
         [HttpGet]
