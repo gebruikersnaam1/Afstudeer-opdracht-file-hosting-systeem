@@ -183,20 +183,26 @@ namespace ProofOfConceptServer.Controllers
             };
         }
 
-        private async void DownloadBlobFileToServer(BlobItem blobItem)
+        private async Task DownloadBlobFileToServer(BlobItem blobItem)
         {
-            CloudBlockBlob blockBob = AzureConnection.Container.GetBlockBlobReference(blobItem.fileName);
-            var rootDir = new FileInfo(blobItem.pathFile).Directory;
-            if (!rootDir.Exists) //make sure the parent directory exists
-                rootDir.Create();
+            try{
+                CloudBlockBlob blockBob = AzureConnection.Container.GetBlockBlobReference(blobItem.fileName);
+                var rootDir = new FileInfo(blobItem.pathFile).Directory;
+                if (!rootDir.Exists) //make sure the parent directory exists
+                    rootDir.Create();
 
-            await blockBob.DownloadToFileAsync(blobItem.pathFile, FileMode.Create);
+                await blockBob.DownloadToFileAsync(blobItem.pathFile, FileMode.Create);
+            }
+            catch{
+                System.Diagnostics.Debug.WriteLine("File couldn't be downloaded from the file!");
+            }
+            
         }
 
         [HttpGet]
         [Route("download/{id}")]
         [Authorize]
-        public ActionResult<BlobItem> DownloadFile(string id)
+        public async Task<ActionResult<BlobItem>> DownloadFile(string id)
         {
             BlobItem blobItem = FilesStorage.Find(item =>
                     item.fileId.Equals(id, StringComparison.InvariantCultureIgnoreCase));
@@ -205,7 +211,7 @@ namespace ProofOfConceptServer.Controllers
                 return NotFound();
 
             //download the file to the local server
-            //DownloadBlobFileToServer(blobItem);
+            await DownloadBlobFileToServer(blobItem);
 
             var net = new System.Net.WebClient();
             try
@@ -218,7 +224,6 @@ namespace ProofOfConceptServer.Controllers
             {
                 return Conflict("The wanted file couldn't be found");
             }
-
         }
     }
 }
