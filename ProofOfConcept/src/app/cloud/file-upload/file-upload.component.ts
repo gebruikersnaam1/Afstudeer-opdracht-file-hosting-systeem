@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { CloudService } from '../shared/cloud.service';
 import { Router } from '@angular/router';
+declare const WaitCursor: any;
+
 
 @Component({
   selector: 'cloud-upload',
@@ -44,6 +46,7 @@ export class FileUploadComponent implements OnInit {
     if(this.fileGroup.invalid || this.file === null){
       return;
     }
+    WaitCursor();
     this.cloudService.uploadFile(this.createFileFormat()).subscribe(
       result => this.router.navigateByUrl("cloud/file/"+result.fileId),
       _ => this.router.navigateByUrl("500")

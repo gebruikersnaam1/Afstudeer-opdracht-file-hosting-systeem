@@ -21,12 +21,12 @@ namespace ProofOfConceptServer.Services.Handlers
             return this.model.RowsCount();
         }
 
-        public List<BlobEntity> GetPages(int itemsPerPage,int currentPage)
+        public List<BlobItem> GetPages(int itemsPerPage,int currentPage)
         {
             if (itemsPerPage < 1 || currentPage < 0)
                 return null;
 
-            List<BlobEntity> b  = this.model.GetPages(itemsPerPage, currentPage);
+            List<BlobItem> b  = this.model.GetPages(itemsPerPage, currentPage);
             if (b.Count == 0)
                 return null;
 
@@ -34,21 +34,21 @@ namespace ProofOfConceptServer.Services.Handlers
         }
 
 
-        public  BlobEntity GetSingleFile(string term)
+        public BlobItem GetSingleFile(int id)
         {
-            BlobEntity b = this.model.GetSingleFile(term);
+            BlobItem b = this.model.GetSingleFile(id);
 
             if (b == null)
                 return null;
             return b;
         }
 
-        public BlobEntity CreateBlobItem(CreateBlob postData)
+        public BlobItem CreateBlobItem(CreateBlob postData)
         {
             return this.model.CreateBlobItem(postData).Result;
         }
 
-        public List<BlobEntity> SearchFiles(string term)
+        public List<BlobItem> SearchFiles(string term)
         {
             if (term == "" || term == null)
                 return null;
@@ -56,21 +56,21 @@ namespace ProofOfConceptServer.Services.Handlers
             return this.model.SearchFiles(term);
         }
 
-        public bool UpdateBlob(BlobEntity newFile)
+        public bool UpdateBlob(BlobItem newFile)
         {
             return this.model.UpdateBlob(newFile);
         }
-        public bool Delete(string id)
+        public bool Delete(int id)
         {
             return this.model.Delete(id).Result;
         }
 
-        public FileInformation DownloadFileAssistent(string id)
+        public FileInformation DownloadFileAssistent(int id)
         {
             return this.model.DownloadFileAssistent(id);
         }
  
-        public DownloadFileResponse DownloadFile(string id)
+        public DownloadFileResponse DownloadFile(int id)
         {
             return this.model.DownloadFile(id).Result;
         }

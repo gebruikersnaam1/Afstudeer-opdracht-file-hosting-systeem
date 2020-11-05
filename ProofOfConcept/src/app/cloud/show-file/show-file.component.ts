@@ -4,7 +4,8 @@ import { CloudService } from '../shared/cloud.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as FileSaver  from 'file-saver';
-
+declare const WaitCursor: any;
+declare const DefaultCursor: any;
 
 
 @Component({
@@ -52,6 +53,7 @@ export class ShowFileComponent implements OnInit {
 
 
   downloadPopup(data: any){
+    DefaultCursor();
     try{
       var blob = new Blob([data], {type: data.type});
       this.cloudService.downloadFileAssistent(this.file).subscribe(
@@ -64,6 +66,7 @@ export class ShowFileComponent implements OnInit {
   }
 
   downloadFile(){ 
+    WaitCursor();
     this.cloudService.downloadFile(this.file).subscribe(
       data => this.downloadPopup(data),
       _ => this.router.navigateByUrl("/500")
@@ -71,10 +74,12 @@ export class ShowFileComponent implements OnInit {
   }
 
   deleteFile(){
+    WaitCursor();
     this.cloudService.deleteFile(this.file).subscribe(
       result => this.fileDeleted = true,
       _ => this.router.navigateByUrl("500")
     );
+    DefaultCursor();
   }
 
   updateFile(){

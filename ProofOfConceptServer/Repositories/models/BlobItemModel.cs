@@ -15,7 +15,7 @@ namespace ProofOfConceptServer.Repositories.models
 {
     public class BlobItemModel
     {
-        private static List<BlobEntity> FilesStorage = DummyDataBlobfiles.GetDummyData();
+        private static List<BlobItem> FilesStorage = DummyDataBlobfiles.GetDummyData();
         private static string blobItemsPath = Path.Combine(Startup.apiRoot, "Models/uploads");
 
         public int RowsCount()
@@ -23,15 +23,15 @@ namespace ProofOfConceptServer.Repositories.models
             return FilesStorage.Count();
         }
 
-        public List<BlobEntity> GetPages(int itemsPerPage,int currentPage)
+        public List<BlobItem> GetPages(int itemsPerPage, int currentPage)
         {
             return FilesStorage.Skip((itemsPerPage * currentPage)).Take(itemsPerPage).ToList();
         }
 
-        public BlobEntity GetSingleFile(string term)
+        public BlobItem GetSingleFile(int id)
         {
             return FilesStorage.Find(item =>
-                    item.fileId.Equals(term, StringComparison.InvariantCultureIgnoreCase));
+                    item.FileId.Equals(id));
         }
 
         private int GenerateId()
@@ -42,22 +42,22 @@ namespace ProofOfConceptServer.Repositories.models
             while (!generatedId)
             {
                 id += 1;
-                if (FilesStorage.Find(i => i.fileId == id.ToString()) == null)
+                //if (FilesStorage.Find(i => i.FileId == id)
                     generatedId = true;
             }
             return id;
         }
 
-        public async Task<BlobEntity> CreateBlobItem(CreateBlob postData)
+        public async Task<BlobItem> CreateBlobItem(CreateBlob postData)
         {
 
-            string id = this.GenerateId().ToString();
-            BlobEntity blobItem = BlobItemFactory.Create(postData, id, blobItemsPath);
+            int id = this.GenerateId();
+            BlobItem blobItem = BlobItemFactory.Create(postData, id, blobItemsPath);
 
             if (blobItem == null)
                 return null;
 
-            string fileName = Path.GetFileName(blobItem.pathFile);
+            string fileName = Path.GetFileName(blobItem.PathFile);
 
             CloudBlockBlob blockBob = AzureConnection.Container.GetBlockBlobReference(fileName);
             using (Stream fileStream = postData.file.OpenReadStream())
@@ -69,38 +69,37 @@ namespace ProofOfConceptServer.Repositories.models
             return blobItem;
         }
 
-        public List<BlobEntity> SearchFiles(string term)
+        public List<BlobItem> SearchFiles(string term)
         {
             return FilesStorage.Where(file =>
-                    file.fileName.ToLower().Contains(term.ToLower())
+                    file.FileName.ToLower().Contains(term.ToLower())
                 ).ToList();
         }
 
-        public bool UpdateBlob(BlobEntity newFile)
+        public bool UpdateBlob(BlobItem newFile)
         {
             var oldFile = FilesStorage.Find(
-                item => item.fileId.Equals
-                            (newFile.fileId, StringComparison.InvariantCultureIgnoreCase));
+                item => item.FileId.Equals(newFile.FileId));
 
             if (oldFile == null)
                 return false;
 
-            oldFile.fileName = newFile.fileName;
-            oldFile.description = newFile.description;
+            oldFile.FileName = newFile.FileName;
+            oldFile.Description = newFile.Description;
             return true;
         }
 
-        public async Task<bool> Delete(string id)
+        public async Task<bool> Delete(int id)
         {
-            var blobItem = FilesStorage.Find(item =>
-                   item.fileId.Equals(id, StringComparison.InvariantCultureIgnoreCase));
+            BlobItem blobItem = FilesStorage.Find(item =>
+                   item.FileId.Equals(id));
 
             if (blobItem == null)
                 return false;
 
             try
             {
-                string fileOnCloud =  Path.GetFileName(blobItem.pathFile);
+                string fileOnCloud = Path.GetFileName(blobItem.PathFile);
                 CloudBlockBlob blockBob = AzureConnection.Container.GetBlockBlobReference(fileOnCloud);
                 await blockBob.DeleteIfExistsAsync();
                 FilesStorage.Remove(blobItem);
@@ -112,30 +111,30 @@ namespace ProofOfConceptServer.Repositories.models
             }
         }
 
-        public FileInformation DownloadFileAssistent(string id)
+        public FileInformation DownloadFileAssistent(int id)
         {
-            var blobItem = FilesStorage.Find(item =>
-                    item.fileId.Equals(id, StringComparison.InvariantCultureIgnoreCase));
-            string extension = Path.GetExtension(blobItem.pathFile);
+            BlobItem blobItem = FilesStorage.Find(item =>
+                    item.FileId.Equals(id));
+            string extension = Path.GetExtension(blobItem.PathFile);
 
             return new FileInformation
             {
-                fileName = Path.GetFileNameWithoutExtension(blobItem.fileName),
+                fileName = Path.GetFileNameWithoutExtension(blobItem.FileName),
                 extension = extension
             };
         }
 
-        private async Task<bool> DownloadBlobFileToServer(BlobEntity blobItem)
+        private async Task<bool> DownloadBlobFileToServer(BlobItem blobItem)
         {
             try
             {
-                string fileName = Path.GetFileName(blobItem.pathFile);
+                string fileName = Path.GetFileName(blobItem.PathFile);
                 CloudBlockBlob blockBob = AzureConnection.Container.GetBlockBlobReference(fileName);
-                var rootDir = new FileInfo(blobItem.pathFile).Directory;
+                var rootDir = new FileInfo(blobItem.PathFile).Directory;
                 if (!rootDir.Exists) //make sure the parent directory exists
                     rootDir.Create();
 
-                await blockBob.DownloadToFileAsync(blobItem.pathFile, FileMode.Create);
+                await blockBob.DownloadToFileAsync(blobItem.PathFile, FileMode.Create);
                 return true;
             }
             catch
@@ -146,10 +145,10 @@ namespace ProofOfConceptServer.Repositories.models
         }
 
 
-        public async Task<DownloadFileResponse> DownloadFile(string id)
+        public async Task<DownloadFileResponse> DownloadFile(int id)
         {
-            BlobEntity blobItem = FilesStorage.Find(item =>
-                    item.fileId.Equals(id, StringComparison.InvariantCultureIgnoreCase));
+            BlobItem blobItem = FilesStorage.Find(item =>
+                    item.FileId.Equals(id));
 
             if (blobItem == null)
                 return null;
@@ -160,16 +159,17 @@ namespace ProofOfConceptServer.Repositories.models
             var net = new System.Net.WebClient();
             try
             {
-                var data = net.DownloadData(blobItem.pathFile);
+                var data = net.DownloadData(blobItem.PathFile);
                 var content = new System.IO.MemoryStream(data);
 
-                if (System.IO.File.Exists(blobItem.pathFile))
-                    System.IO.File.Delete(blobItem.pathFile);
+                if (System.IO.File.Exists(blobItem.PathFile))
+                    System.IO.File.Delete(blobItem.PathFile);
 
                 // var z = File(data, "application/octet-stream", blobItem.fileName);
-                return new DownloadFileResponse {
+                return new DownloadFileResponse
+                {
                     File = data,
-                    FileName = blobItem.fileName
+                    FileName = blobItem.FileName
                 };
             }
             catch
@@ -179,4 +179,3 @@ namespace ProofOfConceptServer.Repositories.models
         }
     }
 }
-

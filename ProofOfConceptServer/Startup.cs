@@ -10,13 +10,14 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 namespace ProofOfConceptServer
 {
     using ProofOfConceptServer.database;
+    using ProofOfConceptServer.Repositories.models;
+    using Microsoft.EntityFrameworkCore;
 
     public class Startup
     {
         public static string apiRoot;
         public Startup(IConfiguration configuration)
         {
-            
             Startup.apiRoot = configuration.GetValue<string>(WebHostDefaults.ContentRootKey);
 
             Configuration = configuration;

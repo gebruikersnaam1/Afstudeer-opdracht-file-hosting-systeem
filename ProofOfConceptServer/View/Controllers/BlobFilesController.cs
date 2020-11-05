@@ -1,21 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using System.Web.Http.Cors;
 
 using Microsoft.AspNetCore.Authorization;
-using ProofOfConceptServer.entities.Factory;
 
 using ProofOfConceptServer.entities.helpers;
 
-using ProofOfConceptServer.database;
-using Microsoft.WindowsAzure.Storage.Blob;
-using System.IO;
-using Azure.Storage.Blobs.Models;
 using ProofOfConceptServer.entities;
-using ProofOfConceptServer.entities.dummy_data;
 using ProofOfConceptServer.Services.Handlers;
 using ProofOfConceptServer.Repositories.entities.helpers;
 
@@ -46,9 +39,9 @@ namespace ProofOfConceptServer.Controllers
 
         [HttpGet]
         [Authorize]
-        public ActionResult<List<BlobEntity>> GetPages([FromQuery]int itemsPerPage, [FromQuery]int currentPage)
+        public ActionResult<List<BlobItem>> GetPages([FromQuery]int itemsPerPage, [FromQuery]int currentPage)
         {
-            List<BlobEntity>  l = handler.GetPages(itemsPerPage,currentPage);
+            List<BlobItem>  l = handler.GetPages(itemsPerPage,currentPage);
 
             if (l == null)
                 Conflict("Wrong values where given!");
@@ -57,11 +50,11 @@ namespace ProofOfConceptServer.Controllers
 
         
         [HttpGet]
-        [Route("file/{term}")]
+        [Route("file/")]
         [Authorize]
-        public ActionResult<BlobEntity> GetSingleFile(string term)
+        public ActionResult<BlobItem> GetSingleFile([FromQuery]int id)
         {
-            BlobEntity b = handler.GetSingleFile(term);
+            BlobItem b = handler.GetSingleFile(id);
             
             if (b == null)
                 return NotFound();
@@ -74,7 +67,7 @@ namespace ProofOfConceptServer.Controllers
         [Authorize]
         public IActionResult CreateBlobItem([FromForm] CreateBlob postData )
         {
-            BlobEntity b = handler.CreateBlobItem(postData);
+            BlobItem b = handler.CreateBlobItem(postData);
 
             if (b == null)
                 return Conflict("Error! Maybe you did not gave us all the needed info?");
@@ -85,9 +78,9 @@ namespace ProofOfConceptServer.Controllers
         [HttpGet]
         [Route("search/{term}")]
         [Authorize]
-        public ActionResult<List<BlobEntity>> SearchFiles(string term)
+        public ActionResult<List<BlobItem>> SearchFiles(string term)
         {
-            List<BlobEntity> l = handler.SearchFiles(term);
+            List<BlobItem> l = handler.SearchFiles(term);
 
             if (l == null)
                 return Conflict("No files found");
@@ -98,7 +91,7 @@ namespace ProofOfConceptServer.Controllers
         [HttpPut]
         [Route("update")]
         [Authorize]
-        public ActionResult Update(BlobEntity newFile)
+        public ActionResult Update(BlobItem newFile)
         {
             bool r = handler.UpdateBlob(newFile);
 
@@ -108,9 +101,9 @@ namespace ProofOfConceptServer.Controllers
         }
 
         [HttpDelete]
-        [Route("delete/{id}")]
+        [Route("delete/")]
         [Authorize]
-        public ActionResult Delete(string id)
+        public ActionResult Delete([FromQuery]int id)
         {
             bool b = handler.Delete(id);
 
@@ -122,18 +115,18 @@ namespace ProofOfConceptServer.Controllers
        
 
         [HttpGet]
-        [Route("download/assistent/{id}")]
+        [Route("download/assistent/")]
         [Authorize]
-        public ActionResult<FileInformation> DownloadFileAssistent(string id)
+        public ActionResult<FileInformation> DownloadFileAssistent([FromQuery]int id)
         {
             return handler.DownloadFileAssistent(id);
         }
 
 
         [HttpGet]
-        [Route("download/{id}")]
+        [Route("download/")]
         [Authorize]
-        public ActionResult<BlobEntity> DownloadFile(string id)
+        public ActionResult<BlobItem> DownloadFile([FromQuery]int id)
         {
             DownloadFileResponse d = handler.DownloadFile(id);
             if(d == null)

@@ -33,19 +33,19 @@ namespace ProofOfConceptServer.entities.Factory
             return Path.Combine(uploadRoot, (name + id + e));
         }
 
-        public static BlobEntity Create(CreateBlob postInfo,string id, string uploadRoot)
+        public static BlobItem Create(CreateBlob postInfo,int id, string uploadRoot)
         {
             try
             {
-                return new BlobEntity
+                return new BlobItem
                 {
-                    fileId = id,
-                    fileName = postInfo.file.FileName,
-                    date = DateTime.Today.ToString("dd-MM-yyyy"),
-                    pathFile = BlobItemFactory.CreatePathFile(uploadRoot, postInfo.file.FileName).Result,
-                    fileSize = (postInfo.file.Length.ToString()),
-                    userId = postInfo.userId,
-                    description = postInfo.description
+                    FileId = id,
+                    FileName = postInfo.file.FileName,
+                    Date = Convert.ToDateTime(DateTime.Today.ToString("dd-MM-yyyy")),
+                    PathFile = BlobItemFactory.CreatePathFile(uploadRoot, postInfo.file.FileName).Result,
+                    FileSize = (postInfo.file.Length.ToString()),
+                    UserId = postInfo.userId,
+                    Description = postInfo.description
                 };
             }
             catch(ArgumentException e)

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 
 namespace ProofOfConceptServer.entities.dummy_data
@@ -6,80 +7,80 @@ namespace ProofOfConceptServer.entities.dummy_data
     public class DummyDataBlobfiles
     {
 
-        public static List<BlobEntity> GetDummyData () {
+        public static List<BlobItem> GetDummyData () {
             return DummyDataBlobfiles.FilesStorage; 
         }
 
-        private static List<BlobEntity> FilesStorage = new List<BlobEntity> {
-            new BlobEntity
+        private static List<BlobItem> FilesStorage = new List<BlobItem> {
+            new BlobItem
             {
-                fileId = "1",
-                fileName="Technisch ontwerp",
-                date="09-10-2020",
-                pathFile="http://daphnis.nl/wp-content/uploads/revslider/TheGem%20Agency%20(One-Page)/Daphnis-2-wit.png",
-                fileSize="500kb",
-                userId="1",
-                description = "Een  ontwerp gemaakt door een UI-expert!"
+                FileId = 1,
+                FileName="Technisch ontwerp",
+                Date= Convert.ToDateTime("09-10-2020"),
+                PathFile="http://daphnis.nl/wp-content/uploads/revslider/TheGem%20Agency%20(One-Page)/Daphnis-2-wit.png",
+                FileSize="500kb",
+                UserId="1",
+                Description = "Een  ontwerp gemaakt door een UI-expert!"
             },
-             new BlobEntity
+             new BlobItem
             {
-                fileId = "2",
-                fileName="Notules",
-                date="12-10-2020",
-                pathFile="http://daphnis.nl/wp-content/uploads/revslider/TheGem%20Agency%20(One-Page)/Daphnis-2-wit.png",
-                fileSize="700kb",
-                userId="2",
-                description = "Belangrijke notules van een belangrijk gesprek!"
+                FileId = 2,
+                FileName="Notules",
+                Date= Convert.ToDateTime("12-10-2020"),
+                PathFile="http://daphnis.nl/wp-content/uploads/revslider/TheGem%20Agency%20(One-Page)/Daphnis-2-wit.png",
+                FileSize="700kb",
+                UserId="2",
+                Description = "Belangrijke notules van een belangrijk gesprek!"
             },
-              new BlobEntity
+              new BlobItem
             {
-                fileId = "3",
-                fileName="Wetenschappelijk tijdschrift",
-                date="13-10-2020",
-                pathFile="http://daphnis.nl/wp-content/uploads/revslider/TheGem%20Agency%20(One-Page)/Daphnis-2-wit.png",
-                fileSize="500kb",
-                userId="3",
-                description = "Gemaakt door iemand die VWO heeft gedaan en te goed was voor TU Delft"
+                FileId = 3,
+                FileName="Wetenschappelijk tijdschrift",
+                Date=Convert.ToDateTime("13-10-2020"),
+                PathFile="http://daphnis.nl/wp-content/uploads/revslider/TheGem%20Agency%20(One-Page)/Daphnis-2-wit.png",
+                FileSize="500kb",
+                UserId="3",
+                Description = "Gemaakt door iemand die VWO heeft gedaan en te goed was voor TU Delft"
             },
-               new BlobEntity
+               new BlobItem
             {
-                fileId = "4",
-                fileName="Functioneel ontwerp",
-                date="13-10-2020",
-                pathFile="http://daphnis.nl/wp-content/uploads/revslider/TheGem%20Agency%20(One-Page)/Daphnis-2-wit.png",
-                fileSize="1500kb",
-                userId="4",
-                description = "Heel functioneel! Iemand zal het wellicht eens kunnen gebruiken!"
+                FileId = 4,
+                FileName="Functioneel ontwerp",
+                Date=Convert.ToDateTime("13-10-2020"),
+                PathFile="http://daphnis.nl/wp-content/uploads/revslider/TheGem%20Agency%20(One-Page)/Daphnis-2-wit.png",
+                FileSize="1500kb",
+                UserId="4",
+                Description = "Heel functioneel! Iemand zal het wellicht eens kunnen gebruiken!"
             },
-            new BlobEntity
+            new BlobItem
             {
-                fileId = "5",
-                fileName="Verslag",
-                date="13-10-2020",
-                pathFile="http://daphnis.nl/wp-content/uploads/revslider/TheGem%20Agency%20(One-Page)/Daphnis-2-wit.png",
-                fileSize="1300kb",
-                userId="5",
-                description = "Een wild verslag van dingen van dingen!"
+                FileId = 5,
+                FileName="Verslag",
+                Date= Convert.ToDateTime("13-10-2020"),
+                PathFile="http://daphnis.nl/wp-content/uploads/revslider/TheGem%20Agency%20(One-Page)/Daphnis-2-wit.png",
+                FileSize="1300kb",
+                UserId="5",
+                Description = "Een wild verslag van dingen van dingen!"
             },
-             new BlobEntity
+             new BlobItem
             {
-                fileId = "6",
-                fileName="Contract",
-                date="14-10-2020",
-                pathFile="http://daphnis.nl/wp-content/uploads/revslider/TheGem%20Agency%20(One-Page)/Daphnis-2-wit.png",
-                fileSize="500kb",
-                userId="6",
-                description = "UFC contract voor het gevecht van het jaar!"
+                FileId = 6,
+                FileName="Contract",
+                Date=Convert.ToDateTime("14-10-2020"),
+                PathFile="http://daphnis.nl/wp-content/uploads/revslider/TheGem%20Agency%20(One-Page)/Daphnis-2-wit.png",
+                FileSize="500kb",
+                UserId="6",
+                Description = "UFC contract voor het gevecht van het jaar!"
             },
-             new BlobEntity
+             new BlobItem
             {
-                fileId = "7",
-                fileName="Feedback",
-                date="14-10-2020",
-                pathFile="http://daphnis.nl/wp-content/uploads/revslider/TheGem%20Agency%20(One-Page)/Daphnis-2-wit.png",
-                fileSize="500kb",
-                userId="4",
-                description = "Feedback of nee toch niet?"
+                FileId = 7,
+                FileName="Feedback",
+                Date=Convert.ToDateTime("14-10-2020"),
+                PathFile="http://daphnis.nl/wp-content/uploads/revslider/TheGem%20Agency%20(One-Page)/Daphnis-2-wit.png",
+                FileSize="500kb",
+                UserId="4",
+                Description = "Feedback of nee toch niet?"
             }
         };
     }

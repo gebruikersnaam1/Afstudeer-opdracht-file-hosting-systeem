@@ -22,7 +22,7 @@ export class CloudService {
   }
 
   getFile(file : FileId){
-    return this.client.get<fileData>((this.url+"blobfiles/file/"+file.fileId), {
+    return this.client.get<fileData>((this.url+"blobfiles/file/?id="+file.fileId), {
       headers:{
         authorization: ("Bearer " + this.authService.id_token)
        }
@@ -46,7 +46,7 @@ export class CloudService {
   }
 
   downloadFileAssistent(file: FileId){
-    return this.client.get<FileInformation>(((this.url+"blobfiles/download/assistent/")+file.fileId),{
+    return this.client.get<FileInformation>(((this.url+"blobfiles/download/assistent/?id="+file.fileId)),{
       headers:{
         authorization: ("Bearer " + this.authService.id_token)
        }
@@ -54,7 +54,7 @@ export class CloudService {
   }
 
   downloadFile(file: FileId){
-    return this.client.get(((this.url+"blobfiles/download/")+file.fileId),{
+    return this.client.get(((this.url+"blobfiles/download/?id="+file.fileId)),{
       responseType: 'blob' ,
       headers:{
         authorization: ("Bearer " + this.authService.id_token)
@@ -63,7 +63,7 @@ export class CloudService {
   }
 
   deleteFile(file: FileId){
-    return this.client.delete((this.url+"blobfiles/delete/")+file.fileId, {
+    return this.client.delete((this.url+"blobfiles/delete/?id="+file.fileId), {
       headers:{
         authorization: ("Bearer " + this.authService.id_token)
        }
