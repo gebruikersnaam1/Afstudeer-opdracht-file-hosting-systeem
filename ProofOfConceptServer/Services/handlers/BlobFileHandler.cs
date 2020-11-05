@@ -1,12 +1,8 @@
-﻿using Azure.Storage.Blobs.Models;
-using ProofOfConceptServer.entities;
+﻿using ProofOfConceptServer.entities;
 using ProofOfConceptServer.entities.helpers;
 using ProofOfConceptServer.Repositories.entities.helpers;
 using ProofOfConceptServer.Repositories.models;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ProofOfConceptServer.Services.Handlers
 {

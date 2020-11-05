@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.WindowsAzure.Storage.Blob;
+﻿using Microsoft.WindowsAzure.Storage.Blob;
 using ProofOfConceptServer.database;
 using ProofOfConceptServer.entities;
 using ProofOfConceptServer.entities.dummy_data;
@@ -18,7 +17,6 @@ namespace ProofOfConceptServer.Repositories.models
     {
         private static List<BlobEntity> FilesStorage = DummyDataBlobfiles.GetDummyData();
         private static string blobItemsPath = Path.Combine(Startup.apiRoot, "Models/uploads");
-
 
         public int RowsCount()
         {
@@ -102,7 +100,8 @@ namespace ProofOfConceptServer.Repositories.models
 
             try
             {
-                CloudBlockBlob blockBob = AzureConnection.Container.GetBlockBlobReference(blobItem.fileName);
+                string fileOnCloud =  Path.GetFileName(blobItem.pathFile);
+                CloudBlockBlob blockBob = AzureConnection.Container.GetBlockBlobReference(fileOnCloud);
                 await blockBob.DeleteIfExistsAsync();
                 FilesStorage.Remove(blobItem);
                 return true;
