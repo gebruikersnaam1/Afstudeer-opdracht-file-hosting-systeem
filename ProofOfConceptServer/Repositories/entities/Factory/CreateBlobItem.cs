@@ -43,7 +43,7 @@ namespace ProofOfConceptServer.entities.Factory
                     FileName = postInfo.file.FileName,
                     Date = Convert.ToDateTime(DateTime.Today.ToString("dd-MM-yyyy")),
                     PathFile = BlobItemFactory.CreatePathFile(uploadRoot, postInfo.file.FileName).Result,
-                    FileSize = (postInfo.file.Length.ToString()),
+                    FileSize = (int)postInfo.file.Length,
                     UserId = postInfo.userId,
                     Description = postInfo.description
                 };

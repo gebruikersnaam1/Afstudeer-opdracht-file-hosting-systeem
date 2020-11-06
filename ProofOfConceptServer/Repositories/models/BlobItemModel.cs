@@ -4,6 +4,7 @@ using ProofOfConceptServer.entities;
 using ProofOfConceptServer.entities.dummy_data;
 using ProofOfConceptServer.entities.Factory;
 using ProofOfConceptServer.entities.helpers;
+using ProofOfConceptServer.Models;
 using ProofOfConceptServer.Repositories.entities.helpers;
 using System;
 using System.Collections.Generic;
@@ -15,35 +16,40 @@ namespace ProofOfConceptServer.Repositories.models
 {
     public class BlobItemModel
     {
-        private static List<BlobItem> FilesStorage = DummyDataBlobfiles.GetDummyData();
-        private static string blobItemsPath = Path.Combine(Startup.apiRoot, "Models/uploads");
+        ///private List<BlobItem> FilesStorage = DummyDataBlobfiles.GetDummyData();
+        private string blobItemsPath = Path.Combine(Startup.apiRoot, "Models/uploads");
+        private woefiedatabaseContext _context;
 
+        public BlobItemModel()
+        {
+            _context = new woefiedatabaseContext();
+        }
         public int RowsCount()
         {
-            return FilesStorage.Count();
+            return _context.BlobItem.ToList().Count();
         }
 
         public List<BlobItem> GetPages(int itemsPerPage, int currentPage)
         {
-            return FilesStorage.Skip((itemsPerPage * currentPage)).Take(itemsPerPage).ToList();
+            return _context.BlobItem.ToList().Skip((itemsPerPage * currentPage)).Take(itemsPerPage).ToList();
         }
 
         public BlobItem GetSingleFile(int id)
         {
-            return FilesStorage.Find(item =>
+            return _context.BlobItem.ToList().Find(item =>
                     item.FileId.Equals(id));
         }
 
         private int GenerateId()
-        {
-            //basic ID -- auto increment, but with a bit more safety
-            int id = FilesStorage.Count();
-            bool generatedId = false;
-            while (!generatedId)
+        { 
+            int id = _context.BlobItem.ToList().Count();
+            int idUnique = 1;
+            while(5 > 0)
             {
                 id += 1;
-                //if (FilesStorage.Find(i => i.FileId == id)
-                    generatedId = true;
+                idUnique = _context.BlobItem.ToList().FindIndex(i => i.FileId == id);
+                if (idUnique <= 0)
+                    break;
             }
             return id;
         }
@@ -63,7 +69,8 @@ namespace ProofOfConceptServer.Repositories.models
             using (Stream fileStream = postData.file.OpenReadStream())
             {
                 await blockBob.UploadFromStreamAsync(fileStream);
-                FilesStorage.Add(blobItem); //set file in the "db"
+                _context.BlobItem.Add(blobItem); //set file in the "db"
+                _context.SaveChanges();
             }
 
             return blobItem;
@@ -71,14 +78,14 @@ namespace ProofOfConceptServer.Repositories.models
 
         public List<BlobItem> SearchFiles(string term)
         {
-            return FilesStorage.Where(file =>
+            return _context.BlobItem.Where(file =>
                     file.FileName.ToLower().Contains(term.ToLower())
                 ).ToList();
         }
 
         public bool UpdateBlob(BlobItem newFile)
         {
-            var oldFile = FilesStorage.Find(
+            var oldFile = _context.BlobItem.ToList().Find(
                 item => item.FileId.Equals(newFile.FileId));
 
             if (oldFile == null)
@@ -91,7 +98,7 @@ namespace ProofOfConceptServer.Repositories.models
 
         public async Task<bool> Delete(int id)
         {
-            BlobItem blobItem = FilesStorage.Find(item =>
+            BlobItem blobItem = _context.BlobItem.ToList().Find(item =>
                    item.FileId.Equals(id));
 
             if (blobItem == null)
@@ -102,7 +109,7 @@ namespace ProofOfConceptServer.Repositories.models
                 string fileOnCloud = Path.GetFileName(blobItem.PathFile);
                 CloudBlockBlob blockBob = AzureConnection.Container.GetBlockBlobReference(fileOnCloud);
                 await blockBob.DeleteIfExistsAsync();
-                FilesStorage.Remove(blobItem);
+                _context.BlobItem.ToList().Remove(blobItem);
                 return true;
             }
             catch (ArgumentException e)
@@ -113,7 +120,7 @@ namespace ProofOfConceptServer.Repositories.models
 
         public FileInformation DownloadFileAssistent(int id)
         {
-            BlobItem blobItem = FilesStorage.Find(item =>
+            BlobItem blobItem = _context.BlobItem.ToList().Find(item =>
                     item.FileId.Equals(id));
             string extension = Path.GetExtension(blobItem.PathFile);
 
@@ -147,7 +154,7 @@ namespace ProofOfConceptServer.Repositories.models
 
         public async Task<DownloadFileResponse> DownloadFile(int id)
         {
-            BlobItem blobItem = FilesStorage.Find(item =>
+            BlobItem blobItem = _context.BlobItem.ToList().Find(item =>
                     item.FileId.Equals(id));
 
             if (blobItem == null)

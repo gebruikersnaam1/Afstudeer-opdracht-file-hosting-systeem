@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+declare const DefaultCursor: any;
 
 @Component({
   selector: 'app-notfound',
@@ -7,7 +8,9 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NotfoundComponent implements OnInit {
 
-  constructor() { }
+  constructor() { 
+    DefaultCursor(); //wait cursor may be loaded in prev. page, hence this may be needed.
+  }
 
   ngOnInit(): void {
   }

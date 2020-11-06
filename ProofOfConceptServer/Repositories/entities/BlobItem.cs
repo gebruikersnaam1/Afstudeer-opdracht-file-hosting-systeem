@@ -9,7 +9,7 @@ namespace ProofOfConceptServer.entities
         public string FileName { get; set; }
         public DateTime Date { get; set; }
         public string PathFile { get; set; }
-        public string FileSize { get; set; }
+        public int FileSize { get; set; }
         public string UserId { get; set; }
         public string Description { get; set; }
     }
