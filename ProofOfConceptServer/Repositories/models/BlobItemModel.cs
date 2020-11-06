@@ -16,13 +16,29 @@ namespace ProofOfConceptServer.Repositories.models
 {
     public class BlobItemModel
     {
-        ///private List<BlobItem> FilesStorage = DummyDataBlobfiles.GetDummyData();
         private string blobItemsPath = Path.Combine(Startup.apiRoot, "Models/uploads");
         private woefiedatabaseContext _context;
 
         public BlobItemModel()
         {
             _context = new woefiedatabaseContext();
+            //LoadDummyData();
+        }
+
+        public void LoadDummyData()
+        {
+            try
+            {
+                foreach (BlobItem bItem in DummyDataBlobfiles.GetDummyData())
+                {
+                    _context.BlobItem.Add(bItem);
+                    _context.SaveChanges();
+                }
+            }
+            catch
+            {
+                System.Diagnostics.Debug.WriteLine("Dummy data error, but data may be loaded");
+            }
         }
         public int RowsCount()
         {
@@ -31,13 +47,13 @@ namespace ProofOfConceptServer.Repositories.models
 
         public List<BlobItem> GetPages(int itemsPerPage, int currentPage)
         {
-            return _context.BlobItem.ToList().Skip((itemsPerPage * currentPage)).Take(itemsPerPage).ToList();
+            return _context.BlobItem.Skip((itemsPerPage * currentPage)).Take(itemsPerPage).ToList();
         }
 
         public BlobItem GetSingleFile(int id)
         {
-            return _context.BlobItem.ToList().Find(item =>
-                    item.FileId.Equals(id));
+            return _context.BlobItem.Where(item =>
+                    item.FileId == id).FirstOrDefault();
         }
 
         private int GenerateId()
@@ -85,21 +101,22 @@ namespace ProofOfConceptServer.Repositories.models
 
         public bool UpdateBlob(BlobItem newFile)
         {
-            var oldFile = _context.BlobItem.ToList().Find(
-                item => item.FileId.Equals(newFile.FileId));
+            BlobItem oldFile = _context.BlobItem.Where(
+                item => item.FileId == newFile.FileId).FirstOrDefault();
 
             if (oldFile == null)
                 return false;
 
             oldFile.FileName = newFile.FileName;
             oldFile.Description = newFile.Description;
+            _context.SaveChanges();
             return true;
         }
 
         public async Task<bool> Delete(int id)
         {
-            BlobItem blobItem = _context.BlobItem.ToList().Find(item =>
-                   item.FileId.Equals(id));
+            BlobItem blobItem = _context.BlobItem.Where(item =>
+                   item.FileId == (id)).FirstOrDefault();
 
             if (blobItem == null)
                 return false;
@@ -109,7 +126,8 @@ namespace ProofOfConceptServer.Repositories.models
                 string fileOnCloud = Path.GetFileName(blobItem.PathFile);
                 CloudBlockBlob blockBob = AzureConnection.Container.GetBlockBlobReference(fileOnCloud);
                 await blockBob.DeleteIfExistsAsync();
-                _context.BlobItem.ToList().Remove(blobItem);
+                _context.BlobItem.Remove(blobItem);
+                _context.SaveChanges();
                 return true;
             }
             catch (ArgumentException e)
@@ -120,8 +138,8 @@ namespace ProofOfConceptServer.Repositories.models
 
         public FileInformation DownloadFileAssistent(int id)
         {
-            BlobItem blobItem = _context.BlobItem.ToList().Find(item =>
-                    item.FileId.Equals(id));
+            BlobItem blobItem = _context.BlobItem.Where(item =>
+                    item.FileId == id).FirstOrDefault();
             string extension = Path.GetExtension(blobItem.PathFile);
 
             return new FileInformation
@@ -154,8 +172,8 @@ namespace ProofOfConceptServer.Repositories.models
 
         public async Task<DownloadFileResponse> DownloadFile(int id)
         {
-            BlobItem blobItem = _context.BlobItem.ToList().Find(item =>
-                    item.FileId.Equals(id));
+            BlobItem blobItem = _context.BlobItem.Where(item =>
+                    item.FileId == id).FirstOrDefault();
 
             if (blobItem == null)
                 return null;

@@ -12,13 +12,13 @@ namespace ProofOfConceptServer.Services.Handlers
 
         public BlobFileHandler()
         {
-            this.model = new BlobItemModel();
+            model = new BlobItemModel();
         }
 
 
         public int GetCountOfRows()
         {
-            return this.model.RowsCount();
+            return model.RowsCount();
         }
 
         public List<BlobItem> GetPages(int itemsPerPage,int currentPage)
@@ -45,7 +45,7 @@ namespace ProofOfConceptServer.Services.Handlers
 
         public BlobItem CreateBlobItem(CreateBlob postData)
         {
-            return this.model.CreateBlobItem(postData).Result;
+            return model.CreateBlobItem(postData).Result;
         }
 
         public List<BlobItem> SearchFiles(string term)
@@ -53,26 +53,26 @@ namespace ProofOfConceptServer.Services.Handlers
             if (term == "" || term == null)
                 return null;
 
-            return this.model.SearchFiles(term);
+            return model.SearchFiles(term);
         }
 
         public bool UpdateBlob(BlobItem newFile)
         {
-            return this.model.UpdateBlob(newFile);
+            return model.UpdateBlob(newFile);
         }
         public bool Delete(int id)
         {
-            return this.model.Delete(id).Result;
+            return model.Delete(id).Result;
         }
 
         public FileInformation DownloadFileAssistent(int id)
         {
-            return this.model.DownloadFileAssistent(id);
+            return model.DownloadFileAssistent(id);
         }
  
         public DownloadFileResponse DownloadFile(int id)
         {
-            return this.model.DownloadFile(id).Result;
+            return model.DownloadFile(id).Result;
         }
     }
 }
