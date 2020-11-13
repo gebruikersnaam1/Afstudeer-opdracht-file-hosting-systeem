@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { fileData, FileId } from '../../interfaces/file';
 import { Router } from '@angular/router';
+
+import { FolderResponse } from '../../interfaces/folder';
 
 @Component({
   selector: 'cloud-table',
@@ -8,8 +9,8 @@ import { Router } from '@angular/router';
   styleUrls: ['./file-table.component.scss']
 })
 export class FileTableComponent implements OnInit {
-  headers = ["Naam", "Datum", "Type", "Bestandsgroten"];
-  @Input() rows: fileData[];
+  headers = ["", "Naam", "Datum", "Type", "Bestandsgroten"];
+  @Input() rows: FolderResponse[];
   @Output() click = new EventEmitter<string>();
 
   constructor(private router : Router) { }
@@ -17,7 +18,11 @@ export class FileTableComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  ShowFile(id : FileId){
+  ShowFolder(id:number){
+    this.router.navigateByUrl("/cloud/overzicht/"+id);
+  }
+  
+  ShowFile(id : number){
     this.router.navigateByUrl("/cloud/file/"+id);
   }
 

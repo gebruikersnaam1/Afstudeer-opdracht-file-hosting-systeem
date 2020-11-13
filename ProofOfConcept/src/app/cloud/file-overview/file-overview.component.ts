@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CloudService } from "../shared/cloud.service";
-import { fileData } from '../interfaces/file';
 
-import { folderView } from '../interfaces/folder';
+import { folderView, FolderResponse } from '../interfaces/folder';
 
 @Component({
   selector: 'cloud-overview',
@@ -11,7 +10,7 @@ import { folderView } from '../interfaces/folder';
   styleUrls: ['./file-overview.component.scss']
 })
 export class FileOverviewComponent implements OnInit {
-  rows : fileData[];
+  rows : FolderResponse[];
   filesLoaded: Promise<boolean>;
   errorExist = false;
   
@@ -19,7 +18,7 @@ export class FileOverviewComponent implements OnInit {
     folderID : 1, //root ID
     totalItems : 0,
     itemsPerPages : 10,
-    currentPage : 0
+    currentPage : 1
   }
   
 
@@ -33,10 +32,10 @@ export class FileOverviewComponent implements OnInit {
       this.setCurrentPage();
       return;
     }
-    this.cloudService.searchOnFileName(searchTerm.toString()).subscribe(
-      files => { this.rows = files; this.filesLoaded = Promise.resolve(true) },
-      _ => { this.rows = []; this.filesLoaded = Promise.resolve(true)}
-    );
+    // this.cloudService.searchOnFileName(searchTerm.toString()).subscribe(
+    //   files => { this.rows = files; this.filesLoaded = Promise.resolve(true) },
+    //   _ => { this.rows = []; this.filesLoaded = Promise.resolve(true)}
+    // );
   }
 
   updateCurrentPage(pageNumber : number){
@@ -47,10 +46,10 @@ export class FileOverviewComponent implements OnInit {
   setCurrentPage(){
     this.activeRoute.params.subscribe( 
       (value) => {
-        if(value?.folderID != undefined && Number(value?.folderID) === NaN){
+        if(value?.folderID != undefined && Number(value?.folderID) != NaN){
           this.folderData.folderID = value.folderID;
         }
-        if(value?.pageNumber != undefined && Number(value?.pageNumber) === NaN){
+        if(value?.pageNumber != undefined && Number(value?.pageNumber) != NaN){
           this.folderData.currentPage = value.pageNumber;
         }
       }
@@ -59,7 +58,7 @@ export class FileOverviewComponent implements OnInit {
   }
 
   setFiles(){
-    this.cloudService.getFiles(this.folderData.itemsPerPages, this.folderData.currentPage).subscribe(
+    this.cloudService.getFolder(this.folderData.folderID).subscribe(
       files => { this.rows = files; this.filesLoaded = Promise.resolve(true) },
       _ => { this.errorExist = true; this.filesLoaded = Promise.resolve(false); }
     );

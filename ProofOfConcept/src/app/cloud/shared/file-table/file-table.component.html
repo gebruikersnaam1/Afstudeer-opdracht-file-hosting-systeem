@@ -4,20 +4,32 @@
         <th scope="col" *ngFor="let h of headers"> {{h}}</th>
       </tr>
     </thead>
-    <tbody *ngIf="rows.length > 0">
+    <tbody *ngIf="rows != null && rows.length > 0">
       <!-- <ng-container *ngFor="let columns of rows"> -->
         <!-- <a routerLink="/cloud/file/{{ columns?.fileId }}"> -->
-            <tr *ngFor="let columns of rows" (click)="ShowFile(columns.fileId)">
-              <td>{{ columns?.fileName }}</td>
-              <td>{{ columns?.date }}</td>
-              <td>{{ columns?.userId }}</td>
-              <td>{{ columns?.fileSize }}</td>
+          <ng-container *ngFor="let columns of rows" >
+            <tr *ngIf="columns.isFolder" (click)="ShowFolder(columns.id)">
+              <td>{{ columns?.name }}</td>
+              <td>{{ columns?.lastChanged | date :  'dd-MM-yyyy'}}</td>
+              <td>{{ columns?.type }}</td>
+              <td>{{ columns?.size }}</td>
             </tr>
+          </ng-container>
+          <ng-container *ngFor="let columns of rows" >
+            <tr *ngIf="!columns.isFolder" (click)="ShowFile(columns.id)">
+              <td>{{ columns?.type}}</td>
+
+              <td>{{ columns?.name }}</td>
+              <td>{{ columns?.lastChanged | date :  'dd-MM-yyyy'}}</td>
+              <td>{{ columns?.type }}</td>
+              <td>{{ columns?.size }}</td>
+            </tr>
+          </ng-container>
     </tbody>
   </table>
   
-  <div class="alert alert-warning" *ngIf="rows.length < 1">
-    Er is geen data om te laten zien op dit moment.
+  <div class="alert alert-warning" *ngIf="rows == null || rows.length < 1">
+   Folder is leeg!
   </div>
 
   

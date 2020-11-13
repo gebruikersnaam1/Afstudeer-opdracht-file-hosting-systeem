@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { fileData, FileId,FileInformation } from '../interfaces/file';
-import { CreateFolderData } from '../interfaces/folder';
+import { CreateFolderData,FolderResponse } from '../interfaces/folder';
 
 import { HttpClient } from '@angular/common/http';
 import { AuthService } from '../../auth/shared/auth.service';
@@ -63,6 +63,14 @@ export class CloudService {
 
   validateFolderID(folderID : number){
     return this.client.get((this.url+"folders/validateid/"+folderID),{
+      headers:{
+        authorization: ("Bearer " + this.authService.id_token)
+       }
+    });
+  }
+
+  getFolder(folderID: number){
+    return this.client.get<FolderResponse[]>((this.url+"folders/getFolder/"+folderID),{
       headers:{
         authorization: ("Bearer " + this.authService.id_token)
        }

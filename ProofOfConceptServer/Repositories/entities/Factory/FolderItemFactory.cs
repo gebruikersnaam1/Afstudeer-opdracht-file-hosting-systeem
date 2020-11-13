@@ -1,6 +1,7 @@
 ﻿using ProofOfConceptServer.Repositories.entities.helpers;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -16,6 +17,7 @@ namespace ProofOfConceptServer.Repositories.entities.Factory
                 LastChanged = blob.Date,
                 Id = blob.FileId,
                 Size = blob.FileSize,
+                Type = Path.GetExtension(blob.Path),
                 IsFolder = false
             };
         }
@@ -28,6 +30,7 @@ namespace ProofOfConceptServer.Repositories.entities.Factory
                 LastChanged = folder.DateChanged,
                 Id = folder.FolderId,
                 Size = 0,
+                Type = "Folder",
                 IsFolder = true
             };
         }
