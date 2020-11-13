@@ -9,12 +9,12 @@
 <ng-container *ngIf="this.filesLoaded && !this.errorExist">
     
     <div class="upper-menu">
-    <a routerLink="/cloud/file/upload" routerLinkActive="active">
+    <a routerLink="/cloud/file/upload/{{folderData.currentfolderID}}" routerLinkActive="active">
         <button class="btn btn-custom mb-2"><span class="fa fa-upload  fa-2x"></span></button>
     </a>
     </div>
     <div class="upper-menu">
-        <a routerLink="/cloud/folder/create" routerLinkActive="active">
+        <a routerLink="/cloud/folder/create/{{folderData.currentfolderID}}" routerLinkActive="active">
             <button class="btn btn-custom mb-2"><span class="fas fa-folder-plus fa-2x"></span></button>
         </a>    
     </div>

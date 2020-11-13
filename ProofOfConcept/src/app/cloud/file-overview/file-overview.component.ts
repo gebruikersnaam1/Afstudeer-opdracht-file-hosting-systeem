@@ -15,10 +15,9 @@ export class FileOverviewComponent implements OnInit {
   errorExist = false;
   
   folderData : folderView = {
-    folderID : 1, //root ID
+    currentfolderID : 1, //root ID
     totalItems : 0,
-    itemsPerPages : 10,
-    currentPage : 1
+    itemsPerPages : 10
   }
   
 
@@ -39,7 +38,7 @@ export class FileOverviewComponent implements OnInit {
   }
 
   updateCurrentPage(pageNumber : number){
-    this.folderData.currentPage = pageNumber > 0 ? pageNumber : 0;
+    this.folderData.currentfolderID = pageNumber > 0 ? pageNumber : 0;
     this.setFiles();
   }
 
@@ -47,10 +46,10 @@ export class FileOverviewComponent implements OnInit {
     this.activeRoute.params.subscribe( 
       (value) => {
         if(value?.folderID != undefined && Number(value?.folderID) != NaN){
-          this.folderData.folderID = value.folderID;
+          this.folderData.currentfolderID = value.folderID;
         }
         if(value?.pageNumber != undefined && Number(value?.pageNumber) != NaN){
-          this.folderData.currentPage = value.pageNumber;
+          this.folderData.currentfolderID = value.pageNumber;
         }
       }
     );
@@ -58,17 +57,13 @@ export class FileOverviewComponent implements OnInit {
   }
 
   setFiles(){
-    this.cloudService.getFolder(this.folderData.folderID).subscribe(
+    this.cloudService.getFolder(this.folderData.currentfolderID).subscribe(
       files => { this.rows = files; this.filesLoaded = Promise.resolve(true) },
       _ => { this.errorExist = true; this.filesLoaded = Promise.resolve(false); }
     );
   }
 
   ngOnInit(): void {
-    this.cloudService.getFileCount().subscribe(
-      result => this.folderData.currentPage = result,
-      _ => console.log("The file count = 0; that is a problem?")
-    );
     this.setCurrentPage();
   }
 

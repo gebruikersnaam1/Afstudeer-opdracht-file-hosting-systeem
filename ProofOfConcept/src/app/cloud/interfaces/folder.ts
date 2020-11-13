@@ -5,10 +5,9 @@ export interface CreateFolderData{
 }
 
 export interface folderView {
-    folderID : number;
+    currentfolderID : number;
     totalItems : number; 
     itemsPerPages : number;
-    currentPage : number;
 }
 
 export interface FolderResponse{
