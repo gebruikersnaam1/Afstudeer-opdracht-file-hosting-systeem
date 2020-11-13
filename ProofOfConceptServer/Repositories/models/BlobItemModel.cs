@@ -4,7 +4,8 @@ using ProofOfConceptServer.entities;
 using ProofOfConceptServer.entities.dummy_data;
 using ProofOfConceptServer.entities.Factory;
 using ProofOfConceptServer.entities.helpers;
-using ProofOfConceptServer.Models;
+using ProofOfConceptServer.Repositories.models;
+using ProofOfConceptServer.Repositories.entities;
 using ProofOfConceptServer.Repositories.entities.helpers;
 using System;
 using System.Collections.Generic;
@@ -57,10 +58,10 @@ namespace ProofOfConceptServer.Repositories.models
         }
 
         private int GenerateId()
-        { 
+        {
             int id = _context.BlobItem.ToList().Count();
             int idUnique = 1;
-            while(5 > 0)
+            while (5 > 0)
             {
                 id += 1;
                 idUnique = _context.BlobItem.ToList().FindIndex(i => i.FileId == id);
@@ -70,7 +71,7 @@ namespace ProofOfConceptServer.Repositories.models
             return id;
         }
 
-        public async Task<BlobItem> CreateBlobItem(CreateBlob postData)
+        public async Task<BlobItem> CreateBlobItem(ICreateBlob postData)
         {
 
             int id = this.GenerateId();
@@ -79,7 +80,7 @@ namespace ProofOfConceptServer.Repositories.models
             if (blobItem == null)
                 return null;
 
-            string fileName = Path.GetFileName(blobItem.PathFile);
+            string fileName = Path.GetFileName(blobItem.Path);
 
             CloudBlockBlob blockBob = AzureConnection.Container.GetBlockBlobReference(fileName);
             using (Stream fileStream = postData.file.OpenReadStream())
@@ -123,7 +124,7 @@ namespace ProofOfConceptServer.Repositories.models
 
             try
             {
-                string fileOnCloud = Path.GetFileName(blobItem.PathFile);
+                string fileOnCloud = Path.GetFileName(blobItem.Path);
                 CloudBlockBlob blockBob = AzureConnection.Container.GetBlockBlobReference(fileOnCloud);
                 await blockBob.DeleteIfExistsAsync();
                 _context.BlobItem.Remove(blobItem);
@@ -136,13 +137,13 @@ namespace ProofOfConceptServer.Repositories.models
             }
         }
 
-        public FileInformation DownloadFileAssistent(int id)
+        public IFileInformation DownloadFileAssistent(int id)
         {
             BlobItem blobItem = _context.BlobItem.Where(item =>
                     item.FileId == id).FirstOrDefault();
-            string extension = Path.GetExtension(blobItem.PathFile);
+            string extension = Path.GetExtension(blobItem.Path);
 
-            return new FileInformation
+            return new IFileInformation
             {
                 fileName = Path.GetFileNameWithoutExtension(blobItem.FileName),
                 extension = extension
@@ -153,13 +154,13 @@ namespace ProofOfConceptServer.Repositories.models
         {
             try
             {
-                string fileName = Path.GetFileName(blobItem.PathFile);
+                string fileName = Path.GetFileName(blobItem.Path);
                 CloudBlockBlob blockBob = AzureConnection.Container.GetBlockBlobReference(fileName);
-                var rootDir = new FileInfo(blobItem.PathFile).Directory;
+                var rootDir = new FileInfo(blobItem.Path).Directory;
                 if (!rootDir.Exists) //make sure the parent directory exists
                     rootDir.Create();
 
-                await blockBob.DownloadToFileAsync(blobItem.PathFile, FileMode.Create);
+                await blockBob.DownloadToFileAsync(blobItem.Path, FileMode.Create);
                 return true;
             }
             catch
@@ -170,7 +171,7 @@ namespace ProofOfConceptServer.Repositories.models
         }
 
 
-        public async Task<DownloadFileResponse> DownloadFile(int id)
+        public async Task<IDownloadFileResponse> DownloadFile(int id)
         {
             BlobItem blobItem = _context.BlobItem.Where(item =>
                     item.FileId == id).FirstOrDefault();
@@ -184,14 +185,14 @@ namespace ProofOfConceptServer.Repositories.models
             var net = new System.Net.WebClient();
             try
             {
-                var data = net.DownloadData(blobItem.PathFile);
+                var data = net.DownloadData(blobItem.Path);
                 var content = new System.IO.MemoryStream(data);
 
-                if (System.IO.File.Exists(blobItem.PathFile))
-                    System.IO.File.Delete(blobItem.PathFile);
+                if (System.IO.File.Exists(blobItem.Path))
+                    System.IO.File.Delete(blobItem.Path);
 
                 // var z = File(data, "application/octet-stream", blobItem.fileName);
-                return new DownloadFileResponse
+                return new IDownloadFileResponse
                 {
                     File = data,
                     FileName = blobItem.FileName

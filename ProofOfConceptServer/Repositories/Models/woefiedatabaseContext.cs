@@ -1,9 +1,9 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
-using ProofOfConceptServer.entities;
+using ProofOfConceptServer.Repositories.entities;
 
-namespace ProofOfConceptServer.Models
+namespace ProofOfConceptServer.Repositories.models
 {
     public partial class woefiedatabaseContext : DbContext
     {
@@ -17,14 +17,15 @@ namespace ProofOfConceptServer.Models
         }
 
         public virtual DbSet<BlobItem> BlobItem { get; set; }
+        public virtual DbSet<FolderItems> FolderItems { get; set; }
+        public virtual DbSet<Folder> Folders { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
-//#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-//#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer("Data Source=woefieserver.database.windows.net;Initial Catalog=woefiedatabase;Persist Security Info=True;User ID=woefiebeheerder;Password=LN7T7sGkhBjYz4eF");
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
+                optionsBuilder.UseSqlServer(" Data Source=woefieserver.database.windows.net;Initial Catalog=woefiedatabase;Persist Security Info=True;User ID=woefiebeheerder;Password= LN7T7sGkhBjYz4eF;");
             }
         }
 
@@ -33,7 +34,7 @@ namespace ProofOfConceptServer.Models
             modelBuilder.Entity<BlobItem>(entity =>
             {
                 entity.HasKey(e => e.FileId)
-                    .HasName("PK__blobItem__C2C6FFFC19A5FE79");
+                    .HasName("PK__tmp_ms_x__C2C6FFFC1150BD38");
 
                 entity.ToTable("blobItem");
 
@@ -56,15 +57,11 @@ namespace ProofOfConceptServer.Models
                     .HasMaxLength(50)
                     .IsUnicode(false);
 
-                entity.Property(e => e.FileSize)
-                    .IsRequired()
-                    .HasColumnName("fileSize")
-                    .HasMaxLength(10)
-                    .IsUnicode(false);
+                entity.Property(e => e.FileSize).HasColumnName("fileSize");
 
-                entity.Property(e => e.PathFile)
+                entity.Property(e => e.Path)
                     .IsRequired()
-                    .HasColumnName("pathFile")
+                    .HasColumnName("path")
                     .HasMaxLength(255)
                     .IsUnicode(false);
 
@@ -72,6 +69,62 @@ namespace ProofOfConceptServer.Models
                     .IsRequired()
                     .HasColumnName("userID")
                     .HasMaxLength(50)
+                    .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<FolderItems>(entity =>
+            {
+                entity.HasKey(e => e.BlobId)
+                    .HasName("PK__FolderIt__F4CC75F8B556F2E3");
+
+                entity.Property(e => e.BlobId)
+                    .HasColumnName("blobID")
+                    .ValueGeneratedNever();
+
+                entity.Property(e => e.FolderId).HasColumnName("folderID");
+
+                entity.HasOne(d => d.Blob)
+                    .WithOne(p => p.FolderItems)
+                    .HasForeignKey<FolderItems>(d => d.BlobId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_FolderItems_T");
+
+                entity.HasOne(d => d.Folder)
+                    .WithMany(p => p.FolderItems)
+                    .HasForeignKey(d => d.FolderId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Table_ToTable");
+            });
+
+            modelBuilder.Entity<Folder>(entity =>
+            {
+                entity.HasKey(e => e.FolderId)
+                    .HasName("PK__folders__C2FABF93CA580360");
+
+                entity.ToTable("folders");
+
+                entity.Property(e => e.FolderId)
+                    .HasColumnName("folderId")
+                    .ValueGeneratedNever();
+
+                entity.Property(e => e.CreatedDate)
+                    .HasColumnName("createdDate")
+                    .HasMaxLength(10)
+                    .IsFixedLength();
+
+                entity.Property(e => e.DateChanged)
+                    .HasColumnName("dateChanged")
+                    .HasColumnType("date");
+
+                entity.Property(e => e.FolderName)
+                    .IsRequired()
+                    .HasColumnName("folderName")
+                    .HasMaxLength(20)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.ParentFolder)
+                    .HasColumnName("parentFolder")
+                    .HasMaxLength(20)
                     .IsUnicode(false);
             });
 

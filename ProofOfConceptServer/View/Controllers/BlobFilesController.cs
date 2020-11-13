@@ -11,6 +11,7 @@ using ProofOfConceptServer.entities.helpers;
 using ProofOfConceptServer.entities;
 using ProofOfConceptServer.Services.Handlers;
 using ProofOfConceptServer.Repositories.entities.helpers;
+using ProofOfConceptServer.Repositories.entities;
 
 namespace ProofOfConceptServer.Controllers
 {
@@ -65,7 +66,7 @@ namespace ProofOfConceptServer.Controllers
         [HttpPost]
         [Route("upload")]
         [Authorize]
-        public IActionResult CreateBlobItem([FromForm] CreateBlob postData )
+        public IActionResult CreateBlobItem([FromForm] ICreateBlob postData )
         {
             BlobItem b = handler.CreateBlobItem(postData);
 
@@ -117,7 +118,7 @@ namespace ProofOfConceptServer.Controllers
         [HttpGet]
         [Route("download/assistent/")]
         [Authorize]
-        public ActionResult<FileInformation> DownloadFileAssistent([FromQuery]int id)
+        public ActionResult<IFileInformation> DownloadFileAssistent([FromQuery]int id)
         {
             return handler.DownloadFileAssistent(id);
         }
@@ -128,7 +129,7 @@ namespace ProofOfConceptServer.Controllers
         [Authorize]
         public ActionResult<BlobItem> DownloadFile([FromQuery]int id)
         {
-            DownloadFileResponse d = handler.DownloadFile(id);
+            IDownloadFileResponse d = handler.DownloadFile(id);
             if(d == null)
                 return Conflict("The wanted file couldn't be found or accessed!");
 

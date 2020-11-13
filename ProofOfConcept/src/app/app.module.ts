@@ -6,7 +6,7 @@ import { AppComponent } from './app.component';
 import { SharedModule } from './shared/shared.module';
 import { PagesModule } from './pages/pages.module';
 
-import { AuthHttpInterceptor } from '@auth0/auth0-angular';
+import { AuthHttpInterceptor, HttpMethod } from '@auth0/auth0-angular';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { AuthModule } from '@auth0/auth0-angular';
@@ -46,29 +46,29 @@ import { AuthInterceptor } from './auth/shared/auth.interceptor';
             // },
       
             // Matching on HTTP method
-            // {
-            //   uri: '/api/orders',
-            //   httpMethod: 'post',
-            //   tokenOptions: {
-            //     audience: 'https://woefie.eu.auth0.com/api/v2/',
-            //     scope: 'write:orders',
-            //   },
-            // },
+            {
+              uri: '/api/orders',
+              httpMethod:  HttpMethod.Post,
+              tokenOptions: {
+                audience: 'https://woefie.eu.auth0.com/api/v2/',
+                scope: 'write:orders',
+              },
+            },
       
-            // Using an absolute URIhttps://woefie.eu.auth0.com/api/v2/
-            // {
-            //   uri: 'https://woefie.eu.auth0.com/api/v2/users',
-            //   tokenOptions: {
-            //     audience: 'https://woefie.eu.auth0.com/api/v2/',
-            //     scope: 'read:users',
-            //   },
-            // },
+           // Using an absolute URIhttps://woefie.eu.auth0.com/api/v2/
+            {
+              uri: 'https://woefie.eu.auth0.com/api/v2/users',
+              tokenOptions: {
+                audience: 'https://woefie.eu.auth0.com/api/v2/',
+                scope: 'read:users',
+              },
+            },
           ],
         },
       })
   ],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    // { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: AuthHttpInterceptor, multi: true }
   ],
   bootstrap: [AppComponent]

@@ -23,11 +23,15 @@
     "@fortawesome/angular-fontawesome": "^0.7.0",
     "@fortawesome/fontawesome-svg-core": "^1.2.28",
     "@fortawesome/free-solid-svg-icons": "^5.13.0",
+    "add": "^2.0.6",
+    "auth0-angular": "^4.2.7",
+    "auth0-js": "^9.14.0",
     "bootstrap": "^4.5.3",
     "file-saver": "^2.0.2",
     "jquery": "^3.5.1",
     "rxjs": "~6.5.5",
     "tslib": "^2.0.0",
+    "yarn": "^1.22.10",
     "zone.js": "~0.10.3"
   },
   "devDependencies": {

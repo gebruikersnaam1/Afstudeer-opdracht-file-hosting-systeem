@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./file-table.component.scss']
 })
 export class FileTableComponent implements OnInit {
-  headers = ["Bestandsnaam", "Upload Datum", "Uploader", "Bestandsgroten"];
+  headers = ["Naam", "Datum", "Type", "Bestandsgroten"];
   @Input() rows: fileData[];
   @Output() click = new EventEmitter<string>();
 

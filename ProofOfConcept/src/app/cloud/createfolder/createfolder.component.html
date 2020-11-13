@@ -1,0 +1,5 @@
+<h1>Nieuwe folder aanmaken</h1>
+<form [formGroup]="folderGroup" (ngSubmit)="onSubmit()">
+    <app-input [controller]="folderGroup.get('folderName')" label="Folder naam" inputType="input"></app-input>
+    <button class="btn btn-custom mb-2"><span class="fas fa-plus-square fa-2x"></span></button>
+</form>

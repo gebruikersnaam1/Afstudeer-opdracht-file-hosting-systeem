@@ -1,6 +1,7 @@
 ﻿using ProofOfConceptServer.entities;
 using ProofOfConceptServer.entities.helpers;
 using ProofOfConceptServer.Repositories.entities.helpers;
+using ProofOfConceptServer.Repositories.entities;
 using ProofOfConceptServer.Repositories.models;
 using System.Collections.Generic;
 
@@ -43,7 +44,7 @@ namespace ProofOfConceptServer.Services.Handlers
             return b;
         }
 
-        public BlobItem CreateBlobItem(CreateBlob postData)
+        public BlobItem CreateBlobItem(ICreateBlob postData)
         {
             return model.CreateBlobItem(postData).Result;
         }
@@ -65,12 +66,12 @@ namespace ProofOfConceptServer.Services.Handlers
             return model.Delete(id).Result;
         }
 
-        public FileInformation DownloadFileAssistent(int id)
+        public IFileInformation DownloadFileAssistent(int id)
         {
             return model.DownloadFileAssistent(id);
         }
  
-        public DownloadFileResponse DownloadFile(int id)
+        public IDownloadFileResponse DownloadFile(int id)
         {
             return model.DownloadFile(id).Result;
         }

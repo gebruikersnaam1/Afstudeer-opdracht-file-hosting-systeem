@@ -72,6 +72,10 @@
               "target": "Package",
               "version": "[3.1.9, )"
             },
+            "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
+              "target": "Package",
+              "version": "[3.1.4, )"
+            },
             "NLog.Config": {
               "target": "Package",
               "version": "[4.7.5, )"

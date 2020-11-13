@@ -10,9 +10,10 @@ import { SharedModule } from '../shared/shared.module';
 import { FileTableComponent } from './shared/file-table/file-table.component';
 
 import { ReactiveFormsModule } from '@angular/forms';
+import { CreatefolderComponent } from './createfolder/createfolder.component';
 
 @NgModule({
-  declarations: [FileUploadComponent, ShowFileComponent, FileOverviewComponent, FileTableComponent],
+  declarations: [FileUploadComponent, ShowFileComponent, FileOverviewComponent, FileTableComponent, CreatefolderComponent],
   imports: [
     CommonModule,
     CloudRoutingModule,

@@ -10,8 +10,6 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 namespace ProofOfConceptServer
 {
     using ProofOfConceptServer.database;
-    using ProofOfConceptServer.Repositories.models;
-    using Microsoft.EntityFrameworkCore;
 
     public class Startup
     {

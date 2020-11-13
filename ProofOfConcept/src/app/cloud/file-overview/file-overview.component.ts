@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { CloudService } from "../shared/cloud.service";
 import { fileData } from '../interfaces/file';
 
-import { PageOverviewData } from '../interfaces/pageOverview';
+import { folderView } from '../interfaces/folder';
 
 @Component({
   selector: 'cloud-overview',
@@ -11,12 +11,12 @@ import { PageOverviewData } from '../interfaces/pageOverview';
   styleUrls: ['./file-overview.component.scss']
 })
 export class FileOverviewComponent implements OnInit {
-  headers = ['bestandsnaam', 'Upload datum', 'Uploader', "verwijderen"]
   rows : fileData[];
   filesLoaded: Promise<boolean>;
   errorExist = false;
   
-  pageData : PageOverviewData = {
+  folderData : folderView = {
+    folderID : 1, //root ID
     totalItems : 0,
     itemsPerPages : 10,
     currentPage : 0
@@ -40,19 +40,26 @@ export class FileOverviewComponent implements OnInit {
   }
 
   updateCurrentPage(pageNumber : number){
-    this.pageData.currentPage = pageNumber > 0 ? pageNumber : 0;
+    this.folderData.currentPage = pageNumber > 0 ? pageNumber : 0;
     this.setFiles();
   }
 
   setCurrentPage(){
-    this.activeRoute.params.subscribe( (value) => 
-    value?.pageNumber === undefined ? console.log("url/:pageNumber param doesn't exist!") : this.pageData.currentPage = value.pageNumber
+    this.activeRoute.params.subscribe( 
+      (value) => {
+        if(value?.folderID != undefined && Number(value?.folderID) === NaN){
+          this.folderData.folderID = value.folderID;
+        }
+        if(value?.pageNumber != undefined && Number(value?.pageNumber) === NaN){
+          this.folderData.currentPage = value.pageNumber;
+        }
+      }
     );
     this.setFiles();
   }
 
   setFiles(){
-    this.cloudService.getFiles(this.pageData.itemsPerPages, this.pageData.currentPage).subscribe(
+    this.cloudService.getFiles(this.folderData.itemsPerPages, this.folderData.currentPage).subscribe(
       files => { this.rows = files; this.filesLoaded = Promise.resolve(true) },
       _ => { this.errorExist = true; this.filesLoaded = Promise.resolve(false); }
     );
@@ -60,7 +67,7 @@ export class FileOverviewComponent implements OnInit {
 
   ngOnInit(): void {
     this.cloudService.getFileCount().subscribe(
-      result => console.log(result),
+      result => this.folderData.currentPage = result,
       _ => console.log("The file count = 0; that is a problem?")
     );
     this.setCurrentPage();

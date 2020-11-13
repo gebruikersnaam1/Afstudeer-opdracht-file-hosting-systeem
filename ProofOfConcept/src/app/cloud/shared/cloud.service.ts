@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { fileData, FileId,FileInformation } from '../interfaces/file';
+import { CreateFolderData } from '../interfaces/folder';
+
 import { HttpClient } from '@angular/common/http';
 import { AuthService } from '../../auth/shared/auth.service';
 
@@ -12,6 +14,9 @@ export class CloudService {
 
   constructor(private client: HttpClient, private authService : AuthService) { }
 
+  /*************************************
+    @files get files (with folders) based on search or current 'page'
+  *************************************/
   getFiles(itemsPerPages : number, currentPage : number){
     let getUrl = this.url+"blobfiles/?itemsPerPage=" + itemsPerPages + "&currentPage=" + currentPage;
     return this.client.get<fileData[]>(getUrl,{
@@ -45,6 +50,28 @@ export class CloudService {
     });
   }
 
+  /*************************************
+    @folderManagement create and delete file
+  *************************************/
+  createFolder(data : CreateFolderData){
+    return this.client.post((this.url+"folders/create"),data, {
+        headers:{
+          authorization: ("Bearer " + this.authService.id_token)
+          }
+    });
+  }
+
+  validateFolderID(folderID : number){
+    return this.client.get((this.url+"folders/validateid/"+folderID),{
+      headers:{
+        authorization: ("Bearer " + this.authService.id_token)
+       }
+    });
+  }
+
+  /*************************************
+    @fileManagement Download, create and delete file
+  *************************************/
   downloadFileAssistent(file: FileId){
     return this.client.get<FileInformation>(((this.url+"blobfiles/download/assistent/?id="+file.fileId)),{
       headers:{
