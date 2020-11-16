@@ -1,6 +1,6 @@
 ﻿using ProofOfConceptServer.entities;
-using ProofOfConceptServer.entities.helpers;
-using ProofOfConceptServer.Repositories.entities.helpers;
+using ProofOfConceptServer.entities.interfaces;
+using ProofOfConceptServer.Repositories.entities.interfaces;
 using ProofOfConceptServer.Repositories.entities;
 using ProofOfConceptServer.Repositories.models;
 using System.Collections.Generic;

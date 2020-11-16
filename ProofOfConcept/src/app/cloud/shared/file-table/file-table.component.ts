@@ -19,7 +19,7 @@ export class FileTableComponent implements OnInit {
   }
 
   ShowFolder(id:number){
-    this.router.navigateByUrl("/cloud/overzicht/"+id);
+    this.router.navigateByUrl("/cloud/explorer/"+id);
   }
   
   ShowFile(id : number){

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.WindowsAzure.Storage.Blob;
 using ProofOfConceptServer.database;
-using ProofOfConceptServer.entities.helpers;
+using ProofOfConceptServer.entities.interfaces;
 
 using ProofOfConceptServer.Repositories.entities;
 

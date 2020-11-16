@@ -6,11 +6,11 @@ using System.Web.Http.Cors;
 
 using Microsoft.AspNetCore.Authorization;
 
-using ProofOfConceptServer.entities.helpers;
+using ProofOfConceptServer.entities.interfaces;
 
 using ProofOfConceptServer.entities;
 using ProofOfConceptServer.Services.Handlers;
-using ProofOfConceptServer.Repositories.entities.helpers;
+using ProofOfConceptServer.Repositories.entities.interfaces;
 using ProofOfConceptServer.Repositories.entities;
 
 namespace ProofOfConceptServer.Controllers

@@ -1,0 +1,19 @@
+<div [id]="modalID" class="modal fade" role="dialog" >
+    <div class="modal-dialog modal-lg">
+  
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-body">
+          <ng-content></ng-content>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" (click)="close()">Close</button>
+        </div>
+      </div>
+  
+    </div>
+  </div>
+
+  <button [class]="buttonClass" data-toggle="modal" [attr.data-target]="'#'+modalID">
+    {{ buttonText }} <span [class]="spanClass"></span>
+  </button>

@@ -1,5 +1,6 @@
-﻿using ProofOfConceptServer.Repositories.entities;
-using ProofOfConceptServer.Repositories.entities.helpers;
+﻿using ProofOfConceptServer.entities.interfaces;
+using ProofOfConceptServer.Repositories.entities;
+using ProofOfConceptServer.Repositories.entities.interfaces;
 using ProofOfConceptServer.Repositories.Models;
 using System;
 using System.Collections.Generic;
@@ -17,7 +18,7 @@ namespace ProofOfConceptServer.Services.handlers
         }
         public Folder CreateFolder(ICreateFolder data)
         {
-            if (this.Model.DoesFolderExist(data.parentID))
+            if (this.Model.GetParentFolder(data.parentID) == null)
             {
                 System.Diagnostics.Debug.WriteLine("Parent class doesn't exist");
                 return null;
@@ -33,6 +34,11 @@ namespace ProofOfConceptServer.Services.handlers
         public List<IGetFolderResponse> GetFolderContent(int folderID)
         {
             return this.Model.GetFolderContent(folderID);
+        }
+
+        public BlobItem CreateFolderBlobItem(ICreateBlob postData, int folderId)
+        {
+            return this.Model.CreateFolderBlobItem(postData, folderId).Result;
         }
     }
 }

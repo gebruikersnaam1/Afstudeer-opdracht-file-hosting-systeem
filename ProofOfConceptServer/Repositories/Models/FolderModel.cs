@@ -1,6 +1,7 @@
-﻿using ProofOfConceptServer.Repositories.entities;
+﻿using ProofOfConceptServer.entities.interfaces;
+using ProofOfConceptServer.Repositories.entities;
 using ProofOfConceptServer.Repositories.entities.Factory;
-using ProofOfConceptServer.Repositories.entities.helpers;
+using ProofOfConceptServer.Repositories.entities.interfaces;
 using ProofOfConceptServer.Repositories.models;
 using System;
 using System.Collections.Generic;
@@ -70,11 +71,24 @@ namespace ProofOfConceptServer.Repositories.Models
             {
                 i.Add(FolderItemFactory.Create(blobModel.GetSingleFile(b.BlobId)));
             }
-            foreach (FolderItems f in folder.GroupBy(x => x.FolderId).Select(x => x.First()).ToList())
+            foreach (Folder f in _context.Folders.Where(f => f.ParentFolder == folderId).ToList())
             {
-                i.Add(FolderItemFactory.Create(GetParentFolder(f.FolderId)));
+                i.Add(FolderItemFactory.Create(f));
             }
             return i;
+        }
+
+        public async Task<BlobItem> CreateFolderBlobItem(ICreateBlob postData, int folderId)
+        {
+            BlobItem b = await this.blobModel.CreateBlobItem(postData);
+
+            if (b == null)
+                return null;
+
+            FolderItems f = FolderBlobFactory.Create(b.FileId, folderId);
+            _context.FolderItems.Add(f);
+            _context.SaveChanges();
+            return b;
         }
     }
 }

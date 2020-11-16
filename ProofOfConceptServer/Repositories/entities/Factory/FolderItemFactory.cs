@@ -1,4 +1,4 @@
-﻿using ProofOfConceptServer.Repositories.entities.helpers;
+﻿using ProofOfConceptServer.Repositories.entities.interfaces;
 using System;
 using System.Collections.Generic;
 using System.IO;

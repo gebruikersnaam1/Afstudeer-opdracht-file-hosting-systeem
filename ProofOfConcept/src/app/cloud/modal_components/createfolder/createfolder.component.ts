@@ -1,11 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CloudService } from '../shared/cloud.service';
-import { CreateFolderData } from '../interfaces/folder';
+import { CloudService } from '../../shared/cloud.service';
+import { CreateFolderData, Folder } from '../../interfaces/folder';
+
+declare const CloseModal: any;
 
 @Component({
-  selector: 'app-createfolder',
+  selector: 'cloud-createfolder',
   templateUrl: './createfolder.component.html',
   styleUrls: ['./createfolder.component.scss']
 })
@@ -16,16 +18,12 @@ export class CreatefolderComponent implements OnInit {
       Validators.minLength(1)
     ])
   })
-  parentFolderID : number;
+  @Input() parentFolderID : number;
 
   constructor(private cloudService : CloudService, private router : Router, private activeRoute : ActivatedRoute) { }
 
   ngOnInit(): void {
-    this.activeRoute.params.subscribe((obj)=> this.parentFolderID = Number(obj?.id));
-    this.cloudService.validateFolderID(this.parentFolderID).subscribe(
-      result => console.log("parent folder was found"),
-      _ => this.router.navigateByUrl("500")
-    )
+    console.log(this.parentFolderID);
   }
 
   GetFolderData() : CreateFolderData{
@@ -38,8 +36,8 @@ export class CreatefolderComponent implements OnInit {
 
   onSubmit(){
     this.cloudService.createFolder(this.GetFolderData()).subscribe(
-      result => console.log("gelukt!"),
-      _ => this.router.navigateByUrl("500")
+      (result:Folder ) =>  { CloseModal(); this.router.navigateByUrl(("/cloud/explorer/"+result.folderId)); },
+      _ => { CloseModal(); this.router.navigateByUrl("500"); }
     )
   }
 

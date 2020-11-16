@@ -7,17 +7,20 @@
 </div>
 
 <ng-container *ngIf="this.filesLoaded && !this.errorExist">
+
+    <div class="upper-menu">
+        <app-modal modalID="uploadModal" spanClass="fa fa-upload fa-2x">
+                <cloud-upload [folderID]="folderData.currentfolderID"></cloud-upload>
+        </app-modal>
+    </div>
     
     <div class="upper-menu">
-    <a routerLink="/cloud/file/upload/{{folderData.currentfolderID}}" routerLinkActive="active">
-        <button class="btn btn-custom mb-2"><span class="fa fa-upload  fa-2x"></span></button>
-    </a>
+        <app-modal  modalID="createModal" spanClass="fas fa-folder-plus fa-2x">
+                <cloud-createfolder [parentFolderID]="folderData.currentfolderID"></cloud-createfolder>
+        </app-modal>
     </div>
-    <div class="upper-menu">
-        <a routerLink="/cloud/folder/create/{{folderData.currentfolderID}}" routerLinkActive="active">
-            <button class="btn btn-custom mb-2"><span class="fas fa-folder-plus fa-2x"></span></button>
-        </a>    
-    </div>
+
+    
     <div class="upper-menu">
         <app-searchbalk placeholder="Zoek op bestandsnaam" (SearchValueChange)="searchForFile($event)"></app-searchbalk>
     </div>

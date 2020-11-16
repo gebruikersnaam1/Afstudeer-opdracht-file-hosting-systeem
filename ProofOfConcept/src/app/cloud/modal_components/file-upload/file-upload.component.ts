@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { CloudService } from '../shared/cloud.service';
+import { CloudService } from '../../shared/cloud.service';
 import { Router } from '@angular/router';
 declare const WaitCursor: any;
 
@@ -11,7 +11,10 @@ declare const WaitCursor: any;
   styleUrls: ['./file-upload.component.scss']
 })
 export class FileUploadComponent implements OnInit {
+  @Input('') folderID : number;
+
   file: File;
+  
 
   fileGroup= new FormGroup({
     fileName: new FormControl('', Validators.required),

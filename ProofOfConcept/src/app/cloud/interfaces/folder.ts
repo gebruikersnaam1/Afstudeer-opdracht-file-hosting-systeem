@@ -1,3 +1,4 @@
+import { Data } from '@angular/router';
 
 export interface CreateFolderData{
     folderName: string;
@@ -17,4 +18,12 @@ export interface FolderResponse{
     size : number,
     type: string,
     isFolder :boolean
+}
+
+export interface Folder{
+    folderId : number
+    folderName: string,
+    parentFolder: number,
+    dateChanged : Date,
+    createdDate: Date
 }

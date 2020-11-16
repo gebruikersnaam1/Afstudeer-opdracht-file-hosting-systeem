@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ProofOfConceptServer.Repositories.entities.helpers
+namespace ProofOfConceptServer.Repositories.entities.interfaces
 {
     public class IGetFolderResponse
     {

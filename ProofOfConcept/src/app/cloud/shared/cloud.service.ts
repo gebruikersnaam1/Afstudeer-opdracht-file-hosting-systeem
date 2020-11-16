@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { fileData, FileId,FileInformation } from '../interfaces/file';
-import { CreateFolderData,FolderResponse } from '../interfaces/folder';
+import { CreateFolderData,FolderResponse, Folder } from '../interfaces/folder';
 
 import { HttpClient } from '@angular/common/http';
 import { AuthService } from '../../auth/shared/auth.service';
@@ -54,7 +54,7 @@ export class CloudService {
     @folderManagement create and delete file
   *************************************/
   createFolder(data : CreateFolderData){
-    return this.client.post((this.url+"folders/create"),data, {
+    return this.client.post<Folder>((this.url+"folders/create"),data, {
         headers:{
           authorization: ("Bearer " + this.authService.id_token)
           }
