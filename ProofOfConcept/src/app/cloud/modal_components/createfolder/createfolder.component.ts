@@ -19,6 +19,7 @@ export class CreatefolderComponent implements OnInit {
     ])
   })
   @Input() parentFolderID : number;
+  @Input() modalName : string;
 
   constructor(private cloudService : CloudService, private router : Router, private activeRoute : ActivatedRoute) { }
 
@@ -30,14 +31,14 @@ export class CreatefolderComponent implements OnInit {
     const { folderName } = this.folderGroup.value;
     return {
         folderName: folderName,
-        parentID: this.parentFolderID
+        parentID: Number(this.parentFolderID)
     }
   }
 
   onSubmit(){
     this.cloudService.createFolder(this.GetFolderData()).subscribe(
-      (result:Folder ) =>  { CloseModal(); this.router.navigateByUrl(("/cloud/explorer/"+result.folderId)); },
-      _ => { CloseModal(); this.router.navigateByUrl("500"); }
+      (result:Folder ) =>  { CloseModal(this.modalName); this.router.navigateByUrl(("/cloud/explorer/"+result.folderId)); },
+      _ => { CloseModal(this.modalName); this.router.navigateByUrl("500"); }
     )
   }
 

@@ -76,9 +76,19 @@ export class CloudService {
        }
     });
   }
-
   /*************************************
-    @fileManagement Download, create and delete file
+    @folderFileManagement Download, create and delete file with the folder structure
+  *************************************/
+  uploadFileInAssignedFolder(file : FormData){
+    return this.client.post<fileData>((this.url+"folders/upload"), file,
+    {
+      headers:{
+        authorization: ("Bearer " + this.authService.id_token)
+       }
+    });
+  }
+  /*************************************
+    @blobManagement Download, create and delete file
   *************************************/
   downloadFileAssistent(file: FileId){
     return this.client.get<FileInformation>(((this.url+"blobfiles/download/assistent/?id="+file.fileId)),{

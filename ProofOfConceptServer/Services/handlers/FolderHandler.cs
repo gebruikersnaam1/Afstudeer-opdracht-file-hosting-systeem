@@ -18,7 +18,7 @@ namespace ProofOfConceptServer.Services.handlers
         }
         public Folder CreateFolder(ICreateFolder data)
         {
-            if (this.Model.GetParentFolder(data.parentID) == null)
+            if (this.Model.GetFolder(data.parentID) == null)
             {
                 System.Diagnostics.Debug.WriteLine("Parent class doesn't exist");
                 return null;
@@ -38,7 +38,7 @@ namespace ProofOfConceptServer.Services.handlers
 
         public BlobItem CreateFolderBlobItem(ICreateBlob postData, int folderId)
         {
-            return this.Model.CreateFolderBlobItem(postData, folderId).Result;
+            return this.Model.CreateFolderBlobItem(postData, folderId);
         }
     }
 }

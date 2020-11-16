@@ -60,7 +60,7 @@ namespace ProofOfConceptServer.View.Controllers
         }
 
         [HttpPost]
-        [Route("upload")]
+        [Route("upload/")]
         //[Authorize]
         public IActionResult CreateFolderBlobItem([FromForm] ICreateBlob postData, [FromForm] int folderId)
         {

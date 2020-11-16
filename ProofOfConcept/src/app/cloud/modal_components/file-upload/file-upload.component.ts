@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { CloudService } from '../../shared/cloud.service';
 import { Router } from '@angular/router';
 declare const WaitCursor: any;
+declare const CloseModal: any;
 
 
 @Component({
@@ -11,7 +12,8 @@ declare const WaitCursor: any;
   styleUrls: ['./file-upload.component.scss']
 })
 export class FileUploadComponent implements OnInit {
-  @Input('') folderID : number;
+  @Input() folderID : number;
+  @Input() modalName: string;
 
   file: File;
   
@@ -40,8 +42,8 @@ export class FileUploadComponent implements OnInit {
     const formdata = new FormData();
     formdata.append("file", this.file);
     formdata.append("userId", "5");
+    formdata.append("folderID",this.folderID.toString()); 
     formdata.append("description", description);
-
     return formdata;
   }
 
@@ -50,9 +52,9 @@ export class FileUploadComponent implements OnInit {
       return;
     }
     WaitCursor();
-    this.cloudService.uploadFile(this.createFileFormat()).subscribe(
-      result => this.router.navigateByUrl("cloud/file/"+result.fileId),
-      _ => this.router.navigateByUrl("500")
+    this.cloudService.uploadFileInAssignedFolder(this.createFileFormat()).subscribe(
+      result => { CloseModal(this.modalName); this.router.navigateByUrl("cloud/file/"+result.fileId) },
+      _ => {  CloseModal(this.modalName); this.router.navigateByUrl("500") }
     );
   }
 

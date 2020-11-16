@@ -78,9 +78,9 @@ namespace ProofOfConceptServer.Repositories.Models
             return i;
         }
 
-        public async Task<BlobItem> CreateFolderBlobItem(ICreateBlob postData, int folderId)
+        public BlobItem CreateFolderBlobItem(ICreateBlob postData, int folderId)
         {
-            BlobItem b = await this.blobModel.CreateBlobItem(postData);
+            BlobItem b = this.blobModel.CreateBlobItem(postData).Result;
 
             if (b == null)
                 return null;
