@@ -69,6 +69,14 @@ export class CloudService {
     });
   }
 
+  searchInFolders(searchTerm){
+    return this.client.get<FolderResponse[]>((this.url+"folders/search/" + searchTerm.toString()), {
+      headers:{
+        authorization: ("Bearer " + this.authService.id_token)
+       }
+    });
+  }
+
   getFolder(folderID: number){
     return this.client.get<FolderResponse[]>((this.url+"folders/getFolder/"+folderID),{
       headers:{
@@ -76,11 +84,21 @@ export class CloudService {
        }
     });
   }
+
   /*************************************
     @folderFileManagement Download, create and delete file with the folder structure
   *************************************/
   uploadFileInAssignedFolder(file : FormData){
     return this.client.post<fileData>((this.url+"folders/upload"), file,
+    {
+      headers:{
+        authorization: ("Bearer " + this.authService.id_token)
+       }
+    });
+  }
+
+  getParentFolder(folderId : number){
+    return this.client.get<Folder>((this.url+"folders/parentFolder/"+folderId), 
     {
       headers:{
         authorization: ("Bearer " + this.authService.id_token)

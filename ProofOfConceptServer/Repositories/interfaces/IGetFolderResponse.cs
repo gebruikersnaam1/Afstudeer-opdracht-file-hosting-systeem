@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace ProofOfConceptServer.Repositories.entities.interfaces
 {
-    public class IGetFolderResponse
+    public class IFolderResponse
     {
         public string Name { get; set; }
         public DateTime LastChanged { get; set;  }

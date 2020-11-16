@@ -49,11 +49,11 @@ namespace ProofOfConceptServer.View.Controllers
 
         [HttpGet]
         [Route("getFolder/{folderid}")]
-        public ActionResult<List<IGetFolderResponse>> GetFolderContent(int folderId)
+        public ActionResult<List<IFolderResponse>> GetFolderContent(int folderId)
         {
             if (!this.handler.DoesFolderExist(folderId))
                 return NotFound();
-            List<IGetFolderResponse> c = this.handler.GetFolderContent(folderId);
+            List<IFolderResponse> c = this.handler.GetFolderContent(folderId);
             if(c.Count() == 0)
                 return NoContent();
             return c;
@@ -73,6 +73,32 @@ namespace ProofOfConceptServer.View.Controllers
                 return Conflict("Error! Maybe you did not gave us all the needed info?");
 
             return Created("", b);
+        }
+
+        [HttpGet]
+        [Route("search/{term}")]
+        public ActionResult<List<IFolderResponse>> SearchFiles(string term)
+        {
+            List<IFolderResponse> l = handler.SearchForFiles(term);
+
+            if (l == null)
+                return Conflict("No files found");
+
+            return l;
+        }
+
+        [HttpGet]
+        [Route("parentFolder/{folderId}")]
+        public ActionResult<Folder> GetParentFolder(int folderId)
+        {
+            if (!this.handler.DoesFolderExist(folderId))
+                return NotFound();
+            Folder f = this.handler.GetParentFolder(folderId);
+
+            if (f == null)
+                NotFound();
+
+            return Ok(f);
         }
     }
 }

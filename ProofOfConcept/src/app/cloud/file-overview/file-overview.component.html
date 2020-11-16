@@ -8,6 +8,13 @@
 
 <ng-container *ngIf="this.filesLoaded && !this.errorExist">
 
+
+    <div class="upper-menu">
+        <button class="btn btn-custom mb-2" (click)="goFolderBack()"> 
+            <span class="fas fa-level-up-alt fa-2x"></span> 
+        </button>
+    </div>
+
     <div class="upper-menu">
         <app-modal modalID="uploadModal" spanClass="fa fa-upload fa-2x">
                 <cloud-upload modalName="uploadModal" [folderID]="folderData.currentfolderID"></cloud-upload>
@@ -26,10 +33,10 @@
     </div>
  
 
-    <cloud-table [rows]="rows"></cloud-table>
+    <cloud-table (onShowFolderEvent)="changeFolder($event)" [rows]="rows"></cloud-table>
     
     <app-pagination 
-        [totalItems]="folderData.totalItems" [itemsPerPages]="folderData.itemsPerPages" url="/cloud/overzicht/" (updatePage)="updateCurrentPage($event)">
+        [totalItems]="folderData.totalItems" [itemsPerPages]="folderData.itemsPerPages" url="/cloud/overzicht/" (updatePage)="changePage($event)">
     </app-pagination>
     
 </ng-container>

@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { CloudService } from '../../shared/cloud.service';
 import { Router } from '@angular/router';
 declare const WaitCursor: any;
+declare const DefaultCursor: any;
 declare const CloseModal: any;
 
 
@@ -47,14 +48,19 @@ export class FileUploadComponent implements OnInit {
     return formdata;
   }
 
+  processDone(){
+    DefaultCursor();
+    CloseModal(this.modalName);
+  }
+
   uploadFile(){
     if(this.fileGroup.invalid || this.file === null){
       return;
     }
     WaitCursor();
     this.cloudService.uploadFileInAssignedFolder(this.createFileFormat()).subscribe(
-      result => { CloseModal(this.modalName); this.router.navigateByUrl("cloud/file/"+result.fileId) },
-      _ => {  CloseModal(this.modalName); this.router.navigateByUrl("500") }
+      result => { this.processDone(); this.router.navigateByUrl("cloud/file/"+result.fileId) },
+      _ => {  this.processDone(); this.router.navigateByUrl("500") }
     );
   }
 

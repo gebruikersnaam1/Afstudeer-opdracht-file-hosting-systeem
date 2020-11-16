@@ -11,7 +11,7 @@ import { FolderResponse } from '../../interfaces/folder';
 export class FileTableComponent implements OnInit {
   headers = ["", "Naam", "Datum", "Type", "Bestandsgroten"];
   @Input() rows: FolderResponse[];
-  @Output() click = new EventEmitter<string>();
+  @Output() onShowFolderEvent = new EventEmitter<number>();
 
   constructor(private router : Router) { }
 
@@ -19,7 +19,7 @@ export class FileTableComponent implements OnInit {
   }
 
   ShowFolder(id:number){
-    this.router.navigateByUrl("/cloud/explorer/"+id);
+    this.onShowFolderEvent.emit(id);
   }
   
   ShowFile(id : number){

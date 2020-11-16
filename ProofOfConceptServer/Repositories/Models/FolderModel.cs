@@ -62,10 +62,10 @@ namespace ProofOfConceptServer.Repositories.Models
             return f;
         }
 
-        public List<IGetFolderResponse> GetFolderContent(int folderId)
+        public List<IFolderResponse> GetFolderContent(int folderId)
         {
             List<FolderItems> folder = _context.FolderItems.Where(f => f.FolderId == folderId).ToList();
-            List<IGetFolderResponse> i = new List<IGetFolderResponse>();
+            List<IFolderResponse> i = new List<IFolderResponse>();
 
             foreach(FolderItems b in folder)
             {
@@ -89,6 +89,17 @@ namespace ProofOfConceptServer.Repositories.Models
             _context.FolderItems.Add(f);
             _context.SaveChanges();
             return b;
+        }
+
+        public List<IFolderResponse> SearchForFile(string searchTerm)
+        {
+            List<BlobItem> blobList = this.blobModel.SearchFiles(searchTerm);
+            List<IFolderResponse> f = new List<IFolderResponse>();
+            foreach(BlobItem b in blobList)
+            {
+                f.Add(FolderItemFactory.Create(b));
+            }
+            return f;
         }
     }
 }

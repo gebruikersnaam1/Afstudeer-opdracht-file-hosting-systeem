@@ -31,7 +31,7 @@ namespace ProofOfConceptServer.Services.handlers
            return this.Model.DoesFolderExist(folderID);
         }
 
-        public List<IGetFolderResponse> GetFolderContent(int folderID)
+        public List<IFolderResponse> GetFolderContent(int folderID)
         {
             return this.Model.GetFolderContent(folderID);
         }
@@ -39,6 +39,17 @@ namespace ProofOfConceptServer.Services.handlers
         public BlobItem CreateFolderBlobItem(ICreateBlob postData, int folderId)
         {
             return this.Model.CreateFolderBlobItem(postData, folderId);
+        }
+
+        public List<IFolderResponse> SearchForFiles(string searchTerm)
+        {
+            return this.Model.SearchForFile(searchTerm);
+        }
+
+        public Folder GetParentFolder(int folderId)
+        {
+            Folder f = this.Model.GetFolder(folderId);
+            return this.Model.GetFolder(f.ParentFolder);
         }
     }
 }

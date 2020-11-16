@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CloudService } from "../shared/cloud.service";
 
-import { folderView, FolderResponse } from '../interfaces/folder';
+import { folderView, FolderResponse, Folder } from '../interfaces/folder';
 
 @Component({
   selector: 'cloud-overview',
@@ -31,14 +31,27 @@ export class FileOverviewComponent implements OnInit {
       this.setCurrentPage();
       return;
     }
-    // this.cloudService.searchOnFileName(searchTerm.toString()).subscribe(
-    //   files => { this.rows = files; this.filesLoaded = Promise.resolve(true) },
-    //   _ => { this.rows = []; this.filesLoaded = Promise.resolve(true)}
-    // );
+    this.cloudService.searchInFolders(searchTerm.toString()).subscribe(
+      files => { this.rows = files; this.filesLoaded = Promise.resolve(true) },
+      _ => { this.rows = []; this.filesLoaded = Promise.resolve(true)}
+    );
   }
 
-  updateCurrentPage(pageNumber : number){
-    this.folderData.currentfolderID = pageNumber > 0 ? pageNumber : 0;
+  goFolderBack(){
+    if(this.folderData.currentfolderID == 1){ //as 1 is his root
+      return; 
+    }
+    this.cloudService.getParentFolder(this.folderData.currentfolderID).subscribe((f: Folder) => this.changeFolder(f.folderId));
+  }
+
+  //pagination
+  changePage(pageNumber:number){
+    ///not sure if needed anymore, for now empty method
+  }
+
+  changeFolder(folderId : number){
+    console.log(folderId);
+    this.folderData.currentfolderID = folderId > 0 ? folderId : 0;
     this.setFiles();
   }
 
