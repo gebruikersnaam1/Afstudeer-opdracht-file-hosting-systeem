@@ -60,7 +60,7 @@ export class FileUploadComponent implements OnInit {
     }
     WaitCursor();
     this.cloudService.uploadFileInAssignedFolder(this.createFileFormat()).subscribe(
-      result => { this.processDone(); this.fileCreated.emit(Number(result.fileId)); },
+      result => { this.processDone(); this.router.navigateByUrl(("cloud/file/"+result.fileId)) },
       _ => {  this.processDone(); this.router.navigateByUrl("500") }
     );
   }

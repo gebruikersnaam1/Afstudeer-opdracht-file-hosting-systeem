@@ -23,7 +23,7 @@ export class FileTableComponent implements OnInit {
   }
   
   ShowFile(id : number){
-    this.router.navigateByUrl("/cloud/file/"+id);
+    this.router.navigateByUrl("cloud/file/"+id);
   }
 
 }
