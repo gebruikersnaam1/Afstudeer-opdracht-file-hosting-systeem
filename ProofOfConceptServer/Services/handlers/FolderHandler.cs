@@ -1,6 +1,7 @@
 ﻿using ProofOfConceptServer.entities.interfaces;
 using ProofOfConceptServer.Repositories.entities;
 using ProofOfConceptServer.Repositories.entities.interfaces;
+using ProofOfConceptServer.Repositories.interfaces;
 using ProofOfConceptServer.Repositories.Models;
 using System;
 using System.Collections.Generic;
@@ -31,7 +32,7 @@ namespace ProofOfConceptServer.Services.handlers
            return this.Model.DoesFolderExist(folderID);
         }
 
-        public List<IFolderResponse> GetFolderContent(int folderID)
+        public List<IFolderContent> GetFolderContent(int folderID)
         {
             return this.Model.GetFolderContent(folderID);
         }
@@ -41,7 +42,7 @@ namespace ProofOfConceptServer.Services.handlers
             return this.Model.CreateFolderBlobItem(postData, folderId);
         }
 
-        public List<IFolderResponse> SearchForFiles(string searchTerm)
+        public List<IFolderContent> SearchForFiles(string searchTerm)
         {
             return this.Model.SearchForFile(searchTerm);
         }
@@ -50,6 +51,20 @@ namespace ProofOfConceptServer.Services.handlers
         {
             Folder f = this.Model.GetFolder(folderId);
             return this.Model.GetFolder(f.ParentFolder);
+        }
+
+        public IFolderWithParent GetFolderWithParent(int folderId)
+        {
+            return this.Model.GetFolderWithParent(folderId);
+        }
+
+        public Folder ChangeFolderName(IChangeFolder changeFolder){
+            return this.Model.ChangeFolderName(changeFolder);
+        }
+
+        public bool DeleteFolder(int folderId)
+        {
+            return this.Model.DeleteFolder(folderId);
         }
     }
 }

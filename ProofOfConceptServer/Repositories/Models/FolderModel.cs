@@ -2,6 +2,7 @@
 using ProofOfConceptServer.Repositories.entities;
 using ProofOfConceptServer.Repositories.entities.Factory;
 using ProofOfConceptServer.Repositories.entities.interfaces;
+using ProofOfConceptServer.Repositories.interfaces;
 using ProofOfConceptServer.Repositories.models;
 using System;
 using System.Collections.Generic;
@@ -62,10 +63,10 @@ namespace ProofOfConceptServer.Repositories.Models
             return f;
         }
 
-        public List<IFolderResponse> GetFolderContent(int folderId)
+        public List<IFolderContent> GetFolderContent(int folderId)
         {
             List<FolderItems> folder = _context.FolderItems.Where(f => f.FolderId == folderId).ToList();
-            List<IFolderResponse> i = new List<IFolderResponse>();
+            List<IFolderContent> i = new List<IFolderContent>();
 
             foreach(FolderItems b in folder)
             {
@@ -91,15 +92,98 @@ namespace ProofOfConceptServer.Repositories.Models
             return b;
         }
 
-        public List<IFolderResponse> SearchForFile(string searchTerm)
+        public List<IFolderContent> SearchForFile(string searchTerm)
         {
             List<BlobItem> blobList = this.blobModel.SearchFiles(searchTerm);
-            List<IFolderResponse> f = new List<IFolderResponse>();
+            List<IFolderContent> f = new List<IFolderContent>();
             foreach(BlobItem b in blobList)
             {
                 f.Add(FolderItemFactory.Create(b));
             }
             return f;
+        }
+
+        public IFolderWithParent GetFolderWithParent(int folderId)
+        {
+            Folder f = GetFolder(folderId);
+            if (f == null)
+                return null;
+
+            return FolderWithParentFactory.Create(f, GetFolderWithParent(f.ParentFolder));
+        }
+
+        public Folder ChangeFolderName(IChangeFolder changeFolder)
+        {
+            Folder f = GetFolder(changeFolder.folderId);
+            if (f == null)
+                return null;
+            f.FolderName = changeFolder.folderName;
+            f.DateChanged = Convert.ToDateTime(DateTime.Today.ToString("dd-MM-yyyy"));
+            _context.Update(f);
+            _context.SaveChanges();
+            return f;
+        }
+        
+        private List<Folder> GetFolderTree(Folder folder)
+        {
+            List<Folder> tree = new List<Folder>();
+            tree.Add(folder);
+
+            List <Folder> childFolders = _context.Folders.Where(z => z.ParentFolder == folder.FolderId).ToList();
+
+            if (childFolders == null || childFolders.Count == 0)
+                return tree;
+
+            foreach(Folder f in childFolders)
+            {
+                tree.AddRange(GetFolderTree(f));
+            }
+
+            return tree;
+        }
+
+        public int CountDuplicates(int fileId)
+        {
+            return _context.FolderItems.Where(f => f.BlobId == fileId).ToList().Count;
+        }
+
+        private async void RemoveBlobsWithoutFolder()
+        {
+            List<BlobItem> blobs = _context.BlobItem.ToList();
+            FolderItems item;
+            foreach(BlobItem b in blobs)
+            {
+                item = null;
+                item = _context.FolderItems.Where(i => i.BlobId == b.FileId).FirstOrDefault();
+                if (item == null)
+                    await blobModel.DeleteBlobItem(b.FileId);
+            }
+        }
+
+        public bool DeleteFolder(int folderId)
+        {
+            try
+            {
+                List <Folder> folders = GetFolderTree(GetFolder(folderId));
+                List<FolderItems> items = new List<FolderItems>();
+
+                foreach (Folder f in folders)
+                {
+                    items.AddRange(_context.FolderItems.Where(i => i.FolderId == f.FolderId).ToList());
+                    foreach (FolderItems fi in items)
+                    {
+                        _context.RemoveRange(fi);
+                    }
+                    _context.Remove(f);
+                    _context.SaveChanges();
+                    RemoveBlobsWithoutFolder();
+            };
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
     }
 }

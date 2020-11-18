@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CloudService } from '../../shared/cloud.service';
@@ -20,6 +20,7 @@ export class CreatefolderComponent implements OnInit {
   })
   @Input() parentFolderID : number;
   @Input() modalName : string;
+  @Output() folderCreated = new EventEmitter<number>();
 
   constructor(private cloudService : CloudService, private router : Router, private activeRoute : ActivatedRoute) { }
 
@@ -37,7 +38,7 @@ export class CreatefolderComponent implements OnInit {
 
   onSubmit(){
     this.cloudService.createFolder(this.GetFolderData()).subscribe(
-      (result:Folder ) =>  { CloseModal(this.modalName); this.router.navigateByUrl(("/cloud/explorer/"+result.folderId)); },
+      (result:Folder ) =>  { CloseModal(this.modalName); this.folderCreated.emit(result.folderId); },
       _ => { CloseModal(this.modalName); this.router.navigateByUrl("500"); }
     )
   }

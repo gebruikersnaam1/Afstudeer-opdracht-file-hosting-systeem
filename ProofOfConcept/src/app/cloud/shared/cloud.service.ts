@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { fileData, FileId,FileInformation } from '../interfaces/file';
-import { CreateFolderData,FolderResponse, Folder } from '../interfaces/folder';
+import { CreateFolderData,FolderResponse, Folder, ChangeFolder } from '../interfaces/folder';
 
 import { HttpClient } from '@angular/common/http';
 import { AuthService } from '../../auth/shared/auth.service';
@@ -77,13 +77,14 @@ export class CloudService {
     });
   }
 
-  getFolder(folderID: number){
-    return this.client.get<FolderResponse[]>((this.url+"folders/getFolder/"+folderID),{
+  getFolderContent(folderID: number){
+    return this.client.get<FolderResponse[]>((this.url+"folders/getFolderContent/"+folderID),{
       headers:{
         authorization: ("Bearer " + this.authService.id_token)
        }
     });
   }
+
 
   /*************************************
     @folderFileManagement Download, create and delete file with the folder structure
@@ -97,14 +98,32 @@ export class CloudService {
     });
   }
 
-  getParentFolder(folderId : number){
-    return this.client.get<Folder>((this.url+"folders/parentFolder/"+folderId), 
+  getFolder(folderId : number){
+    return this.client.get<Folder>((this.url+"folders/getFolder/"+folderId), 
     {
       headers:{
         authorization: ("Bearer " + this.authService.id_token)
        }
     });
   }
+
+  changeFolderName(data : ChangeFolder){
+    return this.client.put((this.url+"folders/changeFolder/"),data, 
+    {
+      headers:{
+        authorization: ("Bearer " + this.authService.id_token)
+       }
+    });
+  }
+
+  removeFolder(folderId: number){
+    return this.client.delete((this.url+"folders/deleteFolder/"+folderId),{
+      headers: {
+        authorization: ("Bearer " + this.authService.id_token)
+      }
+    })
+  }
+  
   /*************************************
     @blobManagement Download, create and delete file
   *************************************/

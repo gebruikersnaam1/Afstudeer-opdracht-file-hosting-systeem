@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CloudService } from "../shared/cloud.service";
 
 import { folderView, FolderResponse, Folder } from '../interfaces/folder';
@@ -10,6 +10,7 @@ import { folderView, FolderResponse, Folder } from '../interfaces/folder';
   styleUrls: ['./file-overview.component.scss']
 })
 export class FileOverviewComponent implements OnInit {
+  folder : Folder;
   rows : FolderResponse[];
   filesLoaded: Promise<boolean>;
   errorExist = false;
@@ -23,7 +24,8 @@ export class FileOverviewComponent implements OnInit {
 
  
 
-  constructor(private cloudService: CloudService, private activeRoute : ActivatedRoute) { 
+  constructor(private cloudService: CloudService, private activeRoute : ActivatedRoute, private router : Router) { 
+
   }
 
   searchForFile(searchTerm){
@@ -37,11 +39,21 @@ export class FileOverviewComponent implements OnInit {
     );
   }
 
+  onFolderRemoved(event : boolean){
+      if(event == true){ 
+        this.changeFolder(1);
+      }
+  }
+
   goFolderBack(){
-    if(this.folderData.currentfolderID == 1){ //as 1 is his root
+    if(this.folderData.currentfolderID == 1 || this.folder.parentFolder == null){ //as 1 is his root
       return; 
     }
-    this.cloudService.getParentFolder(this.folderData.currentfolderID).subscribe((f: Folder) => this.changeFolder(f.folderId));
+    this.changeFolder(this.folder.parentFolder.folderId);
+  }
+
+  changeToFile(fileId: number){
+    this.router.navigateByUrl(("/cloud/file/"+fileId));
   }
 
   //pagination
@@ -50,7 +62,6 @@ export class FileOverviewComponent implements OnInit {
   }
 
   changeFolder(folderId : number){
-    console.log(folderId);
     this.folderData.currentfolderID = folderId > 0 ? folderId : 0;
     this.setFiles();
   }
@@ -69,9 +80,14 @@ export class FileOverviewComponent implements OnInit {
     this.setFiles();
   }
 
+  setFolder(){
+    this.cloudService.getFolder(this.folderData.currentfolderID).subscribe((f: Folder) => this.folder = f);
+  }
+
   setFiles(){
-    this.cloudService.getFolder(this.folderData.currentfolderID).subscribe(
-      files => { this.rows = files; this.filesLoaded = Promise.resolve(true) },
+    this.setFolder();
+    this.cloudService.getFolderContent(this.folderData.currentfolderID).subscribe(
+      files => { this.rows = files; this.filesLoaded = Promise.resolve(true); },
       _ => { this.errorExist = true; this.filesLoaded = Promise.resolve(false); }
     );
   }

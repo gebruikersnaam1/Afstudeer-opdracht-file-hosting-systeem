@@ -114,7 +114,7 @@ namespace ProofOfConceptServer.Repositories.models
             return true;
         }
 
-        public async Task<bool> Delete(int id)
+        public async Task<bool> DeleteBlobItem(int id)
         {
             BlobItem blobItem = _context.BlobItem.Where(item =>
                    item.FileId == (id)).FirstOrDefault();

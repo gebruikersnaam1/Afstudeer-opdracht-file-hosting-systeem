@@ -9,9 +9,9 @@ namespace ProofOfConceptServer.Repositories.entities.Factory
 {
     public static class FolderItemFactory
     {
-        public static IFolderResponse Create(BlobItem blob)
+        public static IFolderContent Create(BlobItem blob)
         {
-            return new IFolderResponse
+            return new IFolderContent
             {
                 Name = blob.FileName,
                 LastChanged = blob.Date,
@@ -22,9 +22,9 @@ namespace ProofOfConceptServer.Repositories.entities.Factory
             };
         }
 
-        public static IFolderResponse Create(Folder folder)
+        public static IFolderContent Create(Folder folder)
         {
-            return new IFolderResponse
+            return new IFolderContent
             {
                 Name = folder.FolderName,
                 LastChanged = folder.DateChanged,

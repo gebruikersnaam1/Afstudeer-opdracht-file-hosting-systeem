@@ -5,10 +5,10 @@ using System.Threading.Tasks;
 
 namespace ProofOfConceptServer.Repositories.entities.interfaces
 {
-    public class IFolderResponse
+    public class IFolderContent
     {
         public string Name { get; set; }
-        public DateTime LastChanged { get; set;  }
+        public DateTime LastChanged { get; set; }
         public int Id { get; set; }
         public int Size { get; set; }
         public string Type { get; set; }

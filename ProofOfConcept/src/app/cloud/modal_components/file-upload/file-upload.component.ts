@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { CloudService } from '../../shared/cloud.service';
 import { Router } from '@angular/router';
@@ -15,6 +15,7 @@ declare const CloseModal: any;
 export class FileUploadComponent implements OnInit {
   @Input() folderID : number;
   @Input() modalName: string;
+  @Output() fileCreated = new EventEmitter<number>();
 
   file: File;
   
@@ -59,7 +60,7 @@ export class FileUploadComponent implements OnInit {
     }
     WaitCursor();
     this.cloudService.uploadFileInAssignedFolder(this.createFileFormat()).subscribe(
-      result => { this.processDone(); this.router.navigateByUrl("cloud/file/"+result.fileId) },
+      result => { this.processDone(); this.fileCreated.emit(Number(result.fileId)); },
       _ => {  this.processDone(); this.router.navigateByUrl("500") }
     );
   }

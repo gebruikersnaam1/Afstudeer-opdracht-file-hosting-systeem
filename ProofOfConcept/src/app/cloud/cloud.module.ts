@@ -11,9 +11,10 @@ import { FileTableComponent } from './shared/file-table/file-table.component';
 
 import { ReactiveFormsModule } from '@angular/forms';
 import { CreatefolderComponent } from './modal_components/createfolder/createfolder.component';
+import { FolderManagementComponent } from './modal_components/folder-management/folder-management.component';
 
 @NgModule({
-  declarations: [FileUploadComponent, ShowFileComponent, FileOverviewComponent, FileTableComponent, CreatefolderComponent],
+  declarations: [FileUploadComponent, ShowFileComponent, FileOverviewComponent, FileTableComponent, CreatefolderComponent, FolderManagementComponent],
   imports: [
     CommonModule,
     CloudRoutingModule,

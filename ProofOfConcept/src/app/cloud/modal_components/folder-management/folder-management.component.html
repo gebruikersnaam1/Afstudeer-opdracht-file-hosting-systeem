@@ -1,0 +1,34 @@
+<h1>Folder management</h1>
+
+
+<div class="col-sm">
+    <label>File ID: </label>
+    <span>{{ folder?.folderId }}</span>
+
+    <label>Folder root</label>
+    <span>{{ GetFolderRoot(folder) }}</span>
+    <label>Aangemaakt op:</label>
+    <span>{{ folder?.createdDate | date :  'dd-MM-yyyy' }}</span>
+
+    <label>Laatst gewijzigd op: </label>
+    <span>{{ folder?.dateChanged | date :  'dd-MM-yyyy'}}</span>
+</div>
+
+
+<form [formGroup]="folderGroup" (ngSubmit)="onSubmit()">
+    <app-input [controller]="folderGroup?.get('folderName')" label="Folder naam" inputType="text"></app-input>
+    <ng-container *ngIf="showSuccesMessage">
+        <div class="alert alert-success">
+            <p>
+                Bestandsnaam is veranderd!
+            </p>
+        </div>
+    </ng-container>
+    <button class="btn btn-custom mb-2">
+        <span class="fas fa-folder-open  fa-2x"></span>
+    </button>
+</form>
+
+<button class="btn btn-custom mb-2" (click)="deleteFolder()">
+    <span class="fa fa-trash-alt  fa-2x"></span>
+</button>

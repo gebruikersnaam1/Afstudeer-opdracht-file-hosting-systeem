@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using ProofOfConceptServer.entities.interfaces;
 using ProofOfConceptServer.Repositories.entities;
 using ProofOfConceptServer.Repositories.entities.interfaces;
+using ProofOfConceptServer.Repositories.interfaces;
 using ProofOfConceptServer.Services.handlers;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -48,12 +49,12 @@ namespace ProofOfConceptServer.View.Controllers
         }
 
         [HttpGet]
-        [Route("getFolder/{folderid}")]
-        public ActionResult<List<IFolderResponse>> GetFolderContent(int folderId)
+        [Route("getFolderContent/{folderid}")]
+        public ActionResult<List<IFolderContent>> GetFolderContent(int folderId)
         {
             if (!this.handler.DoesFolderExist(folderId))
                 return NotFound();
-            List<IFolderResponse> c = this.handler.GetFolderContent(folderId);
+            List<IFolderContent> c = this.handler.GetFolderContent(folderId);
             if(c.Count() == 0)
                 return NoContent();
             return c;
@@ -77,9 +78,9 @@ namespace ProofOfConceptServer.View.Controllers
 
         [HttpGet]
         [Route("search/{term}")]
-        public ActionResult<List<IFolderResponse>> SearchFiles(string term)
+        public ActionResult<List<IFolderContent>> SearchFiles(string term)
         {
-            List<IFolderResponse> l = handler.SearchForFiles(term);
+            List<IFolderContent> l = handler.SearchForFiles(term);
 
             if (l == null)
                 return Conflict("No files found");
@@ -88,15 +89,42 @@ namespace ProofOfConceptServer.View.Controllers
         }
 
         [HttpGet]
-        [Route("parentFolder/{folderId}")]
-        public ActionResult<Folder> GetParentFolder(int folderId)
+        [Route("getFolder/{folderId}")]
+        public ActionResult<IFolderWithParent> GetFolder(int folderId)
         {
             if (!this.handler.DoesFolderExist(folderId))
-                return NotFound();
-            Folder f = this.handler.GetParentFolder(folderId);
+                return Conflict("Wrong Id was given!");
+            IFolderWithParent f = this.handler.GetFolderWithParent(folderId);
 
             if (f == null)
                 NotFound();
+
+            return Ok(f);
+        }
+
+        [HttpDelete]
+        [Route("deleteFolder/{folderId}")]
+        public ActionResult DeleteFolder(int folderId)
+        {
+            if (folderId == 1)
+                return Conflict("This folder may not be deleted")!;
+            if (!this.handler.DeleteFolder(folderId))
+                return Conflict("Folders couldn't be deleted");
+            return NoContent();
+        }
+
+        [HttpPut]
+        [Route("changeFolder/")]
+        public ActionResult<Folder> ChangeFolderName(IChangeFolder changeFolder)
+        {
+            if(changeFolder.folderId == 1)
+                return Conflict("Folder not allowed to change");
+            if (!this.handler.DoesFolderExist(changeFolder.folderId))
+                return Conflict("Folder doesn't exist");
+
+            Folder f =this.handler.ChangeFolderName(changeFolder);
+            if(f == null)
+                return Conflict("Something went wrong| Folder may not exist");
 
             return Ok(f);
         }

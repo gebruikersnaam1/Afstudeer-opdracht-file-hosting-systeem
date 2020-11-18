@@ -23,7 +23,12 @@ export interface FolderResponse{
 export interface Folder{
     folderId : number
     folderName: string,
-    parentFolder: number,
+    parentFolder: Folder,
     dateChanged : Date,
     createdDate: Date
+}
+
+export interface ChangeFolder{
+    folderName : string,
+    folderId : number
 }
