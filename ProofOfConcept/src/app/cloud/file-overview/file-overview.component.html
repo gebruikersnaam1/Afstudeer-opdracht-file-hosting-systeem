@@ -23,7 +23,7 @@
     
     <div class="upper-menu">
         <app-modal  modalID="createModal" spanClass="fas fa-folder-plus fa-2x">
-                <cloud-createfolder (folderCreated)="changeFolder(1)" modalName="createModal" [parentFolderID]="folderData.currentfolderID"></cloud-createfolder>
+                <cloud-createfolder (folderCreated)="changeFolder($event)" modalName="createModal" [parentFolderID]="folderData.currentfolderID"></cloud-createfolder>
         </app-modal>
     </div>
 

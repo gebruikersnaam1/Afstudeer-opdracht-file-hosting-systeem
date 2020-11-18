@@ -47,7 +47,7 @@ export class FolderManagementComponent implements OnInit {
   deleteFolder(){
     //
     this.cloudService.removeFolder(this.folder.folderId).subscribe(
-      result => {this.folderRemoved.emit(1); CloseModal(this.modalName); },
+      result => {this.folderRemoved.emit(true); CloseModal(this.modalName); },
       _ => { CloseModal(this.modalName); this.router.navigateByUrl("500"); } 
     );
   }
