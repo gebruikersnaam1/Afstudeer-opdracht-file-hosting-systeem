@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using System.Web.Http.Cors;
 using Microsoft.AspNetCore.Mvc;
 using ProofOfConceptServer.entities.interfaces;
@@ -28,7 +29,7 @@ namespace ProofOfConceptServer.View.Controllers
         // GET: /<controller>/
         [HttpPost]
         [Route("create")]
-        //[Authorize]
+        [Authorize]
         public IActionResult CreateFolder(ICreateFolder data)
         {
             Folder f = this.handler.CreateFolder(data);
@@ -41,6 +42,7 @@ namespace ProofOfConceptServer.View.Controllers
 
         [HttpGet]
         [Route("validateid/{folderid}")]
+        [Authorize]
         public ActionResult<bool> ValidateFolderID(int folderid)
         {
             if (!this.handler.DoesFolderExist(folderid))
@@ -50,6 +52,7 @@ namespace ProofOfConceptServer.View.Controllers
 
         [HttpGet]
         [Route("getFolderContent/{folderid}")]
+        [Authorize]
         public ActionResult<List<IFolderContent>> GetFolderContent(int folderId)
         {
             if (!this.handler.DoesFolderExist(folderId))
@@ -62,7 +65,7 @@ namespace ProofOfConceptServer.View.Controllers
 
         [HttpPost]
         [Route("upload/")]
-        //[Authorize]
+        [Authorize]
         public IActionResult CreateFolderBlobItem([FromForm] ICreateBlob postData, [FromForm] int folderId)
         {
             if (!this.handler.DoesFolderExist(folderId))
@@ -78,6 +81,7 @@ namespace ProofOfConceptServer.View.Controllers
 
         [HttpGet]
         [Route("search/{term}")]
+        [Authorize]
         public ActionResult<List<IFolderContent>> SearchFiles(string term)
         {
             List<IFolderContent> l = handler.SearchForFiles(term);
@@ -90,6 +94,7 @@ namespace ProofOfConceptServer.View.Controllers
 
         [HttpGet]
         [Route("getFolder/{folderId}")]
+        [Authorize]
         public ActionResult<IFolderWithParent> GetFolder(int folderId)
         {
             if (!this.handler.DoesFolderExist(folderId))
@@ -104,6 +109,7 @@ namespace ProofOfConceptServer.View.Controllers
 
         [HttpDelete]
         [Route("deleteFolder/{folderId}")]
+        [Authorize]
         public ActionResult DeleteFolder(int folderId)
         {
             if (folderId == 1)
@@ -115,6 +121,7 @@ namespace ProofOfConceptServer.View.Controllers
 
         [HttpPut]
         [Route("changeFolder/")]
+        [Authorize]
         public ActionResult<Folder> ChangeFolderName(IChangeFolder changeFolder)
         {
             if(changeFolder.folderId == 1)

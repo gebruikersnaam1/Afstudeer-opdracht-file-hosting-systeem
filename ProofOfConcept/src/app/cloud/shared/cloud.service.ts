@@ -19,70 +19,38 @@ export class CloudService {
   *************************************/
   getFiles(itemsPerPages : number, currentPage : number){
     let getUrl = this.url+"blobfiles/?itemsPerPage=" + itemsPerPages + "&currentPage=" + currentPage;
-    return this.client.get<fileData[]>(getUrl,{
-      headers:{
-         authorization: ("Bearer " + this.authService.id_token)
-        }
-    });
+    return this.client.get<fileData[]>(getUrl);
   }
 
   getFile(file : FileId){
-    return this.client.get<fileData>((this.url+"blobfiles/file/?id="+file.fileId), {
-      // headers:{
-      //   authorization: ("Bearer " + this.authService.id_token)
-      //  }
-    });
+    return this.client.get<fileData>((this.url+"blobfiles/file/?id="+file.fileId));
   }
 
   searchOnFileName(searchTerm){
-    return this.client.get<fileData[]>((this.url+"blobfiles/search/" + searchTerm.toString()), {
-      headers:{
-        authorization: ("Bearer " + this.authService.id_token)
-       }
-    });
+    return this.client.get<fileData[]>((this.url+"blobfiles/search/" + searchTerm.toString()));
   }
 
   getFileCount(){
-    return this.client.get<number>((this.url+"blobfiles/count"), {
-      headers:{
-        authorization: ("Bearer " + this.authService.id_token)
-       }
-    });
+    return this.client.get<number>((this.url+"blobfiles/count"));
   }
 
   /*************************************
     @folderManagement create and delete file
   *************************************/
   createFolder(data : CreateFolderData){
-    return this.client.post<Folder>((this.url+"folders/create"),data, {
-        headers:{
-          authorization: ("Bearer " + this.authService.id_token)
-          }
-    });
+    return this.client.post<Folder>((this.url+"folders/create"),data);
   }
 
   validateFolderID(folderID : number){
-    return this.client.get((this.url+"folders/validateid/"+folderID),{
-      headers:{
-        authorization: ("Bearer " + this.authService.id_token)
-       }
-    });
+    return this.client.get((this.url+"folders/validateid/"+folderID));
   }
 
   searchInFolders(searchTerm){
-    return this.client.get<FolderResponse[]>((this.url+"folders/search/" + searchTerm.toString()), {
-      headers:{
-        authorization: ("Bearer " + this.authService.id_token)
-       }
-    });
+    return this.client.get<FolderResponse[]>((this.url+"folders/search/" + searchTerm.toString()));
   }
 
   getFolderContent(folderID: number){
-    return this.client.get<FolderResponse[]>((this.url+"folders/getFolderContent/"+folderID),{
-      headers:{
-        authorization: ("Bearer " + this.authService.id_token)
-       }
-    });
+    return this.client.get<FolderResponse[]>((this.url+"folders/getFolderContent/"+folderID));
   }
 
 
@@ -90,84 +58,44 @@ export class CloudService {
     @folderFileManagement Download, create and delete file with the folder structure
   *************************************/
   uploadFileInAssignedFolder(file : FormData){
-    return this.client.post<fileData>((this.url+"folders/upload"), file,
-    {
-      headers:{
-        authorization: ("Bearer " + this.authService.id_token)
-       }
-    });
+    return this.client.post<fileData>((this.url+"folders/upload"), file);
   }
 
   getFolder(folderId : number){
-    return this.client.get<Folder>((this.url+"folders/getFolder/"+folderId), 
-    {
-      headers:{
-        authorization: ("Bearer " + this.authService.id_token)
-       }
-    });
+    return this.client.get<Folder>((this.url+"folders/getFolder/"+folderId));
   }
 
   changeFolderName(data : ChangeFolder){
-    return this.client.put((this.url+"folders/changeFolder/"),data, 
-    {
-      headers:{
-        authorization: ("Bearer " + this.authService.id_token)
-       }
-    });
+    return this.client.put((this.url+"folders/changeFolder/"),data);
   }
 
   removeFolder(folderId: number){
-    return this.client.delete((this.url+"folders/deleteFolder/"+folderId),{
-      headers: {
-        authorization: ("Bearer " + this.authService.id_token)
-      }
-    })
+    return this.client.delete((this.url+"folders/deleteFolder/"+folderId))
   }
   
   /*************************************
     @blobManagement Download, create and delete file
   *************************************/
   downloadFileAssistent(file: FileId){
-    return this.client.get<FileInformation>(((this.url+"blobfiles/download/assistent/?id="+file.fileId)),{
-      headers:{
-        authorization: ("Bearer " + this.authService.id_token)
-       }
-    })
+    return this.client.get<FileInformation>(((this.url+"blobfiles/download/assistent/?id="+file.fileId)))
   }
 
   downloadFile(file: FileId){
     return this.client.get(((this.url+"blobfiles/download/?id="+file.fileId)),{
       responseType: 'blob' ,
-      headers:{
-        authorization: ("Bearer " + this.authService.id_token)
-       }
     })
   }
 
   deleteFile(file: FileId){
-    return this.client.delete((this.url+"blobfiles/delete/?id="+file.fileId), {
-      headers:{
-        authorization: ("Bearer " + this.authService.id_token)
-       }
-    });
+    return this.client.delete((this.url+"blobfiles/delete/?id="+file.fileId));
   }
 
   updateFile(file: fileData){
     //the id will be validate 
-    return this.client.put((this.url+"blobfiles/update"),file, 
-    {
-      headers:{
-        authorization: ("Bearer " + this.authService.id_token)
-       }
-    });
+    return this.client.put((this.url+"blobfiles/update"),file);
   }
 
   uploadFile(file : FormData){
-    return this.client.post<fileData>((this.url+"blobfiles/upload"), file,
-    {
-      headers:{
-        authorization: ("Bearer " + this.authService.id_token)
-       }
-    });
+    return this.client.post<fileData>((this.url+"blobfiles/upload"), file);
   }
 }
