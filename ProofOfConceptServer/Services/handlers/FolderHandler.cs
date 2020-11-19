@@ -66,5 +66,10 @@ namespace ProofOfConceptServer.Services.handlers
         {
             return this.Model.DeleteFolder(folderId);
         }
+
+        public IFolderStructure GetFolderStructure()
+        {
+            return this.Model.GetFolderStructure();
+        }
     }
 }

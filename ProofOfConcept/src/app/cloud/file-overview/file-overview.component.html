@@ -8,9 +8,14 @@
 </div>
 
 <ng-container *ngIf="this.filesLoaded && !this.errorExist">
-    <button class="btn btn-custom mb-2" data-toggle="collapse" data-target="#menu">
+    <button class="btn btn-custom mb-2 fa-2x go-right-button" data-toggle="collapse" data-target="#menu">
         <i class="fas fa-bars"></i><span>Werkbalk</span></button>
-    <div id="menu" class="collapse">
+
+        <app-modal modalID="navigationModal" spanClass="fas fa-route" buttonText="Navigatie">
+            <cloud-folder-navigation></cloud-folder-navigation>
+        </app-modal>
+
+    <div id="menu" class="collapse ">
         <div class="upper-menu">
             <button class="btn btn-custom mb-2" (click)="goFolderBack()"> 
                 <span class="fas fa-level-up-alt fa-2x"></span> 
@@ -39,7 +44,6 @@
             <app-searchbalk placeholder="Zoek op bestandsnaam" (SearchValueChange)="searchForFile($event)"></app-searchbalk>
         </div>
     </div>
-            
     
  
 

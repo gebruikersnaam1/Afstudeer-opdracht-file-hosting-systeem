@@ -12,11 +12,11 @@
         </div>
         <div class="form-group">
             <label>Datum: </label>
-            <span>{{ file.date }}</span>
+            <span>{{ file.date  | date :  'dd-MM-yyyy'}}</span>
         </div>
         <div class="form-group">
             <label>Bestandsgroten: </label>
-            <span>{{ file.fileSize }}</span>
+            <span>{{ file.fileSize | bytesConverter  }}</span>
         </div>
 
         <form [formGroup]="fileGroup" >

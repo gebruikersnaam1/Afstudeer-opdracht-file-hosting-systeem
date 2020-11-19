@@ -2,7 +2,7 @@
   <ol class="breadcrumb" >
     <ng-container *ngFor="let f of folders">
       <li class="breadcrumb-item" (click)="changeFolder(f.folderId)" [ngClass]="{'active': f.folderId === folder.folderId }"> 
-          {{f.folderName}}
+          {{f.folderName}} 
       </li>
     </ng-container>
     

@@ -9,7 +9,8 @@ import {Folder } from '../../interfaces/folder';
 export class BreadcrumbComponent implements OnInit {
   @Input() folder : Folder;
   @Output() folderChange = new EventEmitter<number>();
-
+  pageLoaded: Promise<boolean>;
+  
   folders : Folder[];
   constructor() { }
 
@@ -17,7 +18,13 @@ export class BreadcrumbComponent implements OnInit {
   }
 
   ngOnChanges(){
-    this.folders = this.setFoldertreeIntoArray(this.folder).reverse();
+    if(this.folder != undefined){
+      this.folders = this.setFoldertreeIntoArray(this.folder).reverse();
+    }
+  }
+
+  openFolderStructure(folderId: number){
+    console.log(folderId);
   }
 
   changeFolder(folderId:number){

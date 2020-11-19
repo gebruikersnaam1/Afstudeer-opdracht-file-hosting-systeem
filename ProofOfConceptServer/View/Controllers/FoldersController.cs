@@ -58,7 +58,7 @@ namespace ProofOfConceptServer.View.Controllers
             if (!this.handler.DoesFolderExist(folderId))
                 return NotFound();
             List<IFolderContent> c = this.handler.GetFolderContent(folderId);
-            if(c.Count() == 0)
+            if (c.Count() == 0)
                 return NoContent();
             return c;
         }
@@ -90,6 +90,13 @@ namespace ProofOfConceptServer.View.Controllers
                 return Conflict("No files found");
 
             return l;
+        }
+
+        [HttpGet]
+        [Route("folderStructure")]
+        [Authorize]
+        public ActionResult<IFolderStructure> FolderStructure(){
+            return this.handler.GetFolderStructure();
         }
 
         [HttpGet]

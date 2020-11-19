@@ -9,16 +9,17 @@ import { RouterModule } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FileTypeIconPipe } from './pipes/file-type-icon.pipe';
 import { ModalComponent } from './modal/modal.component';
+import { BytesConverterPipe } from './pipes/bytes-converter.pipe';
 
 
 
 @NgModule({
-  declarations: [MenuComponent, InputComponent, SearchbalkComponent, PaginationComponent, FileTypeIconPipe, ModalComponent],
+  declarations: [MenuComponent, InputComponent, SearchbalkComponent, PaginationComponent, FileTypeIconPipe, ModalComponent, BytesConverterPipe],
   imports: [
     CommonModule,
     RouterModule,
     ReactiveFormsModule
   ],
-  exports: [MenuComponent, InputComponent, SearchbalkComponent, PaginationComponent, FileTypeIconPipe, ModalComponent]
+  exports: [MenuComponent, InputComponent, SearchbalkComponent, PaginationComponent, FileTypeIconPipe, ModalComponent, BytesConverterPipe]
 })
 export class SharedModule { }

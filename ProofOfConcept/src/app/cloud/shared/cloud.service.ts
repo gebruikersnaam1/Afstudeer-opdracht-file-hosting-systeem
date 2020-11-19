@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { fileData, FileId,FileInformation } from '../interfaces/file';
-import { CreateFolderData,FolderResponse, Folder, ChangeFolder } from '../interfaces/folder';
+import { CreateFolderData,FolderResponse, FolderStructure, Folder, ChangeFolder } from '../interfaces/folder';
 
 import { HttpClient } from '@angular/common/http';
 import { AuthService } from '../../auth/shared/auth.service';
@@ -53,6 +53,9 @@ export class CloudService {
     return this.client.get<FolderResponse[]>((this.url+"folders/getFolderContent/"+folderID));
   }
 
+  getFolderStructure(){
+    return this.client.get<FolderStructure>((this.url+"folders/folderStructure"));
+  }
 
   /*************************************
     @folderFileManagement Download, create and delete file with the folder structure

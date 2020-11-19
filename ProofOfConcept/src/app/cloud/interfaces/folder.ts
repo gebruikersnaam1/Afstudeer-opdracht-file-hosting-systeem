@@ -32,3 +32,8 @@ export interface ChangeFolder{
     folderName : string,
     folderId : number
 }
+
+export interface FolderStructure{
+    currentBranch: Folder,
+    childBranches: FolderStructure[]
+}

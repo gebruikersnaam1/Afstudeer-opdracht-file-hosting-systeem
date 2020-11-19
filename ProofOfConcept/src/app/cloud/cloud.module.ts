@@ -15,10 +15,11 @@ import { FolderManagementComponent } from './modal_components/folder-management/
 import { BreadcrumbComponent } from './shared/breadcrumb/breadcrumb.component';
 
 
-import {MatExpansionModule} from '@angular/material/expansion'; 
+import {MatExpansionModule} from '@angular/material/expansion';
+import { FolderNavigationComponent } from './modal_components/folder-navigation/folder-navigation.component'; 
 
 @NgModule({
-  declarations: [FileUploadComponent, ShowFileComponent, FileOverviewComponent, FileTableComponent, CreatefolderComponent, FolderManagementComponent, BreadcrumbComponent],
+  declarations: [FileUploadComponent, ShowFileComponent, FileOverviewComponent, FileTableComponent, CreatefolderComponent, FolderManagementComponent, BreadcrumbComponent, FolderNavigationComponent],
   imports: [
     CommonModule,
     CloudRoutingModule,

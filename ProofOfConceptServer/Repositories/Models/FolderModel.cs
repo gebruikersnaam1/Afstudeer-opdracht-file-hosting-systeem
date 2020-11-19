@@ -123,8 +123,33 @@ namespace ProofOfConceptServer.Repositories.Models
             _context.SaveChanges();
             return f;
         }
+
+        public IFolderStructure GetFolderStructure()
+        {
+            return GetFolderTree(GetFolder(1));
+        }
+
+        private IFolderStructure GetFolderTree(Folder folder)
+        {
+            IFolderStructure tree = BranchFactory.Create(folder);
+
+            List<Folder> childFolders = _context.Folders.Where(z => z.ParentFolder == folder.FolderId).ToList();
+
+            if (childFolders == null || childFolders.Count == 0)
+                return tree;
+
+            IFolderStructure branch;
+            foreach (Folder f in childFolders)
+            {
+                branch = BranchFactory.Create(f);
+                branch.ChildBranches = GetFolderTree(f).ChildBranches;
+                tree.ChildBranches.Add(branch);
+            }
+
+            return tree;
+        }
         
-        private List<Folder> GetFolderTree(Folder folder)
+        private List<Folder> GetAllChildFolders(Folder folder)
         {
             List<Folder> tree = new List<Folder>();
             tree.Add(folder);
@@ -136,7 +161,7 @@ namespace ProofOfConceptServer.Repositories.Models
 
             foreach(Folder f in childFolders)
             {
-                tree.AddRange(GetFolderTree(f));
+                tree.AddRange(GetAllChildFolders(f));
             }
 
             return tree;
@@ -164,7 +189,7 @@ namespace ProofOfConceptServer.Repositories.Models
         {
             try
             {
-                List <Folder> folders = GetFolderTree(GetFolder(folderId));
+                List <Folder> folders = GetAllChildFolders(GetFolder(folderId));
                 List<FolderItems> items = new List<FolderItems>();
 
                 foreach (Folder f in folders)

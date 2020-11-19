@@ -25,7 +25,7 @@
               <td>{{ columns?.name }}</td>
               <td>{{ columns?.lastChanged | date :  'dd-MM-yyyy'}}</td>
               <td>{{ columns?.type }}</td>
-              <td>{{ columns?.size }}</td>
+              <td>{{ columns?.size | bytesConverter }}</td>
             </tr>
           </ng-container>
     </tbody>

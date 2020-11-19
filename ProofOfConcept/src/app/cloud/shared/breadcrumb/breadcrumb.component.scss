@@ -1,7 +1,15 @@
+@import '../../../globals.scss';
+
 .active{
     cursor: none !important;
 }
 
 .breadcrumb-item{
     cursor: pointer;
+}
+
+.breadcrumb{
+    margin: 10px 0px 10px 0px;
+    background-color: rgba($flair-colour, 0.1);
+    border-radius: 5px;
 }
