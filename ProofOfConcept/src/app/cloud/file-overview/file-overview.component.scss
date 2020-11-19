@@ -1,8 +1,36 @@
+@import '../../globals.scss';
+
 .custom-spinner{
     width: 10rem; height: 10rem;
 }
 
+h1{
+    border-bottom: none;
+    margin-bottom: 0px;
+}
 .upper-menu{
     display: inline-table;
     margin-left: 15px;
+}
+
+.upper-menu-container{
+    width: auto;
+    display: block;
+    margin-bottom: 10px;
+    background-color: rgba($secondary-colour,1);
+    color: $plane-colour;
+}
+
+.upper-menu-container-body{
+    background-color: $plane-colour !important;
+}
+.mat-expansion-indicator {
+    color: $plane-colour;
+}
+
+i{
+    margin-right: 5px;
+}
+span{
+    margin-left: 5px;
 }

@@ -12,14 +12,19 @@ import { FileTableComponent } from './shared/file-table/file-table.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CreatefolderComponent } from './modal_components/createfolder/createfolder.component';
 import { FolderManagementComponent } from './modal_components/folder-management/folder-management.component';
+import { BreadcrumbComponent } from './shared/breadcrumb/breadcrumb.component';
+
+
+import {MatExpansionModule} from '@angular/material/expansion'; 
 
 @NgModule({
-  declarations: [FileUploadComponent, ShowFileComponent, FileOverviewComponent, FileTableComponent, CreatefolderComponent, FolderManagementComponent],
+  declarations: [FileUploadComponent, ShowFileComponent, FileOverviewComponent, FileTableComponent, CreatefolderComponent, FolderManagementComponent, BreadcrumbComponent],
   imports: [
     CommonModule,
     CloudRoutingModule,
     SharedModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatExpansionModule
   ]
 })
 export class CloudModule { }

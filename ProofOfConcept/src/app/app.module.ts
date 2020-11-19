@@ -10,6 +10,7 @@ import { AuthHttpInterceptor, HttpMethod } from '@auth0/auth0-angular';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { AuthModule } from '@auth0/auth0-angular';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -24,38 +25,15 @@ import { AuthModule } from '@auth0/auth0-angular';
     AuthModule.forRoot({
       domain: 'woefie.eu.auth0.com',
       clientId: 'd4IxY01gbJwb5rEYSnKNlcvdRXzgpMWi',
+      audience: 'https://woefie.eu.auth0.com/api/v2/',
+      scope: 'read:users',
       redirectUri: window.location.origin,
         httpInterceptor: {
           allowedList: [
-            // Attach access tokens to any calls to '/api' (exact match)
-            '/api',
-      
-            // Attach access tokens to any calls that start with '/api/'
-            '/api/*',
-      
-            // Match anything starting with /api/accounts, but also specify the audience and scope the attached
-            // access token must have
-            // {
-            //   uri: '/api/users/*',
-            //   tokenOptions: {
-            //     audience: 'https://woefie.eu.auth0.com/',
-            //     scope: 'read:users',
-            //   },
-            // },
-      
-            // Matching on HTTP method
-            {
-              uri: '/api/orders',
-              httpMethod:  HttpMethod.Post,
-              tokenOptions: {
-                audience: 'https://woefie.eu.auth0.com/api/v2/',
-                scope: 'write:orders',
-              },
-            },
       
            // Using an absolute URIhttps://woefie.eu.auth0.com/api/v2/
             {
-              uri: 'https://woefie.eu.auth0.com/api/v2/users',
+              uri: 'https://localhost:44368/*',
               tokenOptions: {
                 audience: 'https://woefie.eu.auth0.com/api/v2/',
                 scope: 'read:users',
@@ -63,7 +41,8 @@ import { AuthModule } from '@auth0/auth0-angular';
             },
           ],
         },
-      })
+      }),
+    BrowserAnimationsModule
   ],
   providers: [
     // { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },

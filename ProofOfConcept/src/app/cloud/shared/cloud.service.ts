@@ -28,9 +28,9 @@ export class CloudService {
 
   getFile(file : FileId){
     return this.client.get<fileData>((this.url+"blobfiles/file/?id="+file.fileId), {
-      headers:{
-        authorization: ("Bearer " + this.authService.id_token)
-       }
+      // headers:{
+      //   authorization: ("Bearer " + this.authService.id_token)
+      //  }
     });
   }
 
