@@ -1,48 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { CloudService } from '../../shared/cloud.service';
-import { FolderStructure } from '../../interfaces/folder';
+import { FolderStructure, FolderStructureNode } from '../../interfaces/folder';
 import { FlatTreeControl } from '@angular/cdk/tree';
 import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
 
-
-interface FoodNode {
-  name: string;
-  children?: FoodNode[];
-}
-
-interface ExampleFlatNode {
-  expandable: boolean;
-  name: string;
-  level: number;
-}
-
-const TREE_DATA: FoodNode[] = [
-  {
-    name: 'Fruit',
-    children: [
-      { name: 'Apple' },
-      { name: 'Banana' },
-      { name: 'Fruit loops' },
-    ]
-  }, {
-    name: 'Vegetables',
-    children: [
-      {
-        name: 'Green',
-        children: [
-          { name: 'Broccoli' },
-          { name: 'Brussels sprouts' },
-        ]
-      }, {
-        name: 'Orange',
-        children: [
-          { name: 'Pumpkins' },
-          { name: 'Carrots' },
-        ]
-      },
-    ]
-  },
-];
 
 @Component({
   selector: 'cloud-folder-navigation',
@@ -54,7 +15,6 @@ export class FolderNavigationComponent implements OnInit {
 
   
   constructor(private cloudService : CloudService) { 
-    //this.dataSource.data = TREE_DATA;
   }
 
   ngOnInit(): void {
@@ -64,12 +24,13 @@ export class FolderNavigationComponent implements OnInit {
   private _transformer = (node: FolderStructure, level: number) => {
     return {
       expandable: !!node.childBranches && node.childBranches.length > 0,
-      name: node.currentBranch.folderName,
+      folderName: node.currentBranch.folderName,
+      folderId: node.currentBranch.folderId,
       level: level,
     };
   }
 
-  treeControl = new FlatTreeControl<ExampleFlatNode>(
+  treeControl = new FlatTreeControl<FolderStructureNode>(
     node => node.level, node => node.expandable);
 
   treeFlattener = new MatTreeFlattener(
@@ -77,6 +38,6 @@ export class FolderNavigationComponent implements OnInit {
 
   dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
 
-  hasChild = (_: number, node: ExampleFlatNode) => node.expandable;
+  hasChild = (_: number, node: FolderStructureNode) => node.expandable;
 
 }

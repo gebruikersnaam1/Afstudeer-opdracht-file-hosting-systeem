@@ -37,3 +37,11 @@ export interface FolderStructure{
     currentBranch: Folder,
     childBranches: FolderStructure[]
 }
+
+
+export interface FolderStructureNode {
+    expandable: boolean;
+    folderName: string;
+    folderId: number;
+    level: number;
+}
