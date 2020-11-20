@@ -15,8 +15,12 @@ import { FolderManagementComponent } from './modal_components/folder-management/
 import { BreadcrumbComponent } from './shared/breadcrumb/breadcrumb.component';
 
 
-import {MatExpansionModule} from '@angular/material/expansion';
 import { FolderNavigationComponent } from './modal_components/folder-navigation/folder-navigation.component'; 
+
+
+import { MatTreeModule } from '@angular/material/tree';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
 
 @NgModule({
   declarations: [FileUploadComponent, ShowFileComponent, FileOverviewComponent, FileTableComponent, CreatefolderComponent, FolderManagementComponent, BreadcrumbComponent, FolderNavigationComponent],
@@ -25,7 +29,9 @@ import { FolderNavigationComponent } from './modal_components/folder-navigation/
     CloudRoutingModule,
     SharedModule,
     ReactiveFormsModule,
-    MatExpansionModule
+    MatTreeModule,
+    MatIconModule, 
+    MatButtonModule
   ]
 })
 export class CloudModule { }

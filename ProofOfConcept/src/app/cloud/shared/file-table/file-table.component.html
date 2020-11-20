@@ -1,7 +1,10 @@
 <table class="table table-striped ">
     <thead>
       <tr>
-        <th scope="col" *ngFor="let h of headers"> {{h}}</th>
+        <th></th>
+        <th scope="col" *ngFor="let h of headers" (click)="sortData(h)"> 
+          {{h}} <i class="fas fa-sort"></i>
+        </th>
       </tr>
     </thead>
     <tbody *ngIf="rows != null && rows.length > 0">

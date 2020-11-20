@@ -9,7 +9,7 @@ import { FolderResponse } from '../../interfaces/folder';
   styleUrls: ['./file-table.component.scss']
 })
 export class FileTableComponent implements OnInit {
-  headers = ["", "Naam", "Datum", "Type", "Bestandsgroten"];
+  headers = ["Naam", "Datum", "Type", "Bestandsgroten"];
   @Input() rows: FolderResponse[];
   @Output() onShowFolderEvent = new EventEmitter<number>();
 
@@ -24,6 +24,10 @@ export class FileTableComponent implements OnInit {
   
   ShowFile(id : number){
     this.router.navigateByUrl("cloud/file/"+id);
+  }
+
+  sortData(headerName: string){
+    console.log(headerName);
   }
 
 }
