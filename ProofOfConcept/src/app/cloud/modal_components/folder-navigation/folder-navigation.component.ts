@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CloudService } from '../../shared/cloud.service';
 import { FolderStructure, FolderStructureNode } from '../../interfaces/folder';
 import { FlatTreeControl } from '@angular/cdk/tree';
 import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
+
+declare const CloseModal: any;
 
 
 @Component({
@@ -12,7 +14,10 @@ import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree'
 })
 export class FolderNavigationComponent implements OnInit {
   folders : FolderStructure;
+  @Input() modalName : string;
+  @Output() folderChange  = new EventEmitter<number>();
 
+  folderPath = "/cloud/explorer/";
   
   constructor(private cloudService : CloudService) { 
   }
@@ -40,4 +45,9 @@ export class FolderNavigationComponent implements OnInit {
 
   hasChild = (_: number, node: FolderStructureNode) => node.expandable;
 
+
+  goToFolder(id:number){
+    CloseModal(this.modalName);
+    this.folderChange.emit(id);
+  }
 }

@@ -11,8 +11,8 @@
     <button class="btn btn-custom mb-2 fa-2x go-right-button" data-toggle="collapse" data-target="#menu">
         <i class="fas fa-bars"></i><span>Werkbalk</span></button>
 
-        <app-modal modalID="navigationModal" spanClass="fas fa-route" buttonText="Navigatie">
-            <cloud-folder-navigation></cloud-folder-navigation>
+        <app-modal modalID="navigationModal"  spanClass="fas fa-route" buttonText="Navigatie">
+            <cloud-folder-navigation modalName="navigationModal" (folderChange)="changeFolder($event)"></cloud-folder-navigation>
         </app-modal>
 
     <div id="menu" class="collapse ">
