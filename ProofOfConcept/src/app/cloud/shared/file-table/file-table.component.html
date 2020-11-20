@@ -2,7 +2,7 @@
     <thead>
       <tr>
         <th></th>
-        <th scope="col" *ngFor="let h of headers" (click)="sortOnDate(h)"> 
+        <th scope="col" *ngFor="let h of headers" (click)="onSortRequest(h)"> 
           {{h}} <i class="fas fa-sort"></i>
         </th>
       </tr>

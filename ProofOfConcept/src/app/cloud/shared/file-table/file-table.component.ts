@@ -15,8 +15,7 @@ export class FileTableComponent implements OnInit {
   @Input() rows: FolderResponse[];
   @Output() onShowFolderEvent = new EventEmitter<number>();
 
-  dateSort = false;
-
+  sorting = false;
 
   constructor(private router : Router) { }
 
@@ -31,21 +30,28 @@ export class FileTableComponent implements OnInit {
     this.router.navigateByUrl("cloud/file/"+id);
   }
 
-  sortOnDate(){
-    if(this.dateSort){
-      this.rows.sort((a, b) => {
-        return <any>new Date(b.lastChanged) - <any>new Date(a.lastChanged);
-      });
+  sortList(z: any){
+    if(this.sorting){
+      this.rows.sort(z);
     }else{
-      this.rows.sort((a, b) => {
-        return <any>new Date(b.lastChanged) - <any>new Date(a.lastChanged);
-      }).reverse();
+      this.rows.sort(z).reverse();
     }
-    this.dateSort = !this.dateSort;
+    this.sorting = !this.sorting;
   }
+
   onSortRequest(headerName: string){
-    if(headerName == this.headers[0]){
-      this.sortOnDate();
+    if(headerName === this.headers[0]){
+      this.sortList((a:FolderResponse, b:FolderResponse) => a.name.localeCompare(b.name));
+    }
+   
+    if(headerName === this.headers[1]){
+      this.sortList((a:FolderResponse, b:FolderResponse) => <any>new Date(b.lastChanged) - <any>new Date(a.lastChanged));
+    }
+    if(headerName === this.headers[2]){
+      this.sortList((a:FolderResponse, b:FolderResponse) =>  a.type.localeCompare(b.type));
+    }
+    if(headerName === this.headers[3]){
+      this.sortList((a:FolderResponse, b:FolderResponse) => a.size -b.size);
     }
     
   }
