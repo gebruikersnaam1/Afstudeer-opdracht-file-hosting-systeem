@@ -54,17 +54,17 @@ export class FolderNavigationComponent implements OnInit {
 
   
   constructor(private cloudService : CloudService) { 
-    this.dataSource.data = TREE_DATA;
+    //this.dataSource.data = TREE_DATA;
   }
 
   ngOnInit(): void {
-    this.cloudService.getFolderStructure().subscribe((f: FolderStructure) => this.folders = f);
+    this.cloudService.getFolderStructure().subscribe((f: FolderStructure) => this.dataSource.data = f.childBranches);
   }
 
-  private _transformer = (node: FoodNode, level: number) => {
+  private _transformer = (node: FolderStructure, level: number) => {
     return {
-      expandable: !!node.children && node.children.length > 0,
-      name: node.name,
+      expandable: !!node.childBranches && node.childBranches.length > 0,
+      name: node.currentBranch.folderName,
       level: level,
     };
   }
@@ -73,7 +73,7 @@ export class FolderNavigationComponent implements OnInit {
     node => node.level, node => node.expandable);
 
   treeFlattener = new MatTreeFlattener(
-    this._transformer, node => node.level, node => node.expandable, node => node.children);
+    this._transformer, node => node.level, node => node.expandable, node => node.childBranches);
 
   dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
 
