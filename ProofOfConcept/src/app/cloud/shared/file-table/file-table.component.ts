@@ -31,11 +31,7 @@ export class FileTableComponent implements OnInit {
   }
 
   sortList(z: any){
-    if(this.sorting){
-      this.rows.sort(z);
-    }else{
-      this.rows.sort(z).reverse();
-    }
+    this.sorting == true ? this.rows.sort(z) : this.rows.sort(z).reverse();
     this.sorting = !this.sorting;
   }
 

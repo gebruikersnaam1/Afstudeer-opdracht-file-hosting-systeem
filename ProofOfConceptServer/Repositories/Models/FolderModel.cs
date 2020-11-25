@@ -185,6 +185,25 @@ namespace ProofOfConceptServer.Repositories.Models
             }
         }
 
+        public async Task<bool> RemoveBlobFromFolders(int blobId)
+        {
+            try
+            {
+                List<FolderItems> fi = _context.FolderItems.Where(fi => fi.BlobId == blobId).ToList();
+                foreach (FolderItems i in fi)
+                {
+                    _context.Remove(i);
+                }
+                _context.SaveChanges();
+                await blobModel.DeleteBlobItem(blobId);
+                return true;
+            }
+            catch (ArgumentException e)
+            {
+                return false;
+            }
+        }
+
         public bool DeleteFolder(int folderId)
         {
             try

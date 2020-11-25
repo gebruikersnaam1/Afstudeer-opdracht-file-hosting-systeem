@@ -23,8 +23,6 @@
           <ng-container *ngFor="let columns of rows" >
             <tr *ngIf="!columns.isFolder" (click)="ShowFile(columns.id)">
               <td class="faviconTD"><i class="{{ columns?.type | fileTypeIcon}}"></i></td>
-
-
               <td>{{ columns?.name }}</td>
               <td>{{ columns?.lastChanged | date :  'dd-MM-yyyy'}}</td>
               <td>{{ columns?.type }}</td>

@@ -126,6 +126,17 @@ namespace ProofOfConceptServer.View.Controllers
             return NoContent();
         }
 
+        [HttpDelete]
+        [Route("removeBlobFromFolders/{folderId}")]
+        [Authorize]
+        public ActionResult RemoveBlobFromFolder(int folderId)
+        {
+            bool result = this.handler.RemoveBlobFromFolders(folderId);
+            if (result)
+                return NoContent();
+            return Conflict("Folder couldn't be deleted");
+        }
+
         [HttpPut]
         [Route("changeFolder/")]
         [Authorize]

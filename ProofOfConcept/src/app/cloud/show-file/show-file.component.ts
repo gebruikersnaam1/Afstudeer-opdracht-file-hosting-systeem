@@ -75,7 +75,7 @@ export class ShowFileComponent implements OnInit {
 
   deleteFile(){
     WaitCursor();
-    this.cloudService.deleteFile(this.file).subscribe(
+    this.cloudService.deleteFileFromFolder(this.file).subscribe(
       result => this.fileDeleted = true,
       _ => this.router.navigateByUrl("500")
     );

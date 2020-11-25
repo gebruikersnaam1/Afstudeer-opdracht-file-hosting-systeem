@@ -71,5 +71,10 @@ namespace ProofOfConceptServer.Services.handlers
         {
             return this.Model.GetFolderStructure();
         }
+
+        public bool RemoveBlobFromFolders(int blobId)
+        {
+            return this.Model.RemoveBlobFromFolders(blobId).Result;
+        }
     }
 }

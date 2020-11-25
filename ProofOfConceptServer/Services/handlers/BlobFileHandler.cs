@@ -61,10 +61,6 @@ namespace ProofOfConceptServer.Services.Handlers
         {
             return model.UpdateBlob(newFile);
         }
-        public bool Delete(int id)
-        {
-            return model.DeleteBlobItem(id).Result;
-        }
 
         public IFileInformation DownloadFileAssistent(int id)
         {

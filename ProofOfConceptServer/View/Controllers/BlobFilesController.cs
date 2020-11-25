@@ -99,21 +99,7 @@ namespace ProofOfConceptServer.Controllers
             if (!r)
                 return BadRequest("Couldn't update");
             return Ok();
-        }
-
-        [HttpDelete]
-        [Route("delete/")]
-        [Authorize]
-        public ActionResult Delete([FromQuery]int id)
-        {
-            bool b = handler.Delete(id);
-
-            if (!b)
-                Conflict("File couldn't be deleted");
-            return NoContent();
-        }
-
-       
+        }   
 
         [HttpGet]
         [Route("download/assistent/")]

@@ -75,6 +75,10 @@ export class CloudService {
   removeFolder(folderId: number){
     return this.client.delete((this.url+"folders/deleteFolder/"+folderId))
   }
+
+  deleteFileFromFolder(file: FileId){
+    return this.client.delete((this.url+"folders/removeBlobFromFolders/"+file.fileId));
+  }
   
   /*************************************
     @blobManagement Download, create and delete file
@@ -87,10 +91,6 @@ export class CloudService {
     return this.client.get(((this.url+"blobfiles/download/?id="+file.fileId)),{
       responseType: 'blob' ,
     })
-  }
-
-  deleteFile(file: FileId){
-    return this.client.delete((this.url+"blobfiles/delete/?id="+file.fileId));
   }
 
   updateFile(file: fileData){
