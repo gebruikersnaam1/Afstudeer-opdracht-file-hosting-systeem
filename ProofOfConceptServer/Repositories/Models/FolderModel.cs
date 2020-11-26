@@ -81,7 +81,7 @@ namespace ProofOfConceptServer.Repositories.Models
 
         public BlobItem CreateFolderBlobItem(ICreateBlob postData, int folderId)
         {
-            BlobItem b = this.blobModel.CreateBlobItem(postData).Result;
+            BlobItem b = this.blobModel.CreateBlobItem(postData);
 
             if (b == null)
                 return null;
@@ -172,7 +172,7 @@ namespace ProofOfConceptServer.Repositories.Models
             return _context.FolderItems.Where(f => f.BlobId == fileId).ToList().Count;
         }
 
-        private async void RemoveBlobsWithoutFolder()
+        private void RemoveBlobsWithoutFolder()
         {
             List<BlobItem> blobs = _context.BlobItem.ToList();
             FolderItems item;
@@ -181,11 +181,11 @@ namespace ProofOfConceptServer.Repositories.Models
                 item = null;
                 item = _context.FolderItems.Where(i => i.BlobId == b.FileId).FirstOrDefault();
                 if (item == null)
-                    await blobModel.DeleteBlobItem(b.FileId);
+                     blobModel.DeleteBlobItem(b.FileId);
             }
         }
 
-        public async Task<bool> RemoveBlobFromFolders(int blobId)
+        public bool RemoveBlobFromFolders(int blobId)
         {
             try
             {
@@ -195,7 +195,7 @@ namespace ProofOfConceptServer.Repositories.Models
                     _context.Remove(i);
                 }
                 _context.SaveChanges();
-                await blobModel.DeleteBlobItem(blobId);
+                blobModel.DeleteBlobItem(blobId);
                 return true;
             }
             catch (ArgumentException e)

@@ -17,6 +17,7 @@ namespace ProofOfConceptServer.Services.handlers
         {
             this.Model = new FolderModel();
         }
+
         public Folder CreateFolder(ICreateFolder data)
         {
             if (this.Model.GetFolder(data.parentID) == null)
@@ -74,7 +75,7 @@ namespace ProofOfConceptServer.Services.handlers
 
         public bool RemoveBlobFromFolders(int blobId)
         {
-            return this.Model.RemoveBlobFromFolders(blobId).Result;
+            return this.Model.RemoveBlobFromFolders(blobId);
         }
     }
 }

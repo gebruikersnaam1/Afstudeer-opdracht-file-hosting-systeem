@@ -8,19 +8,20 @@ using Microsoft.AspNetCore.Authorization;
 
 using ProofOfConceptServer.entities.interfaces;
 
-using ProofOfConceptServer.entities;
+
 using ProofOfConceptServer.Services.Handlers;
 using ProofOfConceptServer.Repositories.entities.interfaces;
 using ProofOfConceptServer.Repositories.entities;
 
-namespace ProofOfConceptServer.Controllers
+
+namespace ProofOfConceptServer.View.Controllers
 {
     
 
     [ApiController]
     [Route("api/[controller]")]
     [EnableCors(origins: "http://localhost:4200", headers: "*", methods: "*")]
-    public class BlobFilesController : ControllerBase
+    public class BlobFilesController : Controller
     {
 
         private BlobFileHandler handler;

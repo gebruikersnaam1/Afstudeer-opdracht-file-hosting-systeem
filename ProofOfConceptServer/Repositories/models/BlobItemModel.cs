@@ -12,16 +12,123 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using ProofOfConceptServer.Repositories.Models;
+using Microsoft.AspNetCore.Http;
 
 namespace ProofOfConceptServer.Repositories.models
 {
+
+    public class BlobStorageModel
+    {
+        private string container;
+        private string PathUpload = Path.Combine(Startup.apiRoot, "Repositories/upload");
+        public BlobStorageModel()
+        {
+            container = StorageContext.Environment;
+        }
+
+        public async Task<bool> IsFileNameAvailable(string fileName)
+        {
+            if(StorageContext.Environments[1] == StorageContext.Environment)
+            {
+                return false;
+            }
+            else
+            {
+                CloudBlobContainer c = AzureConnection.Container;
+                return await c.GetBlockBlobReference(fileName).ExistsAsync();
+            }
+        }
+
+        public string CreatePathFile(string fileName)
+        {
+
+            bool fileExist = IsFileNameAvailable(fileName).Result;
+
+            if (!fileExist)
+                return Path.Combine(PathUpload, fileName).ToString();
+
+            string e = Path.GetExtension(fileName);
+            string name = Path.GetFileNameWithoutExtension(fileName);
+
+            int id = 0;
+            while (fileExist)
+            {
+                id++;
+                fileExist = IsFileNameAvailable((name + id + e)).Result;
+                if (!fileExist)
+                    break;
+            }
+            return Path.Combine(PathUpload, (name + id + e));
+        }
+
+        public async Task<bool> Create(string fileName, IFormFile file)
+        {
+            try
+            {
+                CloudBlockBlob blockBob = AzureConnection.Container.GetBlockBlobReference(fileName);
+                using (Stream fileStream = file.OpenReadStream())
+                {
+                    await blockBob.UploadFromStreamAsync(fileStream);
+                }
+                return true;
+            }
+            catch (ArgumentException e)
+            {
+                System.Diagnostics.Debug.WriteLine("Error " + e);
+                return false;
+            }
+            
+        }
+        public async void Delete(string fileName)
+        {
+            if (StorageContext.Environments[1].ToString() == StorageContext.Environment)
+            {
+                //azure
+            }
+            else
+            {
+                CloudBlockBlob blockBob = AzureConnection.Container.GetBlockBlobReference(fileName);
+                await blockBob.DeleteIfExistsAsync();
+            }
+        }
+        public async Task<bool> DownloadBlobFileToServer(BlobItem blobItem)
+        {
+            try
+            {
+                string fileName = Path.GetFileName(blobItem.Path);
+                var rootDir = new FileInfo(blobItem.Path).Directory;
+                if (!rootDir.Exists) //make sure the parent directory exists
+                    rootDir.Create();
+
+                if (StorageContext.Environments[0] == StorageContext.Environment)
+                {
+                    CloudBlockBlob blockBob = AzureConnection.Container.GetBlockBlobReference(fileName);
+                    await blockBob.DownloadToFileAsync(blobItem.Path, FileMode.Create);
+                }
+                else
+                {
+                    //TODO:
+                }
+                    
+                return true;
+            }
+            catch
+            {
+                System.Diagnostics.Debug.WriteLine("File couldn't be downloaded from the Azure!");
+                return false;
+            }
+        }
+    }
+
     public class BlobItemModel
     {
-        private string blobItemsPath = Path.Combine(Startup.apiRoot, "Models/uploads");
         private woefiedatabaseContext _context;
+        private BlobStorageModel Storage;
 
         public BlobItemModel()
         {
+            Storage = new BlobStorageModel();
             _context = new woefiedatabaseContext();
             //LoadDummyData();
         }
@@ -71,25 +178,23 @@ namespace ProofOfConceptServer.Repositories.models
             return id;
         }
 
-        public async Task<BlobItem> CreateBlobItem(ICreateBlob postData)
+        public BlobItem CreateBlobItem(ICreateBlob postData)
         {
 
             int id = this.GenerateId();
-            BlobItem blobItem = BlobItemFactory.Create(postData, id, blobItemsPath);
+            BlobItem blobItem = BlobItemFactory.Create(postData, id, Storage.CreatePathFile(postData.file.FileName));
 
             if (blobItem == null)
                 return null;
 
             string fileName = Path.GetFileName(blobItem.Path);
 
-            CloudBlockBlob blockBob = AzureConnection.Container.GetBlockBlobReference(fileName);
-            using (Stream fileStream = postData.file.OpenReadStream())
-            {
-                await blockBob.UploadFromStreamAsync(fileStream);
-                _context.BlobItem.Add(blobItem); //set file in the "db"
-                _context.SaveChanges();
-            }
+            if (!Storage.Create(fileName, postData.file).Result)
+                return null;
 
+            _context.BlobItem.Add(blobItem); //set file in the "db"
+            _context.SaveChanges();
+        
             return blobItem;
         }
 
@@ -114,7 +219,7 @@ namespace ProofOfConceptServer.Repositories.models
             return true;
         }
 
-        public async Task<bool> DeleteBlobItem(int id)
+        public bool DeleteBlobItem(int id)
         {
             BlobItem blobItem = _context.BlobItem.Where(item =>
                    item.FileId == (id)).FirstOrDefault();
@@ -125,13 +230,12 @@ namespace ProofOfConceptServer.Repositories.models
             try
             {
                 string fileOnCloud = Path.GetFileName(blobItem.Path);
-                CloudBlockBlob blockBob = AzureConnection.Container.GetBlockBlobReference(fileOnCloud);
-                await blockBob.DeleteIfExistsAsync();
+                Storage.Delete(fileOnCloud);
                 _context.BlobItem.Remove(blobItem);
                 _context.SaveChanges();
                 return true;
             }
-            catch (ArgumentException e)
+            catch
             {
                 return false;
             }
@@ -150,26 +254,6 @@ namespace ProofOfConceptServer.Repositories.models
             };
         }
 
-        private async Task<bool> DownloadBlobFileToServer(BlobItem blobItem)
-        {
-            try
-            {
-                string fileName = Path.GetFileName(blobItem.Path);
-                CloudBlockBlob blockBob = AzureConnection.Container.GetBlockBlobReference(fileName);
-                var rootDir = new FileInfo(blobItem.Path).Directory;
-                if (!rootDir.Exists) //make sure the parent directory exists
-                    rootDir.Create();
-
-                await blockBob.DownloadToFileAsync(blobItem.Path, FileMode.Create);
-                return true;
-            }
-            catch
-            {
-                System.Diagnostics.Debug.WriteLine("File couldn't be downloaded from the Azure!");
-                return false;
-            }
-        }
-
 
         public async Task<IDownloadFileResponse> DownloadFile(int id)
         {
@@ -180,7 +264,7 @@ namespace ProofOfConceptServer.Repositories.models
                 return null;
 
             //download the file to the local server
-            await DownloadBlobFileToServer(blobItem);
+            bool z = Storage.DownloadBlobFileToServer(blobItem).Result;
 
             var net = new System.Net.WebClient();
             try
@@ -188,10 +272,9 @@ namespace ProofOfConceptServer.Repositories.models
                 var data = net.DownloadData(blobItem.Path);
                 var content = new System.IO.MemoryStream(data);
 
-                if (System.IO.File.Exists(blobItem.Path))
-                    System.IO.File.Delete(blobItem.Path);
+                //if (System.IO.File.Exists(blobItem.Path))
+                //    System.IO.File.Delete(blobItem.Path);
 
-                // var z = File(data, "application/octet-stream", blobItem.fileName);
                 return new IDownloadFileResponse
                 {
                     File = data,

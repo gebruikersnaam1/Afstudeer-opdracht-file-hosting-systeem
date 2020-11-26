@@ -14,28 +14,8 @@ namespace ProofOfConceptServer.entities.Factory
     public class BlobItemFactory
     {
 
-        private static async Task<string> CreatePathFile(string uploadRoot, string fileName)
-        {
-            CloudBlobContainer c =  AzureConnection.Container;
-            bool fileExist = await c.GetBlockBlobReference(fileName).ExistsAsync();
-            
-            if(!fileExist)
-                return Path.Combine(uploadRoot, fileName).ToString();
-
-            string e = Path.GetExtension(fileName);
-            string name = Path.GetFileNameWithoutExtension(fileName);
-
-            int id = 0;
-            while(fileExist) {
-                id++;
-                fileExist = await c.GetBlockBlobReference((name + id + e)).ExistsAsync();
-                if(!fileExist)
-                    break;
-            }
-            return Path.Combine(uploadRoot, (name + id + e));
-        }
-
-        public static BlobItem Create(ICreateBlob postInfo,int id, string uploadRoot)
+      
+        public static BlobItem Create(ICreateBlob postInfo,int id, string uploadPath)
         {
             try
             {
@@ -44,7 +24,7 @@ namespace ProofOfConceptServer.entities.Factory
                     FileId = id,
                     FileName = postInfo.file.FileName,
                     Date = Convert.ToDateTime(DateTime.Today.ToString("dd-MM-yyyy")),
-                    Path = BlobItemFactory.CreatePathFile(uploadRoot, postInfo.file.FileName).Result,
+                    Path = uploadPath,
                     FileSize = (int)postInfo.file.Length / 1024,
                     UserId = postInfo.userId,
                     Description = postInfo.description

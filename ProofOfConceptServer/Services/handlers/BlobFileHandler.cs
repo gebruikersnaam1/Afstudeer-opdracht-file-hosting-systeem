@@ -46,7 +46,7 @@ namespace ProofOfConceptServer.Services.Handlers
 
         public BlobItem CreateBlobItem(ICreateBlob postData)
         {
-            return model.CreateBlobItem(postData).Result;
+            return model.CreateBlobItem(postData);
         }
 
         public List<BlobItem> SearchFiles(string term)

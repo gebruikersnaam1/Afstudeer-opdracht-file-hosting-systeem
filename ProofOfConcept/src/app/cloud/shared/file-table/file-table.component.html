@@ -21,7 +21,7 @@
             </tr>
           </ng-container>
           <ng-container *ngFor="let columns of rows" >
-            <tr *ngIf="!columns.isFolder" (click)="ShowFile(columns.id)">
+            <tr *ngIf="!columns.isFolder" (click)="ShowFile(columns.id)" (contextmenu)="onRightClick($event,columns.id)">
               <td class="faviconTD"><i class="{{ columns?.type | fileTypeIcon}}"></i></td>
               <td>{{ columns?.name }}</td>
               <td>{{ columns?.lastChanged | date :  'dd-MM-yyyy'}}</td>
@@ -36,4 +36,16 @@
    Folder is leeg!
   </div>
 
-  
+  <!-- an hidden div is created to set the position of appearance of the menu-->
+<div style="visibility: hidden; position: fixed;"
+[style.left]="menuTopLeftPosition.x"
+[style.top]="menuTopLeftPosition.y"
+[matMenuTriggerFor]="rightMenu"></div>
+
+<!-- standard material menu -->
+<mat-menu #rightMenu="matMenu">
+  <ng-template matMenuContent let-item="item">
+    <button mat-menu-item>Downloaden</button>
+    <button mat-menu-item>Verwijderen</button>
+  </ng-template>
+</mat-menu>

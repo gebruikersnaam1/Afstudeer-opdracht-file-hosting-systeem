@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace ProofOfConceptServer
 {
+    using Azure.Core;
     using ProofOfConceptServer.database;
 
     public class Startup
@@ -17,7 +18,6 @@ namespace ProofOfConceptServer
         public Startup(IConfiguration configuration)
         {
             Startup.apiRoot = configuration.GetValue<string>(WebHostDefaults.ContentRootKey);
-
             Configuration = configuration;
         }
 

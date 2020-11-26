@@ -10,11 +10,13 @@ using ProofOfConceptServer.Repositories.entities;
 using ProofOfConceptServer.Repositories.entities.interfaces;
 using ProofOfConceptServer.Repositories.interfaces;
 using ProofOfConceptServer.Services.handlers;
+using ProofOfConceptServer.Repositories.Models;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace ProofOfConceptServer.View.Controllers
 {
+  
     [ApiController]
     [Route("api/[controller]")]
     [EnableCors(origins: "http://localhost:4200", headers: "*", methods: "*")]
@@ -26,6 +28,29 @@ namespace ProofOfConceptServer.View.Controllers
         {
             this.handler = new FolderHandler();
         }
+
+        private void SetFolderEnvironment()
+        {
+            try
+            {
+                string env = Request.Headers["environment"];
+                if (env != null)
+                    StorageContext.Environment = env;
+            }
+            catch (ArgumentException e)
+            {
+                System.Diagnostics.Debug.WriteLine("Folder environment is Azure, because: " + e);
+            }
+        }
+
+        [HttpGet]
+        [Route("voorbeeld")]
+        public ActionResult<string> z(int folderid)
+        {
+            SetFolderEnvironment();
+            return Ok(StorageContext.Environment);
+        }
+
         // GET: /<controller>/
         [HttpPost]
         [Route("create")]
@@ -70,6 +95,8 @@ namespace ProofOfConceptServer.View.Controllers
         {
             if (!this.handler.DoesFolderExist(folderId))
                 return NotFound();
+
+            SetFolderEnvironment();
 
             BlobItem b = this.handler.CreateFolderBlobItem(postData, folderId);
 
@@ -127,11 +154,13 @@ namespace ProofOfConceptServer.View.Controllers
         }
 
         [HttpDelete]
-        [Route("removeBlobFromFolders/{folderId}")]
-        [Authorize]
-        public ActionResult RemoveBlobFromFolder(int folderId)
+        [Route("removeBlobFromFolders/{blobId}")]
+        //[Authorize]
+        public ActionResult RemoveBlobFromFolder(int blobId)
         {
-            bool result = this.handler.RemoveBlobFromFolders(folderId);
+            SetFolderEnvironment();
+
+            bool result = this.handler.RemoveBlobFromFolders(blobId);
             if (result)
                 return NoContent();
             return Conflict("Folder couldn't be deleted");
@@ -142,7 +171,9 @@ namespace ProofOfConceptServer.View.Controllers
         [Authorize]
         public ActionResult<Folder> ChangeFolderName(IChangeFolder changeFolder)
         {
-            if(changeFolder.folderId == 1)
+            SetFolderEnvironment();
+
+            if (changeFolder.folderId == 1)
                 return Conflict("Folder not allowed to change");
             if (!this.handler.DoesFolderExist(changeFolder.folderId))
                 return Conflict("Folder doesn't exist");

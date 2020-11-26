@@ -22,8 +22,6 @@ export class FileOverviewComponent implements OnInit {
   }
   
 
- 
-
   constructor(private cloudService: CloudService, private activeRoute : ActivatedRoute, private router : Router) { 
 
   }

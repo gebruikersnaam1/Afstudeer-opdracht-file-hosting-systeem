@@ -21,6 +21,7 @@ import { FolderNavigationComponent } from './modal_components/folder-navigation/
 import { MatTreeModule } from '@angular/material/tree';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { MatMenuModule } from '@angular/material/menu';
 
 @NgModule({
   declarations: [FileUploadComponent, ShowFileComponent, FileOverviewComponent, FileTableComponent, CreatefolderComponent, FolderManagementComponent, BreadcrumbComponent, FolderNavigationComponent],
@@ -30,6 +31,7 @@ import { MatButtonModule } from '@angular/material/button';
     SharedModule,
     ReactiveFormsModule,
     MatTreeModule,
+    MatMenuModule,
     MatIconModule, 
     MatButtonModule
   ]

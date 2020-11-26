@@ -1,8 +1,7 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter,ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-
+import { MatMenuTrigger } from '@angular/material/menu';
 import { FolderResponse } from '../../interfaces/folder';
-
 
 @Component({
   selector: 'cloud-table',
@@ -16,6 +15,11 @@ export class FileTableComponent implements OnInit {
   @Output() onShowFolderEvent = new EventEmitter<number>();
 
   sorting = false;
+
+  menuTopLeftPosition =  {x: '0', y: '0'}
+
+  // reference to the MatMenuTrigger in the DOM
+  @ViewChild(MatMenuTrigger, {static: true}) menuTrigger: MatMenuTrigger;
 
   constructor(private router : Router) { }
 
@@ -49,7 +53,17 @@ export class FileTableComponent implements OnInit {
     if(headerName === this.headers[3]){
       this.sortList((a:FolderResponse, b:FolderResponse) => a.size -b.size);
     }
-    
   }
 
+
+  onRightClick(event: MouseEvent, item) {
+      event.preventDefault();
+      // we record the mouse position in our object
+      this.menuTopLeftPosition.x = event.clientX + 'px';
+      this.menuTopLeftPosition.y = event.clientY + 'px';
+
+      this.menuTrigger.menuData = {item: item}
+
+      this.menuTrigger.openMenu();
+  }
 }
