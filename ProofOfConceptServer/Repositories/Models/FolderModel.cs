@@ -15,6 +15,7 @@ namespace ProofOfConceptServer.Repositories.Models
     {
         private woefiedatabaseContext _context;
         private BlobItemModel blobModel;
+        private int rootFolder = 1;
 
         public FolderModel()
         {
@@ -230,9 +231,16 @@ namespace ProofOfConceptServer.Repositories.Models
             }
         }
 
-        public void SynchronicFiles()
+        public void SynchronizationFiles()
         {
-            this.blobModel.GetUnkownBlobs();
+           List<BlobItem> newBlobs = this.blobModel.SynchronizationBlobs();
+           FolderItems f;
+           foreach (BlobItem b in newBlobs)
+           {
+                 f = FolderBlobFactory.Create(b.FileId, rootFolder);
+                _context.FolderItems.Add(f);
+                _context.SaveChanges();
+            }
         }
     }
 }

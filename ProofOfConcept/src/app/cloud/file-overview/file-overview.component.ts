@@ -22,8 +22,10 @@ export class FileOverviewComponent implements OnInit {
   }
   
 
-  constructor(private cloudService: CloudService, private activeRoute : ActivatedRoute, private router : Router) { 
+  constructor(private cloudService: CloudService, private activeRoute : ActivatedRoute, private router : Router) { }
 
+  ngOnInit(): void {
+    this.setCurrentPage();
   }
 
   searchForFile(searchTerm){
@@ -86,8 +88,8 @@ export class FileOverviewComponent implements OnInit {
     );
   }
 
-  ngOnInit(): void {
-    this.setCurrentPage();
+  syncFiles() {
+    this.cloudService.syncFiles().subscribe(_ => this.changeFolder(1));
   }
 
 

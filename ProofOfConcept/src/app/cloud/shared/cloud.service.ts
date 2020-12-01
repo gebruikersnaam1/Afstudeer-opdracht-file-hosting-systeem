@@ -79,6 +79,10 @@ export class CloudService {
   deleteFileFromFolder(file: FileId){
     return this.client.delete((this.url+"folders/removeBlobFromFolders/"+file.fileId));
   }
+
+  syncFiles(){
+    return this.client.get((this.url+"folders/synchronicFiles"));
+  }
   
   /*************************************
     @blobManagement Download, create and delete file

@@ -24,7 +24,7 @@ namespace ProofOfConceptServer.Repositories.models
     public class BlobStorageModel
     {
         private string container;
-        private string PathUpload = Path.Combine(Startup.apiRoot, "Repositories\\upload");
+        private string PathUpload = Path.Combine(Startup.apiRoot, "upload");
         public BlobStorageModel()
         {
             container = StorageContext.Environment;
@@ -102,11 +102,11 @@ namespace ProofOfConceptServer.Repositories.models
                 await blockBob.DeleteIfExistsAsync();
             }
         }
-        public async Task<bool> DownloadBlobFileToServer(BlobItem blobItem)
+        public async Task<string> DownloadBlobFileToServer(BlobItem blobItem)
         {
-            try
-            {
-                string path  =  Path.Combine(PathUpload, Path.GetFileName(blobItem.Path));
+            //try
+            //{
+                string path  =  Path.Combine(PathUpload, blobItem.Path);
                 var rootDir = new FileInfo(blobItem.Path).Directory;
                 if (!rootDir.Exists) //make sure the parent directory exists
                     rootDir.Create();
@@ -118,16 +118,16 @@ namespace ProofOfConceptServer.Repositories.models
                 }
                 else
                 {
-                    //TODO:
+                    //amazon
                 }
                     
-                return true;
-            }
-            catch
-            {
-                System.Diagnostics.Debug.WriteLine("File couldn't be downloaded from the Azure!");
-                return false;
-            }
+                return path;
+            //}
+            //catch
+            //{
+            //    System.Diagnostics.Debug.WriteLine("File couldn't be downloaded from the Azure!");
+            //    return null;
+            //}
         }
 
         public async Task<List<ISynchronicFiles>> Synchronization()
@@ -297,39 +297,43 @@ namespace ProofOfConceptServer.Repositories.models
                 return null;
 
             //download the file to the local server
-            bool z = Storage.DownloadBlobFileToServer(blobItem).Result;
+            string path = Storage.DownloadBlobFileToServer(blobItem).Result;
 
             var net = new System.Net.WebClient();
-            try
-            {
-                var data = net.DownloadData(blobItem.Path);
+            //try
+            //{
+                var data = net.DownloadData(path);
                 var content = new System.IO.MemoryStream(data);
 
-                if (System.IO.File.Exists(blobItem.Path))
-                    System.IO.File.Delete(blobItem.Path);
+                //if (System.IO.File.Exists(path))
+                //    System.IO.File.Delete(path);
 
                 return new IDownloadFileResponse
                 {
                     File = data,
                     FileName = blobItem.FileName
                 };
-            }
-            catch
-            {
-                return null;
-            }
+            //}
+            //catch
+            //{
+            //    return null;
+            //}
         }
 
-        public List<BlobItem> GetUnkownBlobs()
+        public List<BlobItem> SynchronizationBlobs()
         {
             List<ISynchronicFiles> cloudFiles = this.Storage.Synchronization().Result;
             List<BlobItem> dbFiles = _context.BlobItem.ToList();
             List<BlobItem> l = new List<BlobItem>();
+            BlobItem b;
             foreach (ISynchronicFiles c in cloudFiles)
             {
                 if (dbFiles.Where(d => d.Path == c.FileName).FirstOrDefault() == null)
                 {
-                    l.Add(BlobItemFactory.Create(c,0));
+                    b = (BlobItemFactory.Create(c, GenerateId()));
+                    l.Add(b);
+                    _context.BlobItem.Add(b);
+                    _context.SaveChanges();
                 }
             }
 

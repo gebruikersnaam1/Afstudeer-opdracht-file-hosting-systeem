@@ -188,9 +188,9 @@ namespace ProofOfConceptServer.View.Controllers
         [HttpGet]
         [Route("synchronicFiles")]
         //[Authorize]
-        public ActionResult synchronicFiles(int folderid)
+        public ActionResult FilesSynchronization(int folderid)
         {
-            this.handler.SynchronicFiles();
+            this.handler.FilesSynchronization();
             return Ok();
         }
     }
