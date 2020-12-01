@@ -104,8 +104,8 @@ namespace ProofOfConceptServer.Repositories.models
         }
         public async Task<string> DownloadBlobFileToServer(BlobItem blobItem)
         {
-            //try
-            //{
+            try
+            {
                 string path  =  Path.Combine(PathUpload, blobItem.Path);
                 var rootDir = new FileInfo(blobItem.Path).Directory;
                 if (!rootDir.Exists) //make sure the parent directory exists
@@ -122,12 +122,12 @@ namespace ProofOfConceptServer.Repositories.models
                 }
                     
                 return path;
-            //}
-            //catch
-            //{
-            //    System.Diagnostics.Debug.WriteLine("File couldn't be downloaded from the Azure!");
-            //    return null;
-            //}
+            }
+            catch
+            {
+                System.Diagnostics.Debug.WriteLine("File couldn't be downloaded from the Azure!");
+                return null;
+            }
         }
 
         public async Task<List<ISynchronicFiles>> Synchronization()
@@ -288,7 +288,7 @@ namespace ProofOfConceptServer.Repositories.models
         }
 
 
-        public async Task<IDownloadFileResponse> DownloadFile(int id)
+        public  IDownloadFileResponse DownloadFile(int id)
         {
             BlobItem blobItem = _context.BlobItem.Where(item =>
                     item.FileId == id).FirstOrDefault();
@@ -300,8 +300,8 @@ namespace ProofOfConceptServer.Repositories.models
             string path = Storage.DownloadBlobFileToServer(blobItem).Result;
 
             var net = new System.Net.WebClient();
-            //try
-            //{
+            try
+            {
                 var data = net.DownloadData(path);
                 var content = new System.IO.MemoryStream(data);
 
@@ -313,11 +313,11 @@ namespace ProofOfConceptServer.Repositories.models
                     File = data,
                     FileName = blobItem.FileName
                 };
-            //}
-            //catch
-            //{
-            //    return null;
-            //}
+            }
+            catch
+            {
+                return null;
+            }
         }
 
         public List<BlobItem> SynchronizationBlobs()

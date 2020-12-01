@@ -69,7 +69,7 @@ namespace ProofOfConceptServer.Services.Handlers
  
         public IDownloadFileResponse DownloadFile(int id)
         {
-            return model.DownloadFile(id).Result;
+            return model.DownloadFile(id);
         }
     }
 }
