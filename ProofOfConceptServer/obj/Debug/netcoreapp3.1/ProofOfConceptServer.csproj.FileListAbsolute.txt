@@ -191,4 +191,13 @@ C:\Data\Programmeren\Angular\Afstuderen\Afstudeer-opdracht-file-hosting-systeem\
 C:\Data\Programmeren\Angular\Afstuderen\Afstudeer-opdracht-file-hosting-systeem\ProofOfConceptServer\bin\Debug\netcoreapp3.1\tr\Microsoft.CodeAnalysis.Workspaces.resources.dll
 C:\Data\Programmeren\Angular\Afstuderen\Afstudeer-opdracht-file-hosting-systeem\ProofOfConceptServer\bin\Debug\netcoreapp3.1\zh-Hans\Microsoft.CodeAnalysis.Workspaces.resources.dll
 C:\Data\Programmeren\Angular\Afstuderen\Afstudeer-opdracht-file-hosting-systeem\ProofOfConceptServer\bin\Debug\netcoreapp3.1\zh-Hant\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Data\Programmeren\Angular\Afstuderen\Afstudeer-opdracht-file-hosting-systeem\ProofOfConceptServer\bin\Debug\netcoreapp3.1\AWSSDK.Core.dll
+C:\Data\Programmeren\Angular\Afstuderen\Afstudeer-opdracht-file-hosting-systeem\ProofOfConceptServer\bin\Debug\netcoreapp3.1\AWSSDK.Extensions.NETCore.Setup.dll
+C:\Data\Programmeren\Angular\Afstuderen\Afstudeer-opdracht-file-hosting-systeem\ProofOfConceptServer\bin\Debug\netcoreapp3.1\AWSSDK.S3.dll
+C:\Data\Programmeren\Angular\Afstuderen\Afstudeer-opdracht-file-hosting-systeem\ProofOfConceptServer\bin\Debug\netcoreapp3.1\Microsoft.OpenApi.dll
+C:\Data\Programmeren\Angular\Afstuderen\Afstudeer-opdracht-file-hosting-systeem\ProofOfConceptServer\bin\Debug\netcoreapp3.1\Swashbuckle.AspNetCore.Swagger.dll
+C:\Data\Programmeren\Angular\Afstuderen\Afstudeer-opdracht-file-hosting-systeem\ProofOfConceptServer\bin\Debug\netcoreapp3.1\Swashbuckle.AspNetCore.SwaggerGen.dll
+C:\Data\Programmeren\Angular\Afstuderen\Afstudeer-opdracht-file-hosting-systeem\ProofOfConceptServer\bin\Debug\netcoreapp3.1\Swashbuckle.AspNetCore.SwaggerUI.dll
+C:\Data\Programmeren\Angular\Afstuderen\Afstudeer-opdracht-file-hosting-systeem\ProofOfConceptServer\bin\Debug\netcoreapp3.1\Swashbuckle.AspNetCore.Annotations.dll
+C:\Data\Programmeren\Angular\Afstuderen\Afstudeer-opdracht-file-hosting-systeem\ProofOfConceptServer\obj\Debug\netcoreapp3.1\ProofOfConceptServer.MvcApplicationPartsAssemblyInfo.cs
 C:\Data\Programmeren\Angular\Afstuderen\Afstudeer-opdracht-file-hosting-systeem\ProofOfConceptServer\obj\Debug\netcoreapp3.1\ProofOfConceptServer.MvcApplicationPartsAssemblyInfo.cache

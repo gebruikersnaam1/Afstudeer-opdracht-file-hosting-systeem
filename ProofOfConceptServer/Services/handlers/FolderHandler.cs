@@ -77,5 +77,10 @@ namespace ProofOfConceptServer.Services.handlers
         {
             return this.Model.RemoveBlobFromFolders(blobId);
         }
+
+        public void SynchronicFiles()
+        {
+            this.Model.SynchronicFiles();
+        }
     }
 }

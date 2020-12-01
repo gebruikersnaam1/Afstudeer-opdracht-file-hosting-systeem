@@ -184,5 +184,14 @@ namespace ProofOfConceptServer.View.Controllers
 
             return Ok(f);
         }
+
+        [HttpGet]
+        [Route("synchronicFiles")]
+        //[Authorize]
+        public ActionResult synchronicFiles(int folderid)
+        {
+            this.handler.SynchronicFiles();
+            return Ok();
+        }
     }
 }

@@ -14,6 +14,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using ProofOfConceptServer.Repositories.Models;
 using Microsoft.AspNetCore.Http;
+using Azure.Storage.Blobs;
+using ProofOfConceptServer.Repositories.interfaces;
+using ProofOfConceptServer.Repositories.entities.Factory;
 
 namespace ProofOfConceptServer.Repositories.models
 {
@@ -21,7 +24,7 @@ namespace ProofOfConceptServer.Repositories.models
     public class BlobStorageModel
     {
         private string container;
-        private string PathUpload = Path.Combine(Startup.apiRoot, "Repositories/upload");
+        private string PathUpload = Path.Combine(Startup.apiRoot, "Repositories\\upload");
         public BlobStorageModel()
         {
             container = StorageContext.Environment;
@@ -46,7 +49,7 @@ namespace ProofOfConceptServer.Repositories.models
             bool fileExist = IsFileNameAvailable(fileName).Result;
 
             if (!fileExist)
-                return Path.Combine(PathUpload, fileName).ToString();
+                return fileName;
 
             string e = Path.GetExtension(fileName);
             string name = Path.GetFileNameWithoutExtension(fileName);
@@ -59,19 +62,26 @@ namespace ProofOfConceptServer.Repositories.models
                 if (!fileExist)
                     break;
             }
-            return Path.Combine(PathUpload, (name + id + e));
+            return (name + id + e);
         }
 
         public async Task<bool> Create(string fileName, IFormFile file)
         {
             try
             {
-                CloudBlockBlob blockBob = AzureConnection.Container.GetBlockBlobReference(fileName);
-                using (Stream fileStream = file.OpenReadStream())
+                if (StorageContext.Environments[0].ToString() == StorageContext.Environment)
                 {
-                    await blockBob.UploadFromStreamAsync(fileStream);
+                    CloudBlockBlob blockBob = AzureConnection.Container.GetBlockBlobReference(fileName);
+                    using (Stream fileStream = file.OpenReadStream())
+                    {
+                        await blockBob.UploadFromStreamAsync(fileStream);
+                    }
+                    return true;
                 }
-                return true;
+                else
+                {
+                    return false; //aws
+                }
             }
             catch (ArgumentException e)
             {
@@ -84,7 +94,7 @@ namespace ProofOfConceptServer.Repositories.models
         {
             if (StorageContext.Environments[1].ToString() == StorageContext.Environment)
             {
-                //azure
+                //aws
             }
             else
             {
@@ -96,15 +106,15 @@ namespace ProofOfConceptServer.Repositories.models
         {
             try
             {
-                string fileName = Path.GetFileName(blobItem.Path);
+                string path  =  Path.Combine(PathUpload, Path.GetFileName(blobItem.Path));
                 var rootDir = new FileInfo(blobItem.Path).Directory;
                 if (!rootDir.Exists) //make sure the parent directory exists
                     rootDir.Create();
 
                 if (StorageContext.Environments[0] == StorageContext.Environment)
                 {
-                    CloudBlockBlob blockBob = AzureConnection.Container.GetBlockBlobReference(fileName);
-                    await blockBob.DownloadToFileAsync(blobItem.Path, FileMode.Create);
+                    CloudBlockBlob blockBob = AzureConnection.Container.GetBlockBlobReference(blobItem.Path);
+                    await blockBob.DownloadToFileAsync(path, FileMode.Create);
                 }
                 else
                 {
@@ -118,6 +128,29 @@ namespace ProofOfConceptServer.Repositories.models
                 System.Diagnostics.Debug.WriteLine("File couldn't be downloaded from the Azure!");
                 return false;
             }
+        }
+
+        public async Task<List<ISynchronicFiles>> Synchronization()
+        {
+            List<ISynchronicFiles> f = new List<ISynchronicFiles>();
+
+            if (StorageContext.Environments[0] == StorageContext.Environment)
+            {
+                BlobContainerClient blockBob = AzureConnection.containerClient;
+                await foreach (Azure.Storage.Blobs.Models.BlobItem blobItem in blockBob.GetBlobsAsync())
+                {
+                    f.Add(SynchronicFilesFactory.Create(
+                            blobItem.Properties.CreatedOn.Value.DateTime, 
+                            blobItem.Name.ToString(),
+                            (long) blobItem.Properties.ContentLength
+                        ));
+                }
+            }
+            else
+            {
+
+            }
+            return f;
         }
     }
 
@@ -272,8 +305,8 @@ namespace ProofOfConceptServer.Repositories.models
                 var data = net.DownloadData(blobItem.Path);
                 var content = new System.IO.MemoryStream(data);
 
-                //if (System.IO.File.Exists(blobItem.Path))
-                //    System.IO.File.Delete(blobItem.Path);
+                if (System.IO.File.Exists(blobItem.Path))
+                    System.IO.File.Delete(blobItem.Path);
 
                 return new IDownloadFileResponse
                 {
@@ -285,6 +318,22 @@ namespace ProofOfConceptServer.Repositories.models
             {
                 return null;
             }
+        }
+
+        public List<BlobItem> GetUnkownBlobs()
+        {
+            List<ISynchronicFiles> cloudFiles = this.Storage.Synchronization().Result;
+            List<BlobItem> dbFiles = _context.BlobItem.ToList();
+            List<BlobItem> l = new List<BlobItem>();
+            foreach (ISynchronicFiles c in cloudFiles)
+            {
+                if (dbFiles.Where(d => d.Path == c.FileName).FirstOrDefault() == null)
+                {
+                    l.Add(BlobItemFactory.Create(c,0));
+                }
+            }
+
+            return l;
         }
     }
 }

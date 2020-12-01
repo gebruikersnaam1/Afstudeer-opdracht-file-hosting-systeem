@@ -229,5 +229,10 @@ namespace ProofOfConceptServer.Repositories.Models
                 return false;
             }
         }
+
+        public void SynchronicFiles()
+        {
+            this.blobModel.GetUnkownBlobs();
+        }
     }
 }

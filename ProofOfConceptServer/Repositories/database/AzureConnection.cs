@@ -5,18 +5,34 @@ using System.Threading.Tasks;
 
 namespace ProofOfConceptServer.database
 {
+    using Azure.Storage.Blobs;
     using Microsoft.WindowsAzure.Storage;
     using Microsoft.WindowsAzure.Storage.Blob;
 
     public static class AzureConnection
     {
         public static CloudBlobContainer Container { get; private set; }
+        public static BlobContainerClient containerClient { get; private set; }
 
-        public static void CreateContainerConnections(string connectionString)
+        private static string ContainerName { get { return "blobfiles";  }  }
+
+        public static void CreateConnections(string connectionString)
+        {
+            SetCloudStorage(connectionString);
+            SetBlobServiceClient(connectionString);
+        }
+
+        private static void SetCloudStorage(string connectionString)
         {
             CloudStorageAccount storageAccount = CloudStorageAccount.Parse(connectionString);
-            CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
-            AzureConnection.Container = blobClient.GetContainerReference("blobfiles");
+            CloudBlobClient BlobClient = storageAccount.CreateCloudBlobClient();
+            AzureConnection.Container = BlobClient.GetContainerReference(ContainerName);
+        }
+
+        private static void SetBlobServiceClient(string connectionString)
+        {
+            BlobServiceClient blobServiceClient = new BlobServiceClient(connectionString);
+            containerClient = blobServiceClient.GetBlobContainerClient(ContainerName);
         }
     }
 }
