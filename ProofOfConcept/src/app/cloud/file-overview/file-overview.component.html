@@ -52,7 +52,7 @@
     
  
 
-    <cloud-table (onShowFolderEvent)="changeFolder($event)" [rows]="rows"></cloud-table>
+    <cloud-table (refreshPage)="changeFolder(folderData.currentfolderID)" (onShowFolderEvent)="changeFolder($event)" [rows]="rows"></cloud-table>
     
     <app-pagination 
         [totalItems]="folderData.totalItems" [itemsPerPages]="folderData.itemsPerPages" url="/cloud/overzicht/" (updatePage)="changePage($event)">

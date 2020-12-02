@@ -11,7 +11,7 @@
       <!-- <ng-container *ngFor="let columns of rows"> -->
         <!-- <a routerLink="/cloud/file/{{ columns?.fileId }}"> -->
           <ng-container *ngFor="let columns of rows" >
-            <tr *ngIf="columns.isFolder" (click)="ShowFolder(columns.id)">
+            <tr *ngIf="columns.isFolder" (click)="onClick(columns.id, 'Folder')">
               <td class="faviconTD"><i class="{{ columns?.type | fileTypeIcon}}"></i></td>
               
               <td>{{ columns?.name }}</td>
@@ -21,7 +21,7 @@
             </tr>
           </ng-container>
           <ng-container *ngFor="let columns of rows" >
-            <tr *ngIf="!columns.isFolder" (click)="ShowFile(columns.id)" (contextmenu)="onRightClick($event,columns.id)">
+            <tr *ngIf="!columns.isFolder" (click)="onClick(columns.id, 'File')" (contextmenu)="onRightClick($event,columns.id)">
               <td class="faviconTD"><i class="{{ columns?.type | fileTypeIcon}}"></i></td>
               <td>{{ columns?.name }}</td>
               <td>{{ columns?.lastChanged | date :  'dd-MM-yyyy'}}</td>
@@ -45,7 +45,7 @@
 <!-- standard material menu -->
 <mat-menu #rightMenu="matMenu">
   <ng-template matMenuContent let-item="item">
-    <button mat-menu-item>Downloaden</button>
-    <button mat-menu-item>Verwijderen</button>
+    <button (click)="onRightMenuClick(item,'Download')" mat-menu-item>Downloaden</button>
+    <button (click)="onRightMenuClick(item,'Verwijderen')" mat-menu-item>Verwijderen</button>
   </ng-template>
 </mat-menu>

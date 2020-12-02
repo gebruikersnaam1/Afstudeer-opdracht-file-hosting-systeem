@@ -77,7 +77,7 @@ export class CloudService {
   }
 
   deleteFileFromFolder(file: FileId){
-    return this.client.delete((this.url+"folders/removeBlobFromFolders/"+file.fileId));
+    return this.client.delete((this.url+"folders/removeBlobFromFolders/"+file.fileId), { responseType: 'text', observe: 'response' });
   }
 
   syncFiles(){

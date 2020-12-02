@@ -3,7 +3,8 @@ import { fileData,FileId } from '../interfaces/file';
 import { CloudService } from '../shared/cloud.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import * as FileSaver  from 'file-saver';
+import { FileManager } from '../shared/filemanager';
+
 declare const WaitCursor: any;
 declare const DefaultCursor: any;
 
@@ -20,7 +21,7 @@ export class ShowFileComponent implements OnInit {
   fileDeleted = false;
   fileUpdated = false;
 
-  constructor(private cloudService : CloudService, private activeRoute : ActivatedRoute, private router : Router) { }
+  constructor(private cloudService : CloudService, private fileManager: FileManager, private activeRoute : ActivatedRoute, private router : Router) { }
 
   ngOnInit(): void {
     this.activeRoute.params.subscribe( (id: FileId) => {
@@ -51,33 +52,18 @@ export class ShowFileComponent implements OnInit {
     return userID;
   }
 
-
-  downloadPopup(data: any){
-    DefaultCursor();
-    try{
-      var blob = new Blob([data], {type: data.type});
-      this.cloudService.downloadFileAssistent(this.file).subscribe(
-         i => FileSaver.saveAs(blob,(i.fileName+i.extension)),
-         _ =>this.router.navigateByUrl("/500")
-      );
-    }catch{
-      this.router.navigateByUrl("/500");
-    }
-  }
-
-  downloadFile(){ 
-    WaitCursor();
-    this.cloudService.downloadFile(this.file).subscribe(
-      data => this.downloadPopup(data),
+  onDownloadClick(){
+    this.fileManager.downloadFile(this.file).subscribe(
+      data => console.log(data),
       _ => this.router.navigateByUrl("/500")
     );
   }
+  
 
   deleteFile(){
     WaitCursor();
-    this.cloudService.deleteFileFromFolder(this.file).subscribe(
-      result => this.fileDeleted = true,
-      _ => this.router.navigateByUrl("500")
+    this.fileManager.deleteFile(this.file).subscribe(
+      result => result === true ? this.fileDeleted = true : this.router.navigateByUrl("500")
     );
     DefaultCursor();
   }
