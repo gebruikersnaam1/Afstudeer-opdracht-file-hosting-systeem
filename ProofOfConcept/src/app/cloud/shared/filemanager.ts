@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { CloudService } from './cloud.service';
 import * as FileSaver  from 'file-saver';
-import { catchError, map, take } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { FileId } from '../interfaces/file';
 
 declare const WaitCursor: any;

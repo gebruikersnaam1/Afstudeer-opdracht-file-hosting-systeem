@@ -5,6 +5,7 @@ import { FolderResponse } from '../../interfaces/folder';
 import { FileManager } from '../filemanager';
 
 type cloudItems = "Folder" | "File";
+type TypeMouseClicks = "Download" | "Delete";
 
 @Component({
   selector: 'cloud-table',
@@ -16,7 +17,7 @@ export class FileTableComponent implements OnInit {
 
   @Input() rows: FolderResponse[];
   @Output() onShowFolderEvent = new EventEmitter<number>();
-  @Output() refreshPage = new EventEmitter<boolean>();
+  @Input() currentPage : number = 1;
 
 
   sorting = false;
@@ -67,12 +68,13 @@ export class FileTableComponent implements OnInit {
       this.menuTrigger.openMenu();
   }
 
-  onRightMenuClick(id: string, command: "Download" | "Delete"){
+  onRightMenuClick(id: string, command: TypeMouseClicks){
     if(command === "Download"){
       this.fileManager.downloadFile({fileId: id}).subscribe();
-    }else{
+    }
+    else if(command === "Delete"){
       this.fileManager.deleteFile({fileId: id}).subscribe(
-        result => result === true ?  this.refreshPage.emit(true) : this.router.navigateByUrl("500")
+        result => result === true ?  this.onShowFolderEvent.emit(this.currentPage) : this.router.navigateByUrl("500")
       );
     }
   }
