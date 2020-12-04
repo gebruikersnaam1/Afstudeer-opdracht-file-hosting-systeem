@@ -71,5 +71,10 @@ namespace ProofOfConceptServer.Services.Handlers
         {
             return model.DownloadFile(id);
         }
+
+        public byte[] DownloadFiles(int[] id)
+        {
+            return model.DownloadFilesInZip(id);
+        }
     }
 }

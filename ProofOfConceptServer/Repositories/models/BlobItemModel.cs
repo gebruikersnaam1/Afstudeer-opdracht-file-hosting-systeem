@@ -17,6 +17,7 @@ using Microsoft.AspNetCore.Http;
 using Azure.Storage.Blobs;
 using ProofOfConceptServer.Repositories.interfaces;
 using ProofOfConceptServer.Repositories.entities.Factory;
+using System.IO.Compression;
 
 namespace ProofOfConceptServer.Repositories.models
 {
@@ -305,8 +306,8 @@ namespace ProofOfConceptServer.Repositories.models
                 var data = net.DownloadData(path);
                 var content = new System.IO.MemoryStream(data);
 
-                //if (System.IO.File.Exists(path))
-                //    System.IO.File.Delete(path);
+                if (System.IO.File.Exists(path))
+                    System.IO.File.Delete(path);
 
                 return new IDownloadFileResponse
                 {
@@ -318,6 +319,34 @@ namespace ProofOfConceptServer.Repositories.models
             {
                 return null;
             }
+        }
+
+        public byte[] DownloadFilesInZip(int[] ids)
+        {
+            List<IDownloadFileResponse> files = new List<IDownloadFileResponse>();
+            foreach (int i in ids)
+            {
+                files.Add(DownloadFile(i));
+            }
+            Byte[] zipBytes = null;
+            using (var memoryStream = new MemoryStream())
+            {
+                using (var zipArchive = new ZipArchive(memoryStream, ZipArchiveMode.Create, leaveOpen: true))
+                {
+                    foreach(IDownloadFileResponse f in files)
+                    {
+                        if(f != null) { 
+                            var zipEntry = zipArchive.CreateEntry(f.FileName);
+                            using (Stream entryStream = zipEntry.Open())
+                            {
+                                entryStream.Write(f.File, 0, f.File.Length);
+                            }
+                        }
+                    }
+                }
+                zipBytes = memoryStream.ToArray();
+            }
+            return zipBytes;
         }
 
         public List<BlobItem> SynchronizationBlobs()

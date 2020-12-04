@@ -194,6 +194,8 @@ namespace ProofOfConceptServer.View.Controllers
             return Conflict("One or more blobs couldn't be deleted");
         }
 
+   
+
         [HttpPut]
         [Route("changeFolder/")]
         [Authorize]

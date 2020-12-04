@@ -14,6 +14,14 @@ export class CloudService {
 
   constructor(private client: HttpClient, private authService : AuthService) { }
 
+
+  private fileIdsToParams(fileIds: FileId[]){
+    let z = "?";
+    fileIds.forEach(element => {
+      z += ("blobIds=" + element + "&")
+    });
+    return z.slice(0,-1);
+  }
   /*************************************
     @files get files (with folders) based on search or current 'page'
   *************************************/
@@ -80,13 +88,6 @@ export class CloudService {
     return this.client.delete((this.url+"folders/removeBlobFromFolders/"+file.fileId), { responseType: 'text', observe: 'response' });
   }
 
-  private fileIdsToParams(fileIds: FileId[]){
-    let z = "?";
-    fileIds.forEach(element => {
-      z += ("blobIds=" + element + "&")
-    });
-    return z.slice(0,-1);
-  }
   removeFilesFromFolder(fileIds: FileId[]){
     const params = this.fileIdsToParams(fileIds);
     return this.client.delete((this.url+"folders/blobsRemoveFromFolder/"+params),{ responseType: 'text', observe: 'response' });
@@ -117,8 +118,16 @@ export class CloudService {
 
   downloadFile(file: FileId){
     return this.client.get(((this.url+"blobfiles/download/?id="+file.fileId)),{
-      responseType: 'blob' ,
+      responseType: 'blob'
     })
+  }
+
+  downloadFiles(fileIds: FileId[]){
+    const params = this.fileIdsToParams(fileIds);
+    return this.client.get(((this.url+"blobfiles/downloadFiles/"+params)),{
+      responseType: 'blob'
+    }
+    )
   }
 
   updateFile(file: fileData){

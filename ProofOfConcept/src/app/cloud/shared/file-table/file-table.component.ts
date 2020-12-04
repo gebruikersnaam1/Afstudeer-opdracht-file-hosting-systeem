@@ -96,7 +96,7 @@ export class FileTableComponent implements OnInit {
       this.fileManager.deleteFiles(this.selectedFiles).subscribe(_ =>  this.onShowFolderEvent.emit(this.currentPage));
     }
     else if(command === "DownloadAll" && this.selectedFiles.length > 1){
-      ///
+      this.fileManager.downloadFiles(this.selectedFiles).subscribe(z => console.log(z));
     }
   }
 

@@ -121,7 +121,18 @@ namespace ProofOfConceptServer.View.Controllers
                 return Conflict("The wanted file couldn't be found or accessed!");
 
             return File(d.File, "application/octet-stream", d.FileName);
-            
+        }
+
+        [HttpGet]
+        [Route("downloadFiles/")]
+        //[Authorize]
+        public ActionResult<BlobItem> DownloadFiles([FromQuery] int[] blobIds)
+        {
+            byte[] d = handler.DownloadFiles(blobIds);
+            if (d == null)
+                return Conflict("The wanted file couldn't be found or accessed!");
+
+            return File(d, "application/zip", "download");
         }
     }
 }
