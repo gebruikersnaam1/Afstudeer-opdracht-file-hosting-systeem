@@ -52,12 +52,7 @@
     
  
 
-    <cloud-table [currentPage]="folderData.currentfolderID" (onShowFolderEvent)="changeFolder($event)" [rows]="rows"></cloud-table>
-    
-    <app-pagination 
-        [totalItems]="folderData.totalItems" [itemsPerPages]="folderData.itemsPerPages" url="/cloud/overzicht/" (updatePage)="changePage($event)">
-    </app-pagination>
-    
+    <cloud-table [currentPage]="folderData.currentfolderID" (onShowFolderEvent)="changeFolder($event)" (onShowFileEvent)="goToFile($event)" [rows]="rows"></cloud-table>
 </ng-container>
 
 <ng-container *ngIf="this.errorExist">

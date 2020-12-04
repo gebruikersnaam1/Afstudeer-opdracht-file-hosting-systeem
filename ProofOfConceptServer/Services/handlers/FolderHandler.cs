@@ -78,9 +78,32 @@ namespace ProofOfConceptServer.Services.handlers
             return this.Model.RemoveBlobFromFolders(blobId);
         }
 
+        public bool BlobsRemoveFromFolder(int[] blobIds)
+        {
+            bool result = true;
+            bool t;
+            foreach(int b in blobIds)
+            {
+                t = this.Model.RemoveBlobFromFolders(b);
+                if (!t)
+                    result = t;
+            }
+            return result;
+        }
+
         public void FilesSynchronization()
         {
             this.Model.SynchronizationFiles();
+        }
+
+        public bool MoveBlobToFolder(int blobId, int folderId)
+        {
+            return this.Model.MoveBlobToFolder(blobId, folderId);
+        }
+
+        public Folder FindFolderOfBlob(int blobId)
+        {
+            return this.Model.FindFolderOfBlob(blobId);
         }
     }
 }

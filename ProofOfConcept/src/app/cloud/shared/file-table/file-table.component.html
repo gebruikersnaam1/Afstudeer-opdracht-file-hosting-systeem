@@ -5,6 +5,7 @@
         <th scope="col" *ngFor="let h of headers" (click)="onSortRequest(h)"> 
           {{h}} <i class="fas fa-sort"></i>
         </th>
+        <th></th>
       </tr>
     </thead>
     <tbody *ngIf="rows != null && rows.length > 0">
@@ -18,15 +19,19 @@
               <td>{{ columns?.lastChanged | date :  'dd-MM-yyyy'}}</td>
               <td>{{ columns?.type }}</td>
               <td> </td>
+              <td> </td>
+
             </tr>
           </ng-container>
           <ng-container *ngFor="let columns of rows" >
-            <tr *ngIf="!columns.isFolder" (click)="onClick(columns.id, 'File')" (contextmenu)="onRightClick($event,columns.id)">
+            <tr *ngIf="!columns.isFolder" (contextmenu)="onRightClick($event,columns.id)">
               <td class="faviconTD"><i class="{{ columns?.type | fileTypeIcon}}"></i></td>
-              <td>{{ columns?.name }}</td>
-              <td>{{ columns?.lastChanged | date :  'dd-MM-yyyy'}}</td>
-              <td>{{ columns?.type }}</td>
-              <td>{{ columns?.size | bytesConverter }}</td>
+              <td (click)="onClick(columns.id, 'File')"> {{ columns?.name }}</td>
+              <td (click)="onClick(columns.id, 'File')">{{ columns?.lastChanged | date :  'dd-MM-yyyy'}}</td>
+              <td (click)="onClick(columns.id, 'File')">{{ columns?.type }}</td>
+              <td (click)="onClick(columns.id, 'File')">{{ columns?.size | bytesConverter }}</td>
+              <td> <input (click)="selectFile(columns.id)" type="checkbox" /></td>
+
             </tr>
           </ng-container>
     </tbody>
@@ -45,7 +50,11 @@
 <!-- standard material menu -->
 <mat-menu #rightMenu="matMenu">
   <ng-template matMenuContent let-item="item">
-    <button (click)="onRightMenuClick(item,'Download')" mat-menu-item>Downloaden</button>
-    <button (click)="onRightMenuClick(item,'Verwijderen')" mat-menu-item>Verwijderen</button>
+    <button (click)="onRightMenuClick(item,'Download')" mat-menu-item>Download bestand</button>
+    <button (click)="onRightMenuClick(item,'Delete')" mat-menu-item>Verwijder bestand</button>
+    <ng-container *ngIf="selectedFiles.length > 1">
+      <button (click)="onRightMenuClick(item,'DownloadAll')" mat-menu-item>Download bestanden</button>
+      <button (click)="onRightMenuClick(item,'DeleteAll')" mat-menu-item>Verwijder bestanden</button>
+    </ng-container>
   </ng-template>
 </mat-menu>

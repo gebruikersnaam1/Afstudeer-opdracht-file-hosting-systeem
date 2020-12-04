@@ -1,3 +1,5 @@
+@import '../../globals.scss';
+
 button{
     margin-right: 12px;
 }
@@ -8,4 +10,8 @@ label{
 }
 span{
     font-style: italic;
+}
+
+a{
+    color: $secondary-colour;
 }

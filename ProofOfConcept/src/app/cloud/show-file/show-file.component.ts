@@ -4,6 +4,8 @@ import { CloudService } from '../shared/cloud.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FileManager } from '../shared/filemanager';
+import { Folder } from '../interfaces/folder';
+import { map } from 'rxjs/operators';
 
 declare const WaitCursor: any;
 declare const DefaultCursor: any;
@@ -17,6 +19,7 @@ declare const DefaultCursor: any;
 export class ShowFileComponent implements OnInit {
   fileGroup: FormGroup;
   file : fileData;
+  folder: Folder;
   fileLoaded: Promise<boolean>;
   fileDeleted = false;
   fileUpdated = false;
@@ -40,7 +43,7 @@ export class ShowFileComponent implements OnInit {
                   Validators.maxLength(150)
                 ])
               });
-
+              this.setFolder();
               this.fileLoaded = Promise.resolve(true);
             },
         _ => this.router.navigateByUrl("404")
@@ -50,6 +53,17 @@ export class ShowFileComponent implements OnInit {
 
   GetUsername(userID: string){
     return userID;
+  }
+
+  setFolder(){
+    this.cloudService.getFolderOfFile(Number(this.file.fileId)).subscribe( 
+      (f: Folder) => this.folder = f,
+      _ => this.router.navigateByUrl("/500"));
+  }
+
+  changeFolder(folderId:number){
+    this.fileManager.moveFile(Number(this.file.fileId), folderId).subscribe(
+        r => r == true ? window.location.reload() : this.router.navigateByUrl("/500") );
   }
 
   onDownloadClick(){

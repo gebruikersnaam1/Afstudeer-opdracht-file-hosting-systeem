@@ -3,9 +3,11 @@ import { Router } from '@angular/router';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { FolderResponse } from '../../interfaces/folder';
 import { FileManager } from '../filemanager';
+import { FileId } from '../../interfaces/file';
+
 
 type cloudItems = "Folder" | "File";
-type TypeMouseClicks = "Download" | "Delete";
+type TypeMouseClicks = "Download" | "Delete" | "DownloadAll" | "DeleteAll";
 
 @Component({
   selector: 'cloud-table',
@@ -13,10 +15,14 @@ type TypeMouseClicks = "Download" | "Delete";
   styleUrls: ['./file-table.component.scss']
 })
 export class FileTableComponent implements OnInit {
+  //empty th in html page self
   headers = [ "Naam", "Datum", "Type", "Bestandsgroten"];
+
+  selectedFiles : FileId[] = [];
 
   @Input() rows: FolderResponse[];
   @Output() onShowFolderEvent = new EventEmitter<number>();
+  @Output() onShowFileEvent = new EventEmitter<number>();
   @Input() currentPage : number = 1;
 
 
@@ -33,7 +39,7 @@ export class FileTableComponent implements OnInit {
   }
 
   onClick(id:number, folder: cloudItems){
-    folder == "Folder" ? this.onShowFolderEvent.emit(id) : this.router.navigateByUrl("cloud/file/"+id);
+    folder == "Folder" ? this.onShowFolderEvent.emit(id) : this.onShowFileEvent.emit(id);
   }
 
 
@@ -59,6 +65,15 @@ export class FileTableComponent implements OnInit {
     }
   }
 
+  selectFile(fileId: FileId){
+    if(this.selectedFiles.includes(fileId)){
+      const index : number = this.selectedFiles.indexOf(fileId);
+      this.selectedFiles.splice(index,1);
+    }else{
+      this.selectedFiles.push(fileId);
+    }
+    console.log(this.selectedFiles);
+  }
 
   onRightClick(event: MouseEvent, item) {
       event.preventDefault();
@@ -74,8 +89,14 @@ export class FileTableComponent implements OnInit {
     }
     else if(command === "Delete"){
       this.fileManager.deleteFile({fileId: id}).subscribe(
-        result => result === true ?  this.onShowFolderEvent.emit(this.currentPage) : this.router.navigateByUrl("500")
+        result => result === true ?  this.onShowFolderEvent.emit(this.currentPage) : this.router.navigateByUrl("/500")
       );
+    }
+    else if(command === "DeleteAll" && this.selectedFiles.length > 1){
+      this.fileManager.deleteFiles(this.selectedFiles).subscribe(_ =>  this.onShowFolderEvent.emit(this.currentPage));
+    }
+    else if(command === "DownloadAll" && this.selectedFiles.length > 1){
+      ///
     }
   }
 

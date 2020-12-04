@@ -80,9 +80,33 @@ export class CloudService {
     return this.client.delete((this.url+"folders/removeBlobFromFolders/"+file.fileId), { responseType: 'text', observe: 'response' });
   }
 
+  private fileIdsToParams(fileIds: FileId[]){
+    let z = "?";
+    fileIds.forEach(element => {
+      z += ("blobIds=" + element + "&")
+    });
+    return z.slice(0,-1);
+  }
+  removeFilesFromFolder(fileIds: FileId[]){
+    const params = this.fileIdsToParams(fileIds);
+    return this.client.delete((this.url+"folders/blobsRemoveFromFolder/"+params),{ responseType: 'text', observe: 'response' });
+  }
+
   syncFiles(){
     return this.client.get((this.url+"folders/synchronicFiles"));
   }
+
+  getFolderOfFile(blobId: number){
+    //the id will be validate 
+    return this.client.get<Folder>((this.url+"folders/findFolder/"+blobId));
+  }
+
+  moveFileToAnotherFolder(blobId: number, folderId : number){
+    //the id will be validate 
+    return this.client.put((this.url+"folders/moveBlob?blobId=" + blobId +"&folderId="+folderId), {},{ responseType: 'text', observe: 'response' });
+  }
+
+
   
   /*************************************
     @blobManagement Download, create and delete file

@@ -27,6 +27,14 @@ export class FileManager {
         }
       }
 
+   
+
+      deleteFiles(fileIds : FileId[]){
+        return this.cloudService.removeFilesFromFolder(fileIds).pipe(
+          map((res)=> res.status === 204 ? true : false)
+        )
+      }
+
       deleteFile(fileId: FileId){
         return this.cloudService.deleteFileFromFolder(fileId).pipe(
           map((res)  => {
@@ -48,5 +56,11 @@ export class FileManager {
                 return data;
             })
           );
+      }
+
+      moveFile(blobId : number, fileId : number){ 
+        return this.cloudService.moveFileToAnotherFolder(blobId,fileId).pipe(
+          map(r => r?.status === 200 ? true : false)
+        );
       }
 }

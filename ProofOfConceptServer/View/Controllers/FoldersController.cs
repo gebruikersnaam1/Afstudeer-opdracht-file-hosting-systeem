@@ -43,13 +43,6 @@ namespace ProofOfConceptServer.View.Controllers
             }
         }
 
-        [HttpGet]
-        [Route("voorbeeld")]
-        public ActionResult<string> z(int folderid)
-        {
-            SetFolderEnvironment();
-            return Ok(StorageContext.Environment);
-        }
 
         // GET: /<controller>/
         [HttpPost]
@@ -126,6 +119,28 @@ namespace ProofOfConceptServer.View.Controllers
             return this.handler.GetFolderStructure();
         }
 
+
+        [HttpGet]
+        [Route("findFolder/{blobId}")]
+        [Authorize]
+        public ActionResult<Folder> FindFolderOfBlob(int blobId)
+        {
+            Folder f = this.handler.FindFolderOfBlob(blobId);
+            if (f == null)
+                return NotFound();
+            return Ok(f);
+        }
+
+        [HttpPut]
+        [Route("moveBlob/")]
+        //[Authorize]
+        public ActionResult ReplaceBlob([FromQuery]int blobId, [FromQuery]int folderId)
+        {
+            if (!this.handler.MoveBlobToFolder(blobId, folderId))
+                return Conflict("Couldn't be updated");
+            return Ok();
+        }
+
         [HttpGet]
         [Route("getFolder/{folderId}")]
         [Authorize]
@@ -155,7 +170,7 @@ namespace ProofOfConceptServer.View.Controllers
 
         [HttpDelete]
         [Route("removeBlobFromFolders/{blobId}")]
-        //[Authorize]
+        [Authorize]
         public ActionResult RemoveBlobFromFolder(int blobId)
         {
             SetFolderEnvironment();
@@ -163,7 +178,20 @@ namespace ProofOfConceptServer.View.Controllers
             bool result = this.handler.RemoveBlobFromFolders(blobId);
             if (result)
                 return NoContent();
-            return Conflict("Folder couldn't be deleted");
+            return Conflict("blob couldn't be deleted");
+        }
+
+        [HttpDelete]
+        [Route("blobsRemoveFromFolder/")]
+        //[Authorize]
+        public ActionResult BlobsRemoveFromFolder([FromQuery] int[] blobIds)
+        {
+            SetFolderEnvironment();
+
+            bool result = this.handler.BlobsRemoveFromFolder(blobIds);
+            if (result)
+                return NoContent();
+            return Conflict("One or more blobs couldn't be deleted");
         }
 
         [HttpPut]

@@ -11,6 +11,12 @@
             <span>{{ GetUsername(file.userId) }}</span>
         </div>
         <div class="form-group">
+            <label>Huidige folder: </label>
+            <a [routerLink]="'/cloud/explorer/' +  folder?.folderId">
+                <span>{{ folder?.folderName }}</span>
+            </a> 
+        </div>
+        <div class="form-group">
             <label>Datum: </label>
             <span>{{ file.date  | date :  'dd-MM-yyyy'}}</span>
         </div>
@@ -35,10 +41,13 @@
     <button class="btn btn-custom mb-2" title="Wijzig" (click)="updateFile()">
         <span class="fas fa-edit  fa-2x"></span>
     </button>
-    
+
     <button class="btn btn-custom mb-2" title="verwijderen" (click)="deleteFile()">
         <span class="fa fa-trash-alt  fa-2x"></span>
     </button>
+    <app-modal modalID="newFolder" spanClass="far fa-folder-open fa-2x" >
+        <cloud-folder-navigation title="Kies folder" modalName="newFolder" (folderChange)="changeFolder($event)"></cloud-folder-navigation>
+     </app-modal> 
 </ng-container>
 
 

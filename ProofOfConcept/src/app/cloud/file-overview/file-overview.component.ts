@@ -52,9 +52,9 @@ export class FileOverviewComponent implements OnInit {
     this.changeFolder(this.folder.parentFolder.folderId);
   }
 
-  //pagination
-  changePage(pageNumber:number){
-    ///not sure if needed anymore, for now empty method
+  //
+  goToFile(fileId:number){
+    this.router.navigateByUrl(("/cloud/file/"+fileId));
   }
 
   changeFolder(folderId : number){

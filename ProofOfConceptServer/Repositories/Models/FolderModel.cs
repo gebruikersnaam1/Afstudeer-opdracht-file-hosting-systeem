@@ -242,5 +242,22 @@ namespace ProofOfConceptServer.Repositories.Models
                 _context.SaveChanges();
             }
         }
+
+        public Folder FindFolderOfBlob(int blobId)
+        {
+            return _context.Folders.Where(f =>
+                f.FolderId == _context.FolderItems.Where(fi => fi.BlobId == blobId).FirstOrDefault().FolderId
+                ).FirstOrDefault();
+        }
+
+        public bool MoveBlobToFolder(int blobId, int folderId)
+        {
+            FolderItems fi = _context.FolderItems.Where(fi => fi.BlobId == blobId).FirstOrDefault();
+            if (fi == null || !DoesFolderExist(folderId))
+                return false;
+            fi.FolderId = folderId;
+            _context.SaveChanges();
+            return true;
+        }
     }
 }

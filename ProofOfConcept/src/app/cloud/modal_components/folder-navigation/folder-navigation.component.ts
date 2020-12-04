@@ -15,6 +15,7 @@ declare const CloseModal: any;
 export class FolderNavigationComponent implements OnInit {
   folders : FolderStructure;
   @Input() modalName : string;
+  @Input() title : string = "Navigatie";
   @Output() folderChange  = new EventEmitter<number>();
 
   folderPath = "/cloud/explorer/";
