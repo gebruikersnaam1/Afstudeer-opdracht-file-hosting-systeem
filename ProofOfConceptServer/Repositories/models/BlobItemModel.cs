@@ -89,8 +89,8 @@ namespace ProofOfConceptServer.Repositories.models
                 System.Diagnostics.Debug.WriteLine("Error " + e);
                 return false;
             }
-            
         }
+
         public async void Delete(string fileName)
         {
             if (StorageContext.Environments[1].ToString() == StorageContext.Environment)
@@ -164,24 +164,9 @@ namespace ProofOfConceptServer.Repositories.models
         {
             Storage = new BlobStorageModel();
             _context = new woefiedatabaseContext();
-            //LoadDummyData();
         }
 
-        public void LoadDummyData()
-        {
-            try
-            {
-                foreach (BlobItem bItem in DummyDataBlobfiles.GetDummyData())
-                {
-                    _context.BlobItem.Add(bItem);
-                    _context.SaveChanges();
-                }
-            }
-            catch
-            {
-                System.Diagnostics.Debug.WriteLine("Dummy data error, but data may be loaded");
-            }
-        }
+
         public int RowsCount()
         {
             return _context.BlobItem.ToList().Count();
@@ -210,6 +195,15 @@ namespace ProofOfConceptServer.Repositories.models
                     break;
             }
             return id;
+        }
+
+        public BlobItem CopyFile(BlobItem blobItem)
+        {
+            BlobItem copy = (BlobItem) blobItem.Clone();
+            copy.FileId = this.GenerateId();
+            _context.BlobItem.Add(copy); //set file in the "db"
+            _context.SaveChanges();
+            return copy;
         }
 
         public BlobItem CreateBlobItem(ICreateBlob postData)
@@ -253,6 +247,14 @@ namespace ProofOfConceptServer.Repositories.models
             return true;
         }
 
+        private bool IsPathFileShared(string path)
+        {
+            int rows = _context.BlobItem.Where(i => i.Path == path).Count();
+            if (rows > 1)
+                return true;
+            return false;
+        }
+
         public bool DeleteBlobItem(int id)
         {
             BlobItem blobItem = _context.BlobItem.Where(item =>
@@ -264,7 +266,9 @@ namespace ProofOfConceptServer.Repositories.models
             try
             {
                 string fileOnCloud = Path.GetFileName(blobItem.Path);
-                Storage.Delete(fileOnCloud);
+               
+                if(!IsPathFileShared(blobItem.Path))
+                    Storage.Delete(fileOnCloud);
                 _context.BlobItem.Remove(blobItem);
                 _context.SaveChanges();
                 return true;

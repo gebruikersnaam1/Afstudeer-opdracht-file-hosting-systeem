@@ -125,7 +125,7 @@ namespace ProofOfConceptServer.View.Controllers
 
         [HttpGet]
         [Route("downloadFiles/")]
-        //[Authorize]
+        [Authorize]
         public ActionResult<BlobItem> DownloadFiles([FromQuery] int[] blobIds)
         {
             byte[] d = handler.DownloadFiles(blobIds);

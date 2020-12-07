@@ -16,6 +16,7 @@ export class FolderNavigationComponent implements OnInit {
   folders : FolderStructure;
   @Input() modalName : string;
   @Input() title : string = "Navigatie";
+  @Input() hideFolder : number = 6;
   @Output() folderChange  = new EventEmitter<number>();
 
   folderPath = "/cloud/explorer/";

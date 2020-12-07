@@ -48,6 +48,9 @@
     <app-modal modalID="newFolder" spanClass="far fa-folder-open fa-2x" >
         <cloud-folder-navigation title="Kies folder" modalName="newFolder" (folderChange)="changeFolder($event)"></cloud-folder-navigation>
      </app-modal> 
+     <app-modal modalID="copyfile" spanClass="fas fa-clone fa-2x" >
+        <cloud-folder-navigation title="Kopieër bestand naar" modalName="copyfile" (folderChange)="copyFile($event)"></cloud-folder-navigation>
+     </app-modal> 
 </ng-container>
 
 

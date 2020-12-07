@@ -62,7 +62,7 @@ export class FileManager {
         return this.cloudService.downloadFiles(fileIds).pipe(
             map((data : Blob)=> {
                 WaitCursor();
-                FileSaver.saveAs(data,"test.zip");
+                FileSaver.saveAs(data,"bestanden.zip");
                 DefaultCursor();
                 return data;
             })
@@ -72,6 +72,12 @@ export class FileManager {
       moveFile(blobId : number, fileId : number){ 
         return this.cloudService.moveFileToAnotherFolder(blobId,fileId).pipe(
           map(r => r?.status === 200 ? true : false)
+        );
+      }
+
+      copyFile(blobId : number, folderId : number){
+        return this.cloudService.copyFileToAnotherFolder(blobId, folderId).pipe(
+          map(file => !!file.fileId && file != null ? file.fileId : false)
         );
       }
 }

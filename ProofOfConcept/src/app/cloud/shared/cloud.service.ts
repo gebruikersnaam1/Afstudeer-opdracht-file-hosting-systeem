@@ -107,6 +107,15 @@ export class CloudService {
     return this.client.put((this.url+"folders/moveBlob?blobId=" + blobId +"&folderId="+folderId), {},{ responseType: 'text', observe: 'response' });
   }
 
+  copyFileToAnotherFolder(blobId: number, folderId : number){
+    const body = {
+      blobId: blobId,
+      folderId: folderId
+    };
+    //the id will be validate 
+    return this.client.post<fileData>((this.url+"folders/copyFolder"), body);
+  }
+
 
   
   /*************************************

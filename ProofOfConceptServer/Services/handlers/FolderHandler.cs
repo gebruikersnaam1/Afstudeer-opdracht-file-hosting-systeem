@@ -101,6 +101,11 @@ namespace ProofOfConceptServer.Services.handlers
             return this.Model.MoveBlobToFolder(blobId, folderId);
         }
 
+        public BlobItem CopyFileToAnotherFolder(int blobId, int folderId)
+        {
+            return this.Model.CopyFileToAnotherFolder(blobId, folderId);
+        }
+
         public Folder FindFolderOfBlob(int blobId)
         {
             return this.Model.FindFolderOfBlob(blobId);

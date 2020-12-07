@@ -196,7 +196,7 @@ namespace ProofOfConceptServer.Repositories.Models
                     _context.Remove(i);
                 }
                 _context.SaveChanges();
-                blobModel.DeleteBlobItem(blobId);
+                RemoveBlobsWithoutFolder();
                 return true;
             }
             catch (ArgumentException e)
@@ -248,6 +248,18 @@ namespace ProofOfConceptServer.Repositories.Models
             return _context.Folders.Where(f =>
                 f.FolderId == _context.FolderItems.Where(fi => fi.BlobId == blobId).FirstOrDefault().FolderId
                 ).FirstOrDefault();
+        }
+
+        public BlobItem CopyFileToAnotherFolder(int blobId, int folderId)
+        {
+            BlobItem b = this.blobModel.GetSingleFile(blobId);
+            if (b == null || !DoesFolderExist(folderId))
+                return null;
+            BlobItem copy = this.blobModel.CopyFile(b);
+            FolderItems f = FolderBlobFactory.Create(copy.FileId, folderId);
+            _context.FolderItems.Add(f);
+            _context.SaveChanges();
+            return copy;
         }
 
         public bool MoveBlobToFolder(int blobId, int folderId)

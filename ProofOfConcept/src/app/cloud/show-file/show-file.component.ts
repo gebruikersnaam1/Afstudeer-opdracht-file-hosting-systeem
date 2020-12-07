@@ -74,6 +74,13 @@ export class ShowFileComponent implements OnInit {
   }
   
 
+  copyFile(folderId:number){
+    this.fileManager.copyFile(Number(this.file.fileId), folderId).subscribe(
+      id => this.router.navigateByUrl(("/cloud/file/"+id)),
+      _ => this.router.navigateByUrl("/500")
+    )
+  }
+
   deleteFile(){
     WaitCursor();
     this.fileManager.deleteFile(this.file).subscribe(

@@ -133,12 +133,23 @@ namespace ProofOfConceptServer.View.Controllers
 
         [HttpPut]
         [Route("moveBlob/")]
-        //[Authorize]
+        [Authorize]
         public ActionResult ReplaceBlob([FromQuery]int blobId, [FromQuery]int folderId)
         {
             if (!this.handler.MoveBlobToFolder(blobId, folderId))
                 return Conflict("Couldn't be updated");
             return Ok();
+        }
+
+        [HttpPost]
+        [Route("copyFolder")]
+        //[Authorize]
+        public ActionResult CopyFileToAnotherFolder([FromBody] ICopyBlob postData)
+        {
+           BlobItem b  = this.handler.CopyFileToAnotherFolder(postData.blobId, postData.folderId);
+           if(b == null)
+                return Conflict("Couldn't be created");
+            return Created("File copied", b);
         }
 
         [HttpGet]
@@ -183,7 +194,7 @@ namespace ProofOfConceptServer.View.Controllers
 
         [HttpDelete]
         [Route("blobsRemoveFromFolder/")]
-        //[Authorize]
+        [Authorize]
         public ActionResult BlobsRemoveFromFolder([FromQuery] int[] blobIds)
         {
             SetFolderEnvironment();
@@ -217,7 +228,7 @@ namespace ProofOfConceptServer.View.Controllers
 
         [HttpGet]
         [Route("synchronicFiles")]
-        //[Authorize]
+        [Authorize]
         public ActionResult FilesSynchronization(int folderid)
         {
             this.handler.FilesSynchronization();
