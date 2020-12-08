@@ -1,16 +1,19 @@
 <h1>Filter</h1>
 
-<div class="form-group">
-    <label>Start datum</label>
-    <input type="date" class="form-control" placeholder="yyyy-mm-dd"  (change)="onMinDate($event.target.value)" id="startdate">
-</div>
+<form [formGroup]="filterGroup" >
+    <app-input [controller]="filterGroup?.get('startDate')" 
+    (changeInput)="onMinDate($event)" 
+    label="Start datum" inputType="date"></app-input>
 
-<div class="form-group">
-    <label>Eind datum</label>
-    <input type="date" class="form-control" (change)="onMaxDate($event.target.value)"  id="enddate">
-</div>
+    <app-input [controller]="filterGroup?.get('endDate')" 
+    (changeInput)="onMaxDate($event)" 
+    label="Eind datum" inputType="date"></app-input>
 
-<div class="form-group">
-    <label for="zoektermen">Zoektermen (scheiden met komma)</label>
-    <input type="text" class="form-control" (change)="onKeyWords($event.target.value)" id="zoektermen" placeholder="Hogeschool Rotterdam, contract, stage">
-</div>
+    <app-input [controller]="filterGroup?.get('searchTerms')" 
+    (changeInput)="onKeyWords($event)" 
+    label="Zoektermen (scheiden met komma)" inputType="date"></app-input>
+</form>
+
+<button class="btn btn-custom mb-2" (click)="resetFilter()">
+    <span class="fas fa-redo-alt  fa-2x"></span>
+</button>

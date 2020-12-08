@@ -12,7 +12,7 @@ export class InputComponent implements OnInit {
   @Input() label : string = "";
   @Input() inputType : string = "text";
   @Input() formHelper : string;
-  @Output() changeInput = new EventEmitter<Event>();
+  @Output() changeInput = new EventEmitter<any>();
 
   constructor() { }
 
