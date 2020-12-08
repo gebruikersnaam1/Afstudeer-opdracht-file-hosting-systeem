@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter,ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatMenuTrigger } from '@angular/material/menu';
-import { FolderResponse } from '../../interfaces/folder';
+import { ExplorerData } from '../../interfaces/folder';
 import { FileManager } from '../filemanager';
 import { FileId } from '../../interfaces/file';
 
@@ -20,7 +20,7 @@ export class FileTableComponent implements OnInit {
 
   selectedFiles : FileId[] = [];
 
-  @Input() rows: FolderResponse[];
+  @Input() rows: ExplorerData[];
   @Output() onShowFolderEvent = new EventEmitter<number>();
   @Output() onShowFileEvent = new EventEmitter<number>();
   @Input() currentPage : number = 1;
@@ -51,16 +51,16 @@ export class FileTableComponent implements OnInit {
   onSortRequest(headerName: string){
     switch(headerName){
       case this.headers[0]:
-        this.sortList((a:FolderResponse, b:FolderResponse) => a.name.localeCompare(b.name));
+        this.sortList((a:ExplorerData, b:ExplorerData) => a.name.localeCompare(b.name));
        break;
        case this.headers[1]:
-        this.sortList((a:FolderResponse, b:FolderResponse) => <any>new Date(b.lastChanged) - <any>new Date(a.lastChanged));
+        this.sortList((a:ExplorerData, b:ExplorerData) => <any>new Date(b.lastChanged) - <any>new Date(a.lastChanged));
        break;
        case this.headers[2]:
-        this.sortList((a:FolderResponse, b:FolderResponse) =>  a.type.localeCompare(b.type));
+        this.sortList((a:ExplorerData, b:ExplorerData) =>  a.type.localeCompare(b.type));
        break;
        case this.headers[3]:
-        this.sortList((a:FolderResponse, b:FolderResponse) => a.size -b.size);
+        this.sortList((a:ExplorerData, b:ExplorerData) => a.size -b.size);
        break;
     }
   }

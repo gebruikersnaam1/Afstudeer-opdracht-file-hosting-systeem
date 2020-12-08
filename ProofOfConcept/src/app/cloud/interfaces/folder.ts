@@ -11,10 +11,11 @@ export interface folderView {
     itemsPerPages : number;
 }
 
-export interface FolderResponse{
+export interface ExplorerData{
     name: string,
     lastChanged : Date,
     id: number,
+    keywords: string[]
     size : number,
     type: string,
     isFolder :boolean

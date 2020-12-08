@@ -1,0 +1,16 @@
+<h1>Filter</h1>
+
+<div class="form-group">
+    <label>Start datum</label>
+    <input type="date" class="form-control" placeholder="yyyy-mm-dd"  (change)="onMinDate($event.target.value)" id="startdate">
+</div>
+
+<div class="form-group">
+    <label>Eind datum</label>
+    <input type="date" class="form-control" (change)="onMaxDate($event.target.value)"  id="enddate">
+</div>
+
+<div class="form-group">
+    <label for="zoektermen">Zoektermen (scheiden met komma)</label>
+    <input type="text" class="form-control" (change)="onKeyWords($event.target.value)" id="zoektermen" placeholder="Hogeschool Rotterdam, contract, stage">
+</div>

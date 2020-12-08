@@ -11,6 +11,8 @@ namespace ProofOfConceptServer.Repositories.entities.interfaces
         public DateTime LastChanged { get; set; }
         public int Id { get; set; }
         public int Size { get; set; }
+        public string[] Keywords { get; set; }
+
         public string Type { get; set; }
 
         public bool IsFolder { get; set;  }

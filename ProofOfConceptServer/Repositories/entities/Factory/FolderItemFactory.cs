@@ -17,6 +17,7 @@ namespace ProofOfConceptServer.Repositories.entities.Factory
                 LastChanged = blob.Date,
                 Id = blob.FileId,
                 Size = blob.FileSize,
+                Keywords = blob.Description.Split(","),
                 Type = Path.GetExtension(blob.Path),
                 IsFolder = false
             };
@@ -30,6 +31,7 @@ namespace ProofOfConceptServer.Repositories.entities.Factory
                 LastChanged = folder.DateChanged,
                 Id = folder.FolderId,
                 Size = 0,
+                Keywords = {},
                 Type = "Folder",
                 IsFolder = true
             };

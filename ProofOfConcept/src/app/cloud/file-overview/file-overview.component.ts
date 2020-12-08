@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CloudService } from "../shared/cloud.service";
+import { Fun } from '../../globals';
 
-import { folderView, FolderResponse, Folder } from '../interfaces/folder';
+import { folderView, ExplorerData, Folder } from '../interfaces/folder';
 
 @Component({
   selector: 'cloud-overview',
@@ -11,9 +12,12 @@ import { folderView, FolderResponse, Folder } from '../interfaces/folder';
 })
 export class FileOverviewComponent implements OnInit {
   folder : Folder;
-  rows : FolderResponse[];
+  data : ExplorerData[];
+  rows : ExplorerData[];
   filesLoaded: Promise<boolean>;
   errorExist = false;
+
+  dataFilter : Fun<ExplorerData[],ExplorerData[]> = Fun(x => x);
   
   folderData : folderView = {
     currentfolderID : 1, //root ID
@@ -34,8 +38,8 @@ export class FileOverviewComponent implements OnInit {
       return;
     }
     this.cloudService.searchInFolders(searchTerm.toString()).subscribe(
-      files => { this.rows = files; this.filesLoaded = Promise.resolve(true) },
-      _ => { this.rows = []; this.filesLoaded = Promise.resolve(true)}
+      files => { this.data = files; this.setRows(); this.filesLoaded = Promise.resolve(true) },
+      _ => { this.data = []; this.setRows(); this.filesLoaded = Promise.resolve(true)}
     );
   }
 
@@ -83,13 +87,22 @@ export class FileOverviewComponent implements OnInit {
   setFiles(){
     this.setFolder();
     this.cloudService.getFolderContent(this.folderData.currentfolderID).subscribe(
-      files => { this.rows = files; this.filesLoaded = Promise.resolve(true); },
+      files => { this.data = files; this.setRows(); this.filesLoaded = Promise.resolve(true); },
       _ => { this.errorExist = true; this.filesLoaded = Promise.resolve(false); }
     );
   }
 
   syncFiles() {
     this.cloudService.syncFiles().subscribe(_ => this.changeFolder(1));
+  }
+
+  setRows(){
+    this.rows = this.dataFilter.f(this.data);
+  }
+
+  setFilter(filter){
+    this.dataFilter = filter;
+    this.setRows();
   }
 
 

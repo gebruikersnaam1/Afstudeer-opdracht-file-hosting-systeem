@@ -27,7 +27,7 @@
 
         <form [formGroup]="fileGroup" >
             <app-input [controller]="fileGroup?.get('fileName')" label="Bestandsnaam" inputType="text"></app-input>
-            <app-input [controller]="fileGroup?.get('description')" label="Beschrijving" inputType="textarea"></app-input>
+            <app-input [controller]="fileGroup?.get('description')" label="Zoektermen (onderscheiden met een komma)" inputType="textarea"></app-input>
         </form>
     </ng-container>
     

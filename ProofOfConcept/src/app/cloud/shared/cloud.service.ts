@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { fileData, FileId,FileInformation } from '../interfaces/file';
-import { CreateFolderData,FolderResponse, FolderStructure, Folder, ChangeFolder } from '../interfaces/folder';
+import { CreateFolderData,ExplorerData, FolderStructure, Folder, ChangeFolder } from '../interfaces/folder';
 
 import { HttpClient } from '@angular/common/http';
 import { AuthService } from '../../auth/shared/auth.service';
@@ -54,11 +54,11 @@ export class CloudService {
   }
 
   searchInFolders(searchTerm){
-    return this.client.get<FolderResponse[]>((this.url+"folders/search/" + searchTerm.toString()));
+    return this.client.get<ExplorerData[]>((this.url+"folders/search/" + searchTerm.toString()));
   }
 
   getFolderContent(folderID: number){
-    return this.client.get<FolderResponse[]>((this.url+"folders/getFolderContent/"+folderID));
+    return this.client.get<ExplorerData[]>((this.url+"folders/getFolderContent/"+folderID));
   }
 
   getFolderStructure(){

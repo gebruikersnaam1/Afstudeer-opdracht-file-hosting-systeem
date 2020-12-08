@@ -17,6 +17,9 @@
     <app-modal modalID="navigationModal"  spanClass="fas fa-route" buttonText="Navigatie">
             <cloud-folder-navigation modalName="navigationModal" (folderChange)="changeFolder($event)"></cloud-folder-navigation>
         </app-modal>
+    <app-modal modalID="filtermenu" spanClass="fas fa-filter" buttonText="Filter">
+        <cloud-filter-menu (filter)="setFilter($event)" pmodalName="filtermenu"></cloud-filter-menu>
+    </app-modal>
 
        
 

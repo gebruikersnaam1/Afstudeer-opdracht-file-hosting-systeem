@@ -22,9 +22,10 @@ import { MatTreeModule } from '@angular/material/tree';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
+import { FilterMenuComponent } from './modal_components/filter-menu/filter-menu.component';
 
 @NgModule({
-  declarations: [FileUploadComponent, ShowFileComponent, FileOverviewComponent, FileTableComponent, CreatefolderComponent, FolderManagementComponent, BreadcrumbComponent, FolderNavigationComponent],
+  declarations: [FileUploadComponent, ShowFileComponent, FileOverviewComponent, FileTableComponent, CreatefolderComponent, FolderManagementComponent, BreadcrumbComponent, FolderNavigationComponent, FilterMenuComponent],
   imports: [
     CommonModule,
     CloudRoutingModule,
