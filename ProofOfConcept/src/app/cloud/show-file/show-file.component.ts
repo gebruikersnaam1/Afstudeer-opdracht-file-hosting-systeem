@@ -5,7 +5,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FileManager } from '../shared/filemanager';
 import { Folder } from '../interfaces/folder';
-import { map } from 'rxjs/operators';
+import { AuthService } from '../../auth/shared/auth.service';
 
 declare const WaitCursor: any;
 declare const DefaultCursor: any;
@@ -23,8 +23,12 @@ export class ShowFileComponent implements OnInit {
   fileLoaded: Promise<boolean>;
   fileDeleted = false;
   fileUpdated = false;
+  userName: string;
 
-  constructor(private cloudService : CloudService, private fileManager: FileManager, private activeRoute : ActivatedRoute, private router : Router) { }
+  constructor(private cloudService : CloudService, private authService : AuthService,
+              private fileManager: FileManager, private activeRoute : ActivatedRoute, 
+              private router : Router) { 
+              }
 
   ngOnInit(): void {
     this.activeRoute.params.subscribe( (id: FileId) => {
@@ -44,6 +48,7 @@ export class ShowFileComponent implements OnInit {
                 ])
               });
               this.setFolder();
+              this.setUserName(file.userId);
               this.fileLoaded = Promise.resolve(true);
             },
         _ => this.router.navigateByUrl("404")
@@ -51,8 +56,11 @@ export class ShowFileComponent implements OnInit {
     });
   }
 
-  GetUsername(userID: string){
-    return userID;
+  setUserName(userId: string){
+    this.authService.getUser(userId).subscribe(
+      z => this.userName = z.name,
+      _ => this.userName = "Onbekend"
+    )
   }
 
   setFolder(){

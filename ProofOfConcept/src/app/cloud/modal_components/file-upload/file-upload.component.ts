@@ -1,7 +1,10 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { CloudService } from '../../shared/cloud.service';
+import { AuthService } from '../../../auth/shared/auth.service';
+
 import { Router } from '@angular/router';
+import { take } from 'rxjs/operators';
 declare const WaitCursor: any;
 declare const DefaultCursor: any;
 declare const CloseModal: any;
@@ -18,6 +21,8 @@ export class FileUploadComponent implements OnInit {
   @Output() fileCreated = new EventEmitter<number>();
 
   file: File;
+  userId : string;
+
   
 
   fileGroup= new FormGroup({
@@ -29,21 +34,24 @@ export class FileUploadComponent implements OnInit {
     ])
   })
 
-  constructor(private cloudService : CloudService, private router : Router) { }
+  constructor(private cloudService : CloudService, private router : Router, private authService: AuthService) { }
 
   ngOnInit(): void {
+    this.setUserId();
   }
 
   fileSelected(event){
     this.file = event.target.files[0];
   }
 
+  
+
   createFileFormat() : FormData{
     const { description } = this.fileGroup.value;
 
     const formdata = new FormData();
     formdata.append("file", this.file);
-    formdata.append("userId", "5");
+    formdata.append("userId", this.userId);
     formdata.append("folderID",this.folderID.toString()); 
     formdata.append("description", description);
     return formdata;
@@ -52,6 +60,11 @@ export class FileUploadComponent implements OnInit {
   processDone(){
     DefaultCursor();
     CloseModal(this.modalName);
+  }
+  setUserId(){
+    this.authService.getActiveUserId().then(
+      i => this.userId = i
+    )
   }
 
   uploadFile(){
