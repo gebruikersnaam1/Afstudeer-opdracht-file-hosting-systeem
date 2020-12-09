@@ -1,7 +1,9 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ExplorerData } from '../../interfaces/folder';
 import { Fun } from '../../../globals';
 import { FormControl, FormGroup } from '@angular/forms';
+declare const CloseModal: any;
+
 
 @Component({
   selector: 'cloud-filter-menu',
@@ -10,6 +12,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 })
 export class FilterMenuComponent implements OnInit {
   @Output() filter = new EventEmitter<Fun<ExplorerData[],ExplorerData[]>>();
+  @Input() modalName : string;
 
   startDate : Fun<ExplorerData[],ExplorerData[]> = Fun(x=>x);
   endDate : Fun<ExplorerData[],ExplorerData[]> = Fun(x=>x);
@@ -87,15 +90,21 @@ export class FilterMenuComponent implements OnInit {
       const keywords = keySentence.split(",");
       this.keywordsFilter = this.createFun(
         e => {
+          if(e.isFolder == true){ return true; }
           let founded = false;
           if(e.keywords == null) { return false; }
-  
-          keywords.forEach(z => e.keywords.indexOf(z) > 1 ? founded = true : false)
+
+          keywords.some(k => e.keywords.includes(k) == true ? founded = true : console.log("not matched"));
+        
           return founded;
         } 
       );
     }
     this.setFilter();
+  }
+
+  closeModal(){
+    CloseModal(this.modalName);
   }
 
 

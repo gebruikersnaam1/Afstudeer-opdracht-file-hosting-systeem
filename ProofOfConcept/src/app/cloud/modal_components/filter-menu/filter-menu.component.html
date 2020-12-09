@@ -11,8 +11,12 @@
 
     <app-input [controller]="filterGroup?.get('searchTerms')" 
     (changeInput)="onKeyWords($event)" 
-    label="Zoektermen (scheiden met komma)" inputType="date"></app-input>
+    label="Zoektermen (scheiden met komma)" inputType="text"></app-input>
 </form>
+
+<button class="btn btn-custom mb-2" (click)="closeModal()">
+    <span class="fas fa-filter  fa-2x"></span>
+</button>
 
 <button class="btn btn-custom mb-2" (click)="resetFilter()">
     <span class="fas fa-redo-alt  fa-2x"></span>
