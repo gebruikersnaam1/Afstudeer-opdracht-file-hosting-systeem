@@ -38,7 +38,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
                 audience: 'https://woefie.eu.auth0.com/api/v2/',
                 scope: 'read:users',
               },
-            },
+            }
           ],
         },
       }),

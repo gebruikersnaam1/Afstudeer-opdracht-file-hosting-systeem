@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { CloudService } from './cloud.service';
 import * as FileSaver  from 'file-saver';
 import { map } from 'rxjs/operators';
-import { FileId } from '../interfaces/file';
+import { FileId, FileSharingData } from '../interfaces/file';
 
 declare const WaitCursor: any;
 declare const DefaultCursor: any;
@@ -79,5 +79,9 @@ export class FileManager {
         return this.cloudService.copyFileToAnotherFolder(blobId, folderId).pipe(
           map(file => !!file.fileId && file != null ? file.fileId : false)
         );
+      }
+
+      shareFile(blobId: number){
+        return this.cloudService.setFileToShare(blobId).pipe(map(f => !!f.shareId && f != null ? f.shareId : false))
       }
 }

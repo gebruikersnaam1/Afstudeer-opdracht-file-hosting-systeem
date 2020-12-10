@@ -12,9 +12,19 @@
         </div>
         <div class="form-group">
             <label>Huidige folder: </label>
-            <a [routerLink]="'/cloud/explorer/' +  folder?.folderId">
-                <span>{{ folder?.folderName }}</span>
-            </a> 
+                <a class="go-to-right" [routerLink]="'/cloud/explorer/' +  folder?.folderId">
+                    <span>{{ folder?.folderName }}</span>
+                </a> 
+            <button class="btn btn-small" data-toggle="collapse" data-target="#menu">
+                <i class="fas fa-bars"></i><span></span></button>
+            <div id="menu" class="collapse ">
+                <app-modal modalID="newFolder" spanClass="far fa-folder-open fa-2x" >
+                    <cloud-folder-navigation title="Kies folder" modalName="newFolder" (folderChange)="changeFolder($event)"></cloud-folder-navigation>
+                </app-modal> 
+                <app-modal modalID="copyfile" spanClass="fas fa-clone fa-2x" >
+                    <cloud-folder-navigation title="Kopieër bestand naar" modalName="copyfile" (folderChange)="copyFile($event)"></cloud-folder-navigation>
+                </app-modal>
+             </div> 
         </div>
         <div class="form-group">
             <label>Datum: </label>
@@ -45,12 +55,11 @@
     <button class="btn btn-custom mb-2" title="verwijderen" (click)="deleteFile()">
         <span class="fa fa-trash-alt  fa-2x"></span>
     </button>
-    <app-modal modalID="newFolder" spanClass="far fa-folder-open fa-2x" >
-        <cloud-folder-navigation title="Kies folder" modalName="newFolder" (folderChange)="changeFolder($event)"></cloud-folder-navigation>
-     </app-modal> 
-     <app-modal modalID="copyfile" spanClass="fas fa-clone fa-2x" >
-        <cloud-folder-navigation title="Kopieër bestand naar" modalName="copyfile" (folderChange)="copyFile($event)"></cloud-folder-navigation>
-     </app-modal> 
+
+    <button class="btn btn-custom mb-2" title="Delen" (click)="shareLink()">
+        <span class="fas fa-share-alt fa-2x"></span>
+    </button>
+   
 </ng-container>
 
 

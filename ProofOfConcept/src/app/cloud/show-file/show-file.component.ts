@@ -106,4 +106,8 @@ export class ShowFileComponent implements OnInit {
     );
   }
 
+  shareLink(){
+    this.fileManager.shareFile(Number(this.file.fileId)).subscribe(i => console.log(i));
+  }
+
 }

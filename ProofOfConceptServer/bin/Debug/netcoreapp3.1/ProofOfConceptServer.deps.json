@@ -37,6 +37,7 @@
           "Microsoft.VisualStudio.Web.CodeGeneration.Design": "3.1.4",
           "NLog.Config": "4.7.5",
           "NLog.Web.AspNetCore": "4.9.3",
+          "RestClient.Net": "4.1.0",
           "Swashbuckle.AspNetCore": "5.6.3",
           "Swashbuckle.AspNetCore.Annotations": "5.6.3",
           "System.IO": "4.3.0",
@@ -1473,6 +1474,35 @@
         },
         "compile": {
           "lib/netstandard1.6/NuGet.Frameworks.dll": {}
+        }
+      },
+      "RestClient.Net/4.1.0": {
+        "dependencies": {
+          "Microsoft.Extensions.Logging.Abstractions": "3.1.9",
+          "RestClient.Net.Abstractions": "4.1.0"
+        },
+        "runtime": {
+          "lib/netcoreapp3.0/RestClient.Net.dll": {
+            "assemblyVersion": "4.1.0.0",
+            "fileVersion": "4.1.0.0"
+          }
+        },
+        "compile": {
+          "lib/netcoreapp3.0/RestClient.Net.dll": {}
+        }
+      },
+      "RestClient.Net.Abstractions/4.1.0": {
+        "dependencies": {
+          "Microsoft.Extensions.Logging.Abstractions": "3.1.9"
+        },
+        "runtime": {
+          "lib/netcoreapp3.0/RestClient.Net.Abstractions.dll": {
+            "assemblyVersion": "4.1.0.0",
+            "fileVersion": "4.1.0.0"
+          }
+        },
+        "compile": {
+          "lib/netcoreapp3.0/RestClient.Net.Abstractions.dll": {}
         }
       },
       "runtime.debian.8-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.0": {},
@@ -4791,6 +4821,20 @@
       "sha512": "sha512-qbXaB76XYUVLocLBs8Z9TS/ERGK2wm797feO+0JEPFvT7o7MRadOR77mqaSD4J1k8G+DlZQyq+MlkCuxrkr3ag==",
       "path": "nuget.frameworks/4.7.0",
       "hashPath": "nuget.frameworks.4.7.0.nupkg.sha512"
+    },
+    "RestClient.Net/4.1.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-QasOhFu0C7Ko7sbLaNc0SOu6sVaLbGg+FpDSHnUqXlKi3zwZsBhn2BAKns8M/lnrW981zx8whsoEmYATVSFMbw==",
+      "path": "restclient.net/4.1.0",
+      "hashPath": "restclient.net.4.1.0.nupkg.sha512"
+    },
+    "RestClient.Net.Abstractions/4.1.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-QDWxqex0RES8Gv+PqYF9dnchVjlaSADnnV2Rxyd4ME9ffm5Vu6CU19xQTeg/8kfEgNRWCwvWSf5G5DIwneZr8Q==",
+      "path": "restclient.net.abstractions/4.1.0",
+      "hashPath": "restclient.net.abstractions.4.1.0.nupkg.sha512"
     },
     "runtime.debian.8-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.0": {
       "type": "package",

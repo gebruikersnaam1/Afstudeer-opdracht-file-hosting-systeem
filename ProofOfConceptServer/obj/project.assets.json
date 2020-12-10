@@ -1167,6 +1167,31 @@
           "lib/netstandard1.6/NuGet.Frameworks.dll": {}
         }
       },
+      "RestClient.Net/4.1.0": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.Extensions.Logging.Abstractions": "3.1.5",
+          "RestClient.Net.Abstractions": "4.1.0"
+        },
+        "compile": {
+          "lib/netcoreapp3.0/RestClient.Net.dll": {}
+        },
+        "runtime": {
+          "lib/netcoreapp3.0/RestClient.Net.dll": {}
+        }
+      },
+      "RestClient.Net.Abstractions/4.1.0": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.Extensions.Logging.Abstractions": "3.1.5"
+        },
+        "compile": {
+          "lib/netcoreapp3.0/RestClient.Net.Abstractions.dll": {}
+        },
+        "runtime": {
+          "lib/netcoreapp3.0/RestClient.Net.Abstractions.dll": {}
+        }
+      },
       "runtime.debian.8-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.0": {
         "type": "package",
         "runtimeTargets": {
@@ -4921,6 +4946,40 @@
         "lib/netstandard1.6/NuGet.Frameworks.xml",
         "nuget.frameworks.4.7.0.nupkg.sha512",
         "nuget.frameworks.nuspec"
+      ]
+    },
+    "RestClient.Net/4.1.0": {
+      "sha512": "QasOhFu0C7Ko7sbLaNc0SOu6sVaLbGg+FpDSHnUqXlKi3zwZsBhn2BAKns8M/lnrW981zx8whsoEmYATVSFMbw==",
+      "type": "package",
+      "path": "restclient.net/4.1.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "Icon.png",
+        "License.txt",
+        "lib/net45/RestClient.Net.dll",
+        "lib/net47/RestClient.Net.dll",
+        "lib/netcoreapp3.0/RestClient.Net.dll",
+        "lib/netstandard2.0/RestClient.Net.dll",
+        "restclient.net.4.1.0.nupkg.sha512",
+        "restclient.net.nuspec"
+      ]
+    },
+    "RestClient.Net.Abstractions/4.1.0": {
+      "sha512": "QDWxqex0RES8Gv+PqYF9dnchVjlaSADnnV2Rxyd4ME9ffm5Vu6CU19xQTeg/8kfEgNRWCwvWSf5G5DIwneZr8Q==",
+      "type": "package",
+      "path": "restclient.net.abstractions/4.1.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "Icon.png",
+        "License.txt",
+        "lib/net45/RestClient.Net.Abstractions.dll",
+        "lib/net47/RestClient.Net.Abstractions.dll",
+        "lib/netcoreapp3.0/RestClient.Net.Abstractions.dll",
+        "lib/netstandard2.0/RestClient.Net.Abstractions.dll",
+        "restclient.net.abstractions.4.1.0.nupkg.sha512",
+        "restclient.net.abstractions.nuspec"
       ]
     },
     "runtime.debian.8-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.0": {
@@ -9776,6 +9835,7 @@
       "Microsoft.VisualStudio.Web.CodeGeneration.Design >= 3.1.4",
       "NLog.Config >= 4.7.5",
       "NLog.Web.AspNetCore >= 4.9.3",
+      "RestClient.NET >= 4.1.0",
       "Swashbuckle.AspNetCore >= 5.6.3",
       "Swashbuckle.AspNetCore.Annotations >= 5.6.3",
       "System.IO >= 4.3.0",
@@ -9872,6 +9932,10 @@
           "NLog.Web.AspNetCore": {
             "target": "Package",
             "version": "[4.9.3, )"
+          },
+          "RestClient.NET": {
+            "target": "Package",
+            "version": "[4.1.0, )"
           },
           "Swashbuckle.AspNetCore": {
             "target": "Package",

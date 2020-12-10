@@ -199,5 +199,7 @@ C:\Data\Programmeren\Angular\Afstuderen\Afstudeer-opdracht-file-hosting-systeem\
 C:\Data\Programmeren\Angular\Afstuderen\Afstudeer-opdracht-file-hosting-systeem\ProofOfConceptServer\bin\Debug\netcoreapp3.1\Swashbuckle.AspNetCore.SwaggerGen.dll
 C:\Data\Programmeren\Angular\Afstuderen\Afstudeer-opdracht-file-hosting-systeem\ProofOfConceptServer\bin\Debug\netcoreapp3.1\Swashbuckle.AspNetCore.SwaggerUI.dll
 C:\Data\Programmeren\Angular\Afstuderen\Afstudeer-opdracht-file-hosting-systeem\ProofOfConceptServer\bin\Debug\netcoreapp3.1\Swashbuckle.AspNetCore.Annotations.dll
+C:\Data\Programmeren\Angular\Afstuderen\Afstudeer-opdracht-file-hosting-systeem\ProofOfConceptServer\bin\Debug\netcoreapp3.1\RestClient.Net.dll
+C:\Data\Programmeren\Angular\Afstuderen\Afstudeer-opdracht-file-hosting-systeem\ProofOfConceptServer\bin\Debug\netcoreapp3.1\RestClient.Net.Abstractions.dll
 C:\Data\Programmeren\Angular\Afstuderen\Afstudeer-opdracht-file-hosting-systeem\ProofOfConceptServer\obj\Debug\netcoreapp3.1\ProofOfConceptServer.MvcApplicationPartsAssemblyInfo.cs
 C:\Data\Programmeren\Angular\Afstuderen\Afstudeer-opdracht-file-hosting-systeem\ProofOfConceptServer\obj\Debug\netcoreapp3.1\ProofOfConceptServer.MvcApplicationPartsAssemblyInfo.cache

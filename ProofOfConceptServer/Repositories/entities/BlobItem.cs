@@ -3,8 +3,13 @@ using System.Collections.Generic;
 
 namespace ProofOfConceptServer.Repositories.entities
 {
-    public partial class BlobItem : ICloneable
+    public partial class BlobItem
     {
+        public BlobItem()
+        {
+            ShareItems = new HashSet<ShareItems>();
+        }
+
         public int FileId { get; set; }
         public string FileName { get; set; }
         public DateTime Date { get; set; }
@@ -14,10 +19,6 @@ namespace ProofOfConceptServer.Repositories.entities
         public string Description { get; set; }
 
         public virtual FolderItems FolderItems { get; set; }
-
-        public object Clone()
-        {
-            return (BlobItem) this.MemberwiseClone();
-        }
+        public virtual ICollection<ShareItems> ShareItems { get; set; }
     }
 }

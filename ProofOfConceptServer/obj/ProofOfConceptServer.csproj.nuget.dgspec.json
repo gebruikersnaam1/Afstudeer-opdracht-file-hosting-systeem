@@ -92,6 +92,10 @@
               "target": "Package",
               "version": "[4.9.3, )"
             },
+            "RestClient.NET": {
+              "target": "Package",
+              "version": "[4.1.0, )"
+            },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
               "version": "[5.6.3, )"

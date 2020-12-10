@@ -14,3 +14,9 @@ export interface FileInformation{
     fileName: string;
     extension : string;
 }
+
+export interface FileSharingData{
+    filename: string,
+    shareId: number,
+    shareable : Date
+}

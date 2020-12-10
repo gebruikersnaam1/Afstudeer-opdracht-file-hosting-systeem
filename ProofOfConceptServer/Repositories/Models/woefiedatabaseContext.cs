@@ -1,7 +1,6 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
-using ProofOfConceptServer.Repositories.entities;
 
 namespace ProofOfConceptServer.Repositories.models
 {
@@ -18,14 +17,15 @@ namespace ProofOfConceptServer.Repositories.models
 
         public virtual DbSet<BlobItem> BlobItem { get; set; }
         public virtual DbSet<FolderItems> FolderItems { get; set; }
-        public virtual DbSet<Folder> Folders { get; set; }
+        public virtual DbSet<Folders> Folders { get; set; }
+        public virtual DbSet<ShareItems> ShareItems { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer(" Data Source=woefieserver.database.windows.net;Initial Catalog=woefiedatabase;Persist Security Info=True;User ID=woefiebeheerder;Password= LN7T7sGkhBjYz4eF;");
+                optionsBuilder.UseSqlServer("Data Source=woefieserver.database.windows.net;Initial Catalog=woefiedatabase;Persist Security Info=True;User ID=woefiebeheerder;Password=LN7T7sGkhBjYz4eF");
             }
         }
 
@@ -96,7 +96,7 @@ namespace ProofOfConceptServer.Repositories.models
                     .HasConstraintName("FK_Table_ToTable");
             });
 
-            modelBuilder.Entity<Folder>(entity =>
+            modelBuilder.Entity<Folders>(entity =>
             {
                 entity.HasKey(e => e.FolderId)
                     .HasName("PK__folders__C2FABF93CA580360");
@@ -109,8 +109,7 @@ namespace ProofOfConceptServer.Repositories.models
 
                 entity.Property(e => e.CreatedDate)
                     .HasColumnName("createdDate")
-                    .HasMaxLength(10)
-                    .IsFixedLength();
+                    .HasColumnType("date");
 
                 entity.Property(e => e.DateChanged)
                     .HasColumnName("dateChanged")
@@ -122,10 +121,26 @@ namespace ProofOfConceptServer.Repositories.models
                     .HasMaxLength(20)
                     .IsUnicode(false);
 
-                entity.Property(e => e.ParentFolder)
-                    .HasColumnName("parentFolder")
-                    .HasMaxLength(20)
-                    .IsUnicode(false);
+                entity.Property(e => e.ParentFolder).HasColumnName("parentFolder");
+            });
+
+            modelBuilder.Entity<ShareItems>(entity =>
+            {
+                entity.Property(e => e.Id)
+                    .HasColumnName("id")
+                    .ValueGeneratedNever();
+
+                entity.Property(e => e.ActiveUntil)
+                    .HasColumnName("activeUntil")
+                    .HasColumnType("date");
+
+                entity.Property(e => e.BlobId).HasColumnName("blobId");
+
+                entity.HasOne(d => d.Blob)
+                    .WithMany(p => p.ShareItems)
+                    .HasForeignKey(d => d.BlobId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_ShareItems_T");
             });
 
             OnModelCreatingPartial(modelBuilder);

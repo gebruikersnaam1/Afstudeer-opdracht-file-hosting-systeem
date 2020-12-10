@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { fileData, FileId,FileInformation } from '../interfaces/file';
+import { fileData, FileId,FileInformation, FileSharingData } from '../interfaces/file';
 import { CreateFolderData,ExplorerData, FolderStructure, Folder, ChangeFolder } from '../interfaces/folder';
 
 import { HttpClient } from '@angular/common/http';
@@ -146,5 +146,9 @@ export class CloudService {
 
   uploadFile(file : FormData){
     return this.client.post<fileData>((this.url+"blobfiles/upload"), file);
+  }
+
+  setFileToShare(fileId:number){
+    return this.client.post<FileSharingData>((this.url+"blobfiles/sharable"), {fileId});
   }
 }
