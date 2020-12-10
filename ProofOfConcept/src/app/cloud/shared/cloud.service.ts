@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { fileData, FileId,FileInformation, FileSharingData } from '../interfaces/file';
+import { fileData, FileId,FileInformation, FileSharingData,SharedFileInfo } from '../interfaces/file';
 import { CreateFolderData,ExplorerData, FolderStructure, Folder, ChangeFolder } from '../interfaces/folder';
 
 import { HttpClient } from '@angular/common/http';
@@ -148,7 +148,27 @@ export class CloudService {
     return this.client.post<fileData>((this.url+"blobfiles/upload"), file);
   }
 
+  /*************************************
+    @sharable Download, create and delete file
+  *************************************/
   setFileToShare(fileId:number){
-    return this.client.post<FileSharingData>((this.url+"blobfiles/sharable"), {fileId});
+    return this.client.post<FileSharingData>((this.url+"shareable/createShareable"), {
+      share: fileId
+    });
+  }
+
+  getSharedFileInfo(shareId : number){
+    return this.client.get<SharedFileInfo>((this.url+"shareable/getShareItem/"+shareId));
+  }
+
+  downloadSharedFile(sharedId: number){
+    return this.client.get((this.url+"shareable/download/"+sharedId),
+    {
+      responseType: 'blob'
+    });
+  }
+
+  downloadSharedFileAssistent(sharedId: number){
+    return this.client.get<FileInformation>((this.url+"shareable/download/assistent/"+sharedId));
   }
 }

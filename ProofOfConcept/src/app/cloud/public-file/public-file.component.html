@@ -1,0 +1,21 @@
+<h1>File sharing</h1>
+
+<ng-container *ngIf="error">
+    <div class="alert alert-danger">
+        <p >
+            Het gewenste bestand kon niet worden gevonden. Een downloadlink is maar beperkt houdbaar.
+        </p>
+    </div>
+</ng-container>
+
+<ng-container *ngIf="!error && file != null">
+    <div class="alert alert-info">
+        <h2>{{file.fileName}}</h2>
+        <p>
+            Deze downloadlink is beschikbaar tot {{file.availableUntil | date}}
+        </p>
+        <button (click)="Download()" class="btn btn-custom mb-2">
+            Download
+        </button>
+    </div>
+</ng-container>

@@ -16,7 +16,13 @@ export interface FileInformation{
 }
 
 export interface FileSharingData{
-    filename: string,
+    id: string,
+    blobId: number,
+    activeUntil : Date
+}
+
+export interface SharedFileInfo{
     shareId: number,
-    shareable : Date
+    fileName: string,
+    availableUntil : Date
 }

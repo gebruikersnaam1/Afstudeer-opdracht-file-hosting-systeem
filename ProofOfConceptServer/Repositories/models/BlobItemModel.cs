@@ -159,11 +159,12 @@ namespace ProofOfConceptServer.Repositories.models
     {
         private woefiedatabaseContext _context;
         private BlobStorageModel Storage;
-
+        private ShareableModel ShareableModel;
         public BlobItemModel()
         {
             Storage = new BlobStorageModel();
             _context = new woefiedatabaseContext();
+            this.ShareableModel = new ShareableModel();
         }
 
 
@@ -263,6 +264,7 @@ namespace ProofOfConceptServer.Repositories.models
             if (blobItem == null)
                 return false;
 
+            this.ShareableModel.DeleteShareItem(blobItem);
             try
             {
                 string fileOnCloud = Path.GetFileName(blobItem.Path);
@@ -369,7 +371,6 @@ namespace ProofOfConceptServer.Repositories.models
                     _context.SaveChanges();
                 }
             }
-
             return l;
         }
     }

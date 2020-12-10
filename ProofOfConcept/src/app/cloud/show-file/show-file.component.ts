@@ -24,6 +24,7 @@ export class ShowFileComponent implements OnInit {
   fileDeleted = false;
   fileUpdated = false;
   userName: string;
+  publicUrl : string;
 
   constructor(private cloudService : CloudService, private authService : AuthService,
               private fileManager: FileManager, private activeRoute : ActivatedRoute, 
@@ -106,8 +107,24 @@ export class ShowFileComponent implements OnInit {
     );
   }
 
+  urlToClipBoard(){
+    const selBox = document.createElement('textarea');
+    selBox.style.position = 'fixed';
+    selBox.style.left = '0';
+    selBox.style.top = '0';
+    selBox.style.opacity = '0';
+    selBox.value = this.publicUrl;
+    document.body.appendChild(selBox);
+    selBox.focus();
+    selBox.select();
+    document.execCommand('copy');
+    document.body.removeChild(selBox);
+  }
+
   shareLink(){
-    this.fileManager.shareFile(Number(this.file.fileId)).subscribe(i => console.log(i));
+    this.fileManager.shareFile(Number(this.file.fileId)).subscribe(id => 
+        id != false ? this.publicUrl = ("localhost:4200/cloud/public/"+ id) : this.router.navigateByUrl("500")
+      );
   }
 
 }

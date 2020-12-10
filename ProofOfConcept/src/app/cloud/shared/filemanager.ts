@@ -3,7 +3,8 @@ import { Router } from '@angular/router';
 import { CloudService } from './cloud.service';
 import * as FileSaver  from 'file-saver';
 import { map } from 'rxjs/operators';
-import { FileId, FileSharingData } from '../interfaces/file';
+import { FileId, FileInformation } from '../interfaces/file';
+import { Observable } from 'rxjs';
 
 declare const WaitCursor: any;
 declare const DefaultCursor: any;
@@ -15,10 +16,10 @@ export class FileManager {
 
     constructor(private router : Router, private cloudService : CloudService ){ }
     
-    private downloadPopup(data: Blob,fileId){
+    private downloadPopup(data: Blob, fileAssistent : Observable<FileInformation>){
         try{
           var blob = new Blob([data], {type: data.type});
-          this.cloudService.downloadFileAssistent(fileId).subscribe(
+          fileAssistent.subscribe(
              i => FileSaver.saveAs(blob,(i.fileName+i.extension)),
              _ =>this.router.navigateByUrl("/500")
           );
@@ -51,7 +52,7 @@ export class FileManager {
         return this.cloudService.downloadFile(fileId).pipe(
             map((data : Blob)=> {
                 WaitCursor();
-                this.downloadPopup(data,fileId);
+                this.downloadPopup(data,this.cloudService.downloadFileAssistent(fileId));
                 DefaultCursor();
                 return data;
             })
@@ -82,6 +83,21 @@ export class FileManager {
       }
 
       shareFile(blobId: number){
-        return this.cloudService.setFileToShare(blobId).pipe(map(f => !!f.shareId && f != null ? f.shareId : false))
+        return this.cloudService.setFileToShare(blobId).pipe(map(f => f != null && !!f.id != false ? f.id : false))
+      }
+
+      getSharedFileInfo(shareFileId: number){
+        return this.cloudService.getSharedFileInfo(shareFileId);
+      }
+
+      downloadSharedFile(shareFileId : number){
+        return this.cloudService.downloadSharedFile(shareFileId).pipe(
+          map((data : Blob)=> {
+              WaitCursor();
+              this.downloadPopup(data,this.cloudService.downloadSharedFileAssistent(shareFileId));
+              DefaultCursor();
+              return data;
+          })
+        );
       }
 }

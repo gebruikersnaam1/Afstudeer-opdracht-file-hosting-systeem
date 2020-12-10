@@ -69,7 +69,7 @@ namespace ProofOfConceptServer.Repositories.Models
             List<FolderItem> folder = _context.FolderItems.Where(f => f.FolderId == folderId).ToList();
             List<IFolderContent> i = new List<IFolderContent>();
 
-            foreach(FolderItem b in folder)
+            foreach (FolderItem b in folder)
             {
                 i.Add(FolderItemFactory.Create(blobModel.GetSingleFile(b.BlobId)));
             }
