@@ -14,7 +14,7 @@ namespace ProofOfConceptServer.Repositories.entities.Factory
             {
                 Id = id,
                 BlobId = blobId,
-                ActiveUntil = DateTime.Now.AddDays(+1)
+                ActiveUntil = DateTime.Now.AddDays(+2)
         };
         }
     }
