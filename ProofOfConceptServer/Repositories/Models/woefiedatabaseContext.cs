@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using ProofOfConceptServer.Repositories.entities;
 
 namespace ProofOfConceptServer.Repositories.models
 {
@@ -16,9 +17,9 @@ namespace ProofOfConceptServer.Repositories.models
         }
 
         public virtual DbSet<BlobItem> BlobItem { get; set; }
-        public virtual DbSet<FolderItems> FolderItems { get; set; }
-        public virtual DbSet<Folders> Folders { get; set; }
-        public virtual DbSet<ShareItems> ShareItems { get; set; }
+        public virtual DbSet<FolderItem> FolderItems { get; set; }
+        public virtual DbSet<Folder> Folders { get; set; }
+        public virtual DbSet<ShareItem> ShareItems { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -72,7 +73,7 @@ namespace ProofOfConceptServer.Repositories.models
                     .IsUnicode(false);
             });
 
-            modelBuilder.Entity<FolderItems>(entity =>
+            modelBuilder.Entity<FolderItem>(entity =>
             {
                 entity.HasKey(e => e.BlobId)
                     .HasName("PK__FolderIt__F4CC75F8B556F2E3");
@@ -85,7 +86,7 @@ namespace ProofOfConceptServer.Repositories.models
 
                 entity.HasOne(d => d.Blob)
                     .WithOne(p => p.FolderItems)
-                    .HasForeignKey<FolderItems>(d => d.BlobId)
+                    .HasForeignKey<FolderItem>(d => d.BlobId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_FolderItems_T");
 
@@ -96,7 +97,7 @@ namespace ProofOfConceptServer.Repositories.models
                     .HasConstraintName("FK_Table_ToTable");
             });
 
-            modelBuilder.Entity<Folders>(entity =>
+            modelBuilder.Entity<Folder>(entity =>
             {
                 entity.HasKey(e => e.FolderId)
                     .HasName("PK__folders__C2FABF93CA580360");
@@ -124,7 +125,7 @@ namespace ProofOfConceptServer.Repositories.models
                 entity.Property(e => e.ParentFolder).HasColumnName("parentFolder");
             });
 
-            modelBuilder.Entity<ShareItems>(entity =>
+            modelBuilder.Entity<ShareItem>(entity =>
             {
                 entity.Property(e => e.Id)
                     .HasColumnName("id")

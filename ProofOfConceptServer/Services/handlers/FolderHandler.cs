@@ -51,7 +51,7 @@ namespace ProofOfConceptServer.Services.handlers
         public Folder GetParentFolder(int folderId)
         {
             Folder f = this.Model.GetFolder(folderId);
-            return this.Model.GetFolder(f.ParentFolder);
+            return this.Model.GetFolder((int)f.ParentFolder);
         }
 
         public IFolderWithParent GetFolderWithParent(int folderId)

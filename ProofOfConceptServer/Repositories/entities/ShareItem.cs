@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ProofOfConceptServer.Repositories.entities
 {
-    public partial class ShareItems
+    public partial class ShareItem
     {
         public int Id { get; set; }
         public int BlobId { get; set; }

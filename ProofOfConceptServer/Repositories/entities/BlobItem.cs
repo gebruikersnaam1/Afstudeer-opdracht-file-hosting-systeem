@@ -7,7 +7,7 @@ namespace ProofOfConceptServer.Repositories.entities
     {
         public BlobItem()
         {
-            ShareItems = new HashSet<ShareItems>();
+            ShareItems = new HashSet<ShareItem>();
         }
 
         public int FileId { get; set; }
@@ -18,7 +18,12 @@ namespace ProofOfConceptServer.Repositories.entities
         public string UserId { get; set; }
         public string Description { get; set; }
 
-        public virtual FolderItems FolderItems { get; set; }
-        public virtual ICollection<ShareItems> ShareItems { get; set; }
+        public virtual FolderItem FolderItems { get; set; }
+        public virtual ICollection<ShareItem> ShareItems { get; set; }
+
+        public object Clone()
+        {
+            return (BlobItem)this.MemberwiseClone();
+        }
     }
 }

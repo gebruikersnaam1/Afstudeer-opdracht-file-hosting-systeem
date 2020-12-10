@@ -7,9 +7,9 @@ namespace ProofOfConceptServer.Repositories.entities.Factory
 {
     public class FolderBlobFactory
     {
-        public static FolderItems Create(int blobId, int folderId)
+        public static FolderItem Create(int blobId, int folderId)
         {
-            return new FolderItems
+            return new FolderItem
             {
                 BlobId = blobId,
                 FolderId = folderId

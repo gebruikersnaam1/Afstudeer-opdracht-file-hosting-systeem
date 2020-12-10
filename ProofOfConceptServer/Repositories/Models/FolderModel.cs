@@ -66,10 +66,10 @@ namespace ProofOfConceptServer.Repositories.Models
 
         public List<IFolderContent> GetFolderContent(int folderId)
         {
-            List<FolderItems> folder = _context.FolderItems.Where(f => f.FolderId == folderId).ToList();
+            List<FolderItem> folder = _context.FolderItems.Where(f => f.FolderId == folderId).ToList();
             List<IFolderContent> i = new List<IFolderContent>();
 
-            foreach(FolderItems b in folder)
+            foreach(FolderItem b in folder)
             {
                 i.Add(FolderItemFactory.Create(blobModel.GetSingleFile(b.BlobId)));
             }
@@ -87,7 +87,7 @@ namespace ProofOfConceptServer.Repositories.Models
             if (b == null)
                 return null;
 
-            FolderItems f = FolderBlobFactory.Create(b.FileId, folderId);
+            FolderItem f = FolderBlobFactory.Create(b.FileId, folderId);
             _context.FolderItems.Add(f);
             _context.SaveChanges();
             return b;
@@ -110,7 +110,7 @@ namespace ProofOfConceptServer.Repositories.Models
             if (f == null)
                 return null;
 
-            return FolderWithParentFactory.Create(f, GetFolderWithParent(f.ParentFolder));
+            return FolderWithParentFactory.Create(f, GetFolderWithParent((int)f.ParentFolder));
         }
 
         public Folder ChangeFolderName(IChangeFolder changeFolder)
@@ -176,7 +176,7 @@ namespace ProofOfConceptServer.Repositories.Models
         private void RemoveBlobsWithoutFolder()
         {
             List<BlobItem> blobs = _context.BlobItem.ToList();
-            FolderItems item;
+            FolderItem item;
             foreach(BlobItem b in blobs)
             {
                 item = null;
@@ -190,8 +190,8 @@ namespace ProofOfConceptServer.Repositories.Models
         {
             try
             {
-                List<FolderItems> fi = _context.FolderItems.Where(fi => fi.BlobId == blobId).ToList();
-                foreach (FolderItems i in fi)
+                List<FolderItem> fi = _context.FolderItems.Where(fi => fi.BlobId == blobId).ToList();
+                foreach (FolderItem i in fi)
                 {
                     _context.Remove(i);
                 }
@@ -210,12 +210,12 @@ namespace ProofOfConceptServer.Repositories.Models
             try
             {
                 List <Folder> folders = GetAllChildFolders(GetFolder(folderId));
-                List<FolderItems> items = new List<FolderItems>();
+                List<FolderItem> items = new List<FolderItem>();
 
                 foreach (Folder f in folders)
                 {
                     items.AddRange(_context.FolderItems.Where(i => i.FolderId == f.FolderId).ToList());
-                    foreach (FolderItems fi in items)
+                    foreach (FolderItem fi in items)
                     {
                         _context.RemoveRange(fi);
                     }
@@ -234,7 +234,7 @@ namespace ProofOfConceptServer.Repositories.Models
         public void SynchronizationFiles()
         {
            List<BlobItem> newBlobs = this.blobModel.SynchronizationBlobs();
-           FolderItems f;
+           FolderItem f;
            foreach (BlobItem b in newBlobs)
            {
                  f = FolderBlobFactory.Create(b.FileId, rootFolder);
@@ -256,7 +256,7 @@ namespace ProofOfConceptServer.Repositories.Models
             if (b == null || !DoesFolderExist(folderId))
                 return null;
             BlobItem copy = this.blobModel.CopyFile(b);
-            FolderItems f = FolderBlobFactory.Create(copy.FileId, folderId);
+            FolderItem f = FolderBlobFactory.Create(copy.FileId, folderId);
             _context.FolderItems.Add(f);
             _context.SaveChanges();
             return copy;
@@ -264,7 +264,7 @@ namespace ProofOfConceptServer.Repositories.Models
 
         public bool MoveBlobToFolder(int blobId, int folderId)
         {
-            FolderItems fi = _context.FolderItems.Where(fi => fi.BlobId == blobId).FirstOrDefault();
+            FolderItem fi = _context.FolderItems.Where(fi => fi.BlobId == blobId).FirstOrDefault();
             if (fi == null || !DoesFolderExist(folderId))
                 return false;
             fi.FolderId = folderId;

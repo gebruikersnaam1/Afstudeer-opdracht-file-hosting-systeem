@@ -3,11 +3,11 @@ using System.Collections.Generic;
 
 namespace ProofOfConceptServer.Repositories.entities
 {
-    public partial class Folders
+    public partial class Folder
     {
-        public Folders()
+        public Folder()
         {
-            FolderItems = new HashSet<FolderItems>();
+            FolderItems = new HashSet<FolderItem>();
         }
 
         public int FolderId { get; set; }
@@ -16,6 +16,6 @@ namespace ProofOfConceptServer.Repositories.entities
         public DateTime DateChanged { get; set; }
         public DateTime CreatedDate { get; set; }
 
-        public virtual ICollection<FolderItems> FolderItems { get; set; }
+        public virtual ICollection<FolderItem> FolderItems { get; set; }
     }
 }
