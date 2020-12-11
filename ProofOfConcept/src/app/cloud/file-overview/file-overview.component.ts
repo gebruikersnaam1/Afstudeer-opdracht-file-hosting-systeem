@@ -12,7 +12,7 @@ import { folderView, ExplorerData, Folder } from '../interfaces/folder';
 })
 export class FileOverviewComponent implements OnInit {
   folder : Folder;
-  data : ExplorerData[];
+  rawData : ExplorerData[]; //data that isn't filterd
   rows : ExplorerData[];
   filesLoaded: Promise<boolean>;
   errorExist = false;
@@ -32,14 +32,20 @@ export class FileOverviewComponent implements OnInit {
     this.setCurrentPage();
   }
 
-  searchForFile(searchTerm){
+  loadFiles(data : ExplorerData[]){
+    this.rawData = data; 
+    this.setRows(); 
+    this.filesLoaded = Promise.resolve(true);
+  }
+
+  searchForFile(searchTerm : string){
     if(searchTerm == "" || searchTerm === undefined){
       this.setCurrentPage();
       return;
     }
-    this.cloudService.searchInFolders(searchTerm.toString()).subscribe(
-      files => { this.data = files; this.setRows(); this.filesLoaded = Promise.resolve(true) },
-      _ => { this.data = []; this.setRows(); this.filesLoaded = Promise.resolve(true)}
+    this.cloudService.searchInFolders(searchTerm).subscribe(
+      files => this.loadFiles(files),
+      _ => this.loadFiles([])
     );
   }
 
@@ -56,24 +62,22 @@ export class FileOverviewComponent implements OnInit {
     this.changeFolder(this.folder.parentFolder.folderId);
   }
 
-  //
   goToFile(fileId:number){
     this.router.navigateByUrl(("/cloud/file/"+fileId));
   }
 
   changeFolder(folderId : number){
-    this.folderData.currentfolderID = folderId > 0 ? folderId : 0;
+    this.folderData.currentfolderID = folderId > 0 ? folderId : 1;
     this.setFiles();
   }
 
   setCurrentPage(){
     this.activeRoute.params.subscribe( 
       (value) => {
-        if(value?.folderID != undefined && Number(value?.folderID) != NaN){
+        if(value?.folderID == undefined || Number(value?.folderID) == NaN){
+          this.folderData.currentfolderID = 1;
+        }else{
           this.folderData.currentfolderID = value.folderID;
-        }
-        if(value?.pageNumber != undefined && Number(value?.pageNumber) != NaN){
-          this.folderData.currentfolderID = value.pageNumber;
         }
       }
     );
@@ -87,8 +91,8 @@ export class FileOverviewComponent implements OnInit {
   setFiles(){
     this.setFolder();
     this.cloudService.getFolderContent(this.folderData.currentfolderID).subscribe(
-      files => { this.data = files; this.setRows(); this.filesLoaded = Promise.resolve(true); },
-      _ => { this.errorExist = true; this.filesLoaded = Promise.resolve(false); }
+      files => this.loadFiles(files),
+      _ => { this.errorExist = true; this.filesLoaded = Promise.resolve(false);}
     );
   }
 
@@ -97,13 +101,11 @@ export class FileOverviewComponent implements OnInit {
   }
 
   setRows(){
-    this.rows = this.dataFilter.f(this.data);
+    this.rows = this.dataFilter.f(this.rawData);
   }
 
   setFilter(filter){
     this.dataFilter = filter;
     this.setRows();
   }
-
-
 }

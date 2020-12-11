@@ -36,10 +36,9 @@ export class AuthService {
     ));
   }
 
-  getToken = () => {
-    return this.auth0Service.getAccessTokenSilently();
+  logout = () =>{
+    return new Observable<void>(_=> this.auth0Service.logout());
   }
-
 
   isAuthenticated = () =>{
     return this.auth0Service.isAuthenticated$.pipe(tap(z => 

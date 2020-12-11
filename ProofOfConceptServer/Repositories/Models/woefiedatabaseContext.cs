@@ -25,8 +25,7 @@ namespace ProofOfConceptServer.Repositories.models
         {
             if (!optionsBuilder.IsConfigured)
             {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer("Data Source=woefieserver.database.windows.net;Initial Catalog=woefiedatabase;Persist Security Info=True;User ID=woefiebeheerder;Password=LN7T7sGkhBjYz4eF");
+             optionsBuilder.UseSqlServer("Data Source=woefieserver.database.windows.net;Initial Catalog=woefiedatabase;Persist Security Info=True;User ID=woefiebeheerder;Password=LN7T7sGkhBjYz4eF");
             }
         }
 

@@ -23,8 +23,6 @@ export class FileUploadComponent implements OnInit {
   file: File;
   userId : string;
 
-  
-
   fileGroup= new FormGroup({
     fileName: new FormControl('', Validators.required),
     description: new FormControl('',[
@@ -44,8 +42,6 @@ export class FileUploadComponent implements OnInit {
     this.file = event.target.files[0];
   }
 
-  
-
   createFileFormat() : FormData{
     const { description } = this.fileGroup.value;
 
@@ -61,6 +57,7 @@ export class FileUploadComponent implements OnInit {
     DefaultCursor();
     CloseModal(this.modalName);
   }
+
   setUserId(){
     this.authService.getActiveUserId().then(
       i => this.userId = i

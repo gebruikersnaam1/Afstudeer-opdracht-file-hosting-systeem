@@ -10,7 +10,6 @@ const routes: Routes = [
     path: '',children: [
         { path: 'explorer', component: FileOverviewComponent },
         { path: 'explorer/:folderID', component: FileOverviewComponent },
-        { path: 'explorer/:folderID/:pageNumber', component: FileOverviewComponent },
         { path: '', component: FileOverviewComponent }
       ]
   } 

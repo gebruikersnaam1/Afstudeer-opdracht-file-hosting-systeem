@@ -3,9 +3,8 @@ import { Router } from '@angular/router';
 import { CloudService } from './cloud.service';
 import * as FileSaver  from 'file-saver';
 import { map } from 'rxjs/operators';
-import { FileId, FileInformation } from '../interfaces/file';
+import { FileId, FileInformation,SharedFileInfo } from '../interfaces/file';
 import { Observable } from 'rxjs';
-
 declare const WaitCursor: any;
 declare const DefaultCursor: any;
 
@@ -27,16 +26,14 @@ export class FileManager {
           this.router.navigateByUrl("/500");
         }
       }
-
-   
-
-      deleteFiles(fileIds : FileId[]){
+      
+      deleteFiles(fileIds : FileId[])  : Observable<boolean>{
         return this.cloudService.removeFilesFromFolder(fileIds).pipe(
           map((res)=> res.status === 204 ? true : false)
         )
       }
 
-      deleteFile(fileId: FileId){
+      deleteFile(fileId: FileId) : Observable<boolean>{
         return this.cloudService.deleteFileFromFolder(fileId).pipe(
           map((res)  => {
             if(res.status === 204){
@@ -48,7 +45,7 @@ export class FileManager {
         );
       }
     
-      downloadFile(fileId : FileId){ 
+      downloadFile(fileId : FileId) :  Observable<Blob>{ 
         return this.cloudService.downloadFile(fileId).pipe(
             map((data : Blob)=> {
                 WaitCursor();
@@ -59,7 +56,7 @@ export class FileManager {
           );
       }
 
-      downloadFiles(fileIds : FileId[]){ 
+      downloadFiles(fileIds : FileId[]) :  Observable<Blob>{ 
         return this.cloudService.downloadFiles(fileIds).pipe(
             map((data : Blob)=> {
                 WaitCursor();
@@ -70,27 +67,27 @@ export class FileManager {
           );
       }
 
-      moveFile(blobId : number, fileId : number){ 
+      moveFile(blobId : number, fileId : number) : Observable<boolean>{ 
         return this.cloudService.moveFileToAnotherFolder(blobId,fileId).pipe(
           map(r => r?.status === 200 ? true : false)
         );
       }
 
-      copyFile(blobId : number, folderId : number){
+      copyFile(blobId : number, folderId : number) : Observable<number | boolean>{
         return this.cloudService.copyFileToAnotherFolder(blobId, folderId).pipe(
-          map(file => !!file.fileId && file != null ? file.fileId : false)
+          map(file => !!file.fileId && file != null ? Number(file.fileId) : false)
         );
       }
 
-      shareFile(blobId: number){
+      shareFile(blobId: number) : Observable<boolean| string>{
         return this.cloudService.setFileToShare(blobId).pipe(map(f => f != null && !!f.id != false ? f.id : false))
       }
 
-      getSharedFileInfo(shareFileId: number){
+      getSharedFileInfo(shareFileId: number) : Observable<SharedFileInfo> {
         return this.cloudService.getSharedFileInfo(shareFileId);
       }
 
-      downloadSharedFile(shareFileId : number){
+      downloadSharedFile(shareFileId : number) : Observable<Blob>{
         return this.cloudService.downloadSharedFile(shareFileId).pipe(
           map((data : Blob)=> {
               WaitCursor();
