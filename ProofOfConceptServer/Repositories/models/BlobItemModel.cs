@@ -25,7 +25,6 @@ namespace ProofOfConceptServer.Repositories.models
             this.ShareableModel = new ShareableModel();
         }
 
-
         public int RowsCount()
         {
             return _context.BlobItem.ToList().Count();
@@ -187,23 +186,23 @@ namespace ProofOfConceptServer.Repositories.models
 
         public byte[] DownloadFilesInZip(int[] ids)
         {
-            List<IDownloadFileResponse> files = new List<IDownloadFileResponse>();
+            List<(IDownloadFileResponse, IFileInformation)> files = new List<(IDownloadFileResponse, IFileInformation)> ();
             foreach (int i in ids)
             {
-                files.Add(DownloadFile(i));
+                files.Add((DownloadFile(i), DownloadFileAssistent(i)));
             }
             Byte[] zipBytes = null;
             using (var memoryStream = new MemoryStream())
             {
                 using (var zipArchive = new ZipArchive(memoryStream, ZipArchiveMode.Create, leaveOpen: true))
                 {
-                    foreach(IDownloadFileResponse f in files)
+                    foreach((IDownloadFileResponse, IFileInformation) f in files)
                     {
-                        if(f != null) { 
-                            var zipEntry = zipArchive.CreateEntry(f.FileName);
+                        if(f.Item1 != null && f.Item2 != null) { 
+                            var zipEntry = zipArchive.CreateEntry((f.Item1.FileName+f.Item2.extension));
                             using (Stream entryStream = zipEntry.Open())
                             {
-                                entryStream.Write(f.File, 0, f.File.Length);
+                                entryStream.Write(f.Item1.File, 0, f.Item1.File.Length);
                             }
                         }
                     }
