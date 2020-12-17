@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29519.181
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProofOfConceptServer", "ProofOfConceptServer.csproj", "{02AE6E02-D04F-4F06-8B07-74A4360794DC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProofOfConceptServer", "ProofOfConceptServer.csproj", "{02AE6E02-D04F-4F06-8B07-74A4360794DC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProofOfConceptServer.UnitTesting", "..\ProofOfConceptServer.UnitTesting\ProofOfConceptServer.UnitTesting.csproj", "{555D19C7-A3FC-426B-A8A4-AC557BDF4132}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{02AE6E02-D04F-4F06-8B07-74A4360794DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{02AE6E02-D04F-4F06-8B07-74A4360794DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{02AE6E02-D04F-4F06-8B07-74A4360794DC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{555D19C7-A3FC-426B-A8A4-AC557BDF4132}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{555D19C7-A3FC-426B-A8A4-AC557BDF4132}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{555D19C7-A3FC-426B-A8A4-AC557BDF4132}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{555D19C7-A3FC-426B-A8A4-AC557BDF4132}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

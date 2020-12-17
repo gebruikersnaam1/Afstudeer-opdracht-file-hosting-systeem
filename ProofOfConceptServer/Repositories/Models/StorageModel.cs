@@ -14,8 +14,7 @@ namespace ProofOfConceptServer.Repositories.Models
 {
     public class StorageModel
     {
-        private string PathUpload = Path.Combine(Startup.apiRoot, "repositories/uploads");
-  
+        private string PathUpload = Path.Combine(System.IO.Directory.GetCurrentDirectory(), "repositories/uploads");
 
         public async Task<bool> IsFileNameAvailable(string fileName)
         {
@@ -89,7 +88,8 @@ namespace ProofOfConceptServer.Repositories.Models
                 await blockBob.DeleteIfExistsAsync();
             }
         }
-        public async Task<string> DownloadBlobFileToServer(BlobItem blobItem)
+
+        private async Task<string> GetDownloadPath(BlobItem blobItem)
         {
             try
             {
@@ -97,7 +97,7 @@ namespace ProofOfConceptServer.Repositories.Models
                 var rootDir = new FileInfo(blobItem.Path).Directory;
                 if (!rootDir.Exists) //make sure the parent directory exists
                     rootDir.Create();
-                
+
                 if (StorageContext.Environments[0] == StorageContext.Environment)
                 {
                     CloudBlockBlob blockBob = AzureConnection.Container.GetBlockBlobReference(blobItem.Path);
@@ -113,6 +113,25 @@ namespace ProofOfConceptServer.Repositories.Models
             catch
             {
                 System.Diagnostics.Debug.WriteLine("File couldn't be downloaded from the Azure!");
+                return null;
+            }
+        }
+        public async Task<Byte[]> DownloadBlobFile(BlobItem blobItem)
+        {
+            try
+            {
+                string downloadPath = await GetDownloadPath(blobItem);
+
+                var net = new System.Net.WebClient();
+                byte[] data = net.DownloadData(downloadPath);
+
+                if (System.IO.File.Exists(downloadPath))
+                    System.IO.File.Delete(downloadPath);
+
+                return data;
+            }
+            catch
+            {
                 return null;
             }
         }

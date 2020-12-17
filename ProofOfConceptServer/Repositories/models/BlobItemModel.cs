@@ -160,17 +160,9 @@ namespace ProofOfConceptServer.Repositories.models
             if (blobItem == null)
                 return null;
 
-            //download the file to the local server
-            string path = Storage.DownloadBlobFileToServer(blobItem).Result;
-
-            var net = new System.Net.WebClient();
             try
             {
-                var data = net.DownloadData(path);
-                var content = new System.IO.MemoryStream(data);
-
-                if (System.IO.File.Exists(path))
-                    System.IO.File.Delete(path);
+                Byte[] data = Storage.DownloadBlobFile(blobItem).Result;
 
                 return new IDownloadFileResponse
                 {

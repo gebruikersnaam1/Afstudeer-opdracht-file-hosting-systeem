@@ -36,7 +36,6 @@ C:\Data\Programmeren\Angular\Afstuderen\Afstudeeropdracht-File-Hosting-System\Pr
 C:\Data\Programmeren\Angular\Afstuderen\Afstudeeropdracht-File-Hosting-System\ProofOfConceptServer\bin\Debug\netcoreapp3.1\Microsoft.WindowsAzure.Storage.dll
 C:\Data\Programmeren\Angular\Afstuderen\Afstudeeropdracht-File-Hosting-System\ProofOfConceptServer\obj\Debug\netcoreapp3.1\ProofOfConceptServer.MvcApplicationPartsAssemblyInfo.cache
 C:\Data\Programmeren\Angular\Afstuderen\Afstudeer-opdracht-file-hosting-systeem\ProofOfConceptServer\bin\Debug\netcoreapp3.1\appsettings.Development.json
-C:\Data\Programmeren\Angular\Afstuderen\Afstudeer-opdracht-file-hosting-systeem\ProofOfConceptServer\bin\Debug\netcoreapp3.1\Properties\launchSettings.json
 C:\Data\Programmeren\Angular\Afstuderen\Afstudeer-opdracht-file-hosting-systeem\ProofOfConceptServer\bin\Debug\netcoreapp3.1\ProofOfConceptServer.exe
 C:\Data\Programmeren\Angular\Afstuderen\Afstudeer-opdracht-file-hosting-systeem\ProofOfConceptServer\bin\Debug\netcoreapp3.1\appsettings.json
 C:\Data\Programmeren\Angular\Afstuderen\Afstudeer-opdracht-file-hosting-systeem\ProofOfConceptServer\bin\Debug\netcoreapp3.1\ProofOfConceptServer.deps.json
@@ -86,20 +85,15 @@ C:\Data\Programmeren\Angular\Afstuderen\Afstudeer-opdracht-file-hosting-systeem\
 C:\Data\Programmeren\Angular\Afstuderen\Afstudeer-opdracht-file-hosting-systeem\ProofOfConceptServer\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Primitives.dll
 C:\Data\Programmeren\Angular\Afstuderen\Afstudeer-opdracht-file-hosting-systeem\ProofOfConceptServer\bin\Debug\netcoreapp3.1\EntityFramework.SqlServer.dll
 C:\Data\Programmeren\Angular\Afstuderen\Afstudeer-opdracht-file-hosting-systeem\ProofOfConceptServer\bin\Debug\netcoreapp3.1\EntityFramework.dll
-C:\Data\Programmeren\Angular\Afstuderen\Afstudeer-opdracht-file-hosting-systeem\ProofOfConceptServer\bin\Debug\netcoreapp3.1\Microsoft.Win32.SystemEvents.dll
 C:\Data\Programmeren\Angular\Afstuderen\Afstudeer-opdracht-file-hosting-systeem\ProofOfConceptServer\bin\Debug\netcoreapp3.1\System.CodeDom.dll
 C:\Data\Programmeren\Angular\Afstuderen\Afstudeer-opdracht-file-hosting-systeem\ProofOfConceptServer\bin\Debug\netcoreapp3.1\System.Configuration.ConfigurationManager.dll
 C:\Data\Programmeren\Angular\Afstuderen\Afstudeer-opdracht-file-hosting-systeem\ProofOfConceptServer\bin\Debug\netcoreapp3.1\System.Data.SqlClient.dll
-C:\Data\Programmeren\Angular\Afstuderen\Afstudeer-opdracht-file-hosting-systeem\ProofOfConceptServer\bin\Debug\netcoreapp3.1\System.Drawing.Common.dll
 C:\Data\Programmeren\Angular\Afstuderen\Afstudeer-opdracht-file-hosting-systeem\ProofOfConceptServer\bin\Debug\netcoreapp3.1\System.Security.Cryptography.ProtectedData.dll
-C:\Data\Programmeren\Angular\Afstuderen\Afstudeer-opdracht-file-hosting-systeem\ProofOfConceptServer\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp3.0\Microsoft.Win32.SystemEvents.dll
 C:\Data\Programmeren\Angular\Afstuderen\Afstudeer-opdracht-file-hosting-systeem\ProofOfConceptServer\bin\Debug\netcoreapp3.1\runtimes\win-arm64\native\sni.dll
 C:\Data\Programmeren\Angular\Afstuderen\Afstudeer-opdracht-file-hosting-systeem\ProofOfConceptServer\bin\Debug\netcoreapp3.1\runtimes\win-x64\native\sni.dll
 C:\Data\Programmeren\Angular\Afstuderen\Afstudeer-opdracht-file-hosting-systeem\ProofOfConceptServer\bin\Debug\netcoreapp3.1\runtimes\win-x86\native\sni.dll
 C:\Data\Programmeren\Angular\Afstuderen\Afstudeer-opdracht-file-hosting-systeem\ProofOfConceptServer\bin\Debug\netcoreapp3.1\runtimes\unix\lib\netcoreapp2.1\System.Data.SqlClient.dll
 C:\Data\Programmeren\Angular\Afstuderen\Afstudeer-opdracht-file-hosting-systeem\ProofOfConceptServer\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp2.1\System.Data.SqlClient.dll
-C:\Data\Programmeren\Angular\Afstuderen\Afstudeer-opdracht-file-hosting-systeem\ProofOfConceptServer\bin\Debug\netcoreapp3.1\runtimes\unix\lib\netcoreapp3.0\System.Drawing.Common.dll
-C:\Data\Programmeren\Angular\Afstuderen\Afstudeer-opdracht-file-hosting-systeem\ProofOfConceptServer\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp3.0\System.Drawing.Common.dll
 C:\Data\Programmeren\Angular\Afstuderen\Afstudeer-opdracht-file-hosting-systeem\ProofOfConceptServer\bin\Debug\netcoreapp3.1\runtimes\win\lib\netstandard2.0\System.Security.Cryptography.ProtectedData.dll
 C:\Data\Programmeren\Angular\Afstuderen\Afstudeer-opdracht-file-hosting-systeem\ProofOfConceptServer\bin\Debug\netcoreapp3.1\Microsoft.Bcl.HashCode.dll
 C:\Data\Programmeren\Angular\Afstuderen\Afstudeer-opdracht-file-hosting-systeem\ProofOfConceptServer\bin\Debug\netcoreapp3.1\Microsoft.Data.SqlClient.dll
@@ -203,3 +197,6 @@ C:\Data\Programmeren\Angular\Afstuderen\Afstudeer-opdracht-file-hosting-systeem\
 C:\Data\Programmeren\Angular\Afstuderen\Afstudeer-opdracht-file-hosting-systeem\ProofOfConceptServer\bin\Debug\netcoreapp3.1\RestClient.Net.Abstractions.dll
 C:\Data\Programmeren\Angular\Afstuderen\Afstudeer-opdracht-file-hosting-systeem\ProofOfConceptServer\obj\Debug\netcoreapp3.1\ProofOfConceptServer.MvcApplicationPartsAssemblyInfo.cs
 C:\Data\Programmeren\Angular\Afstuderen\Afstudeer-opdracht-file-hosting-systeem\ProofOfConceptServer\obj\Debug\netcoreapp3.1\ProofOfConceptServer.MvcApplicationPartsAssemblyInfo.cache
+C:\Data\Programmeren\Angular\Afstuderen\Afstudeer-opdracht-file-hosting-systeem\ProofOfConceptServer\obj\Debug\netcoreapp3.1\ProofOfConceptServer.csproj.CoreCompileInputs.cache
+C:\Data\Programmeren\Angular\Afstuderen\Afstudeer-opdracht-file-hosting-systeem\ProofOfConceptServer\obj\Debug\netcoreapp3.1\scopedcss\bundle\ProofOfConceptServer.styles.css
+C:\Data\Programmeren\Angular\Afstuderen\Afstudeer-opdracht-file-hosting-systeem\ProofOfConceptServer\obj\Debug\netcoreapp3.1\ProofOfConceptServer.genruntimeconfig.cache
