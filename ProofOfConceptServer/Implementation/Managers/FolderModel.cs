@@ -14,13 +14,13 @@ namespace ProofOfConceptServer.Repositories.Models
     public class FolderModel
     {
         private woefiedatabaseContext _context;
-        private BlobItemModel blobModel;
+        private BlobItemManager blobModel;
         private int rootFolder = 1;
 
         public FolderModel()
         {
             _context = new woefiedatabaseContext();
-            blobModel = new BlobItemModel();
+            blobModel = new BlobItemManager();
         }
 
         public Folder GetFolder(int folderID)

@@ -16,7 +16,7 @@ namespace ProofOfConceptServer.UnitTesting
         public void GetSingleFile_FileExit_NotNull()
         {
             //arrange
-            BlobItemModel model = new BlobItemModel();
+            BlobItemManager model = new BlobItemManager();
 
             //act
             BlobItem result = model.GetSingleFile(7);
@@ -29,7 +29,7 @@ namespace ProofOfConceptServer.UnitTesting
         public void GetSingleFile_FileNotExits_Null()
         {
             //arrange
-            BlobItemModel model = new BlobItemModel();
+            BlobItemManager model = new BlobItemManager();
 
             //act
             BlobItem result = model.GetSingleFile(99999999);
@@ -42,7 +42,7 @@ namespace ProofOfConceptServer.UnitTesting
         public void GetSingleFile_FileExits_BlobItem()
         {
             //arrange
-            BlobItemModel model = new BlobItemModel();
+            BlobItemManager model = new BlobItemManager();
 
             //act
             BlobItem result = model.GetSingleFile(7);

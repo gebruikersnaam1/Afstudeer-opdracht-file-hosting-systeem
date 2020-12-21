@@ -13,16 +13,16 @@ using System.IO.Compression;
 namespace ProofOfConceptServer.Repositories.models
 {
 
-    public class BlobItemModel
+    public class BlobItemManager
     {
         private woefiedatabaseContext _context;
-        private StorageModel Storage;
-        private ShareableModel ShareableModel;
-        public BlobItemModel()
+        private StorageManager Storage;
+        private ShareableManager ShareableModel;
+        public BlobItemManager()
         {
-            Storage = new StorageModel();
+            Storage = new StorageManager();
             _context = new woefiedatabaseContext();
-            this.ShareableModel = new ShareableModel();
+            this.ShareableModel = new ShareableManager();
         }
 
         public int RowsCount()
@@ -198,6 +198,7 @@ namespace ProofOfConceptServer.Repositories.models
                             }
                         }
                     }
+                    
                 }
                 zipBytes = memoryStream.ToArray();
             }

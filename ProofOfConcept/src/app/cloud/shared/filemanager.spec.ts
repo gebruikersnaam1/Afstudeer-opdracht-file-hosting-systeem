@@ -1,7 +1,3 @@
-import { Filemanager } from './filemanager';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-describe('Filemanager', () => {
-  it('should create an instance', () => {
-    expect(new Filemanager()).toBeTruthy();
-  });
-});
+import { FileManager } from './filemanager';

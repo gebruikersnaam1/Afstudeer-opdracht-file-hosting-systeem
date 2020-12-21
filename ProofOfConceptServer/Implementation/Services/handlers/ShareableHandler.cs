@@ -12,10 +12,10 @@ namespace ProofOfConceptServer.Services.handlers
 {
     public class ShareableHandler
     {
-        private ShareableModel Model;
+        private ShareableManager Model;
         public ShareableHandler()
         {
-            this.Model = new ShareableModel();
+            this.Model = new ShareableManager();
         }
         public ShareItem Create(ICreateSharable postData)
         {

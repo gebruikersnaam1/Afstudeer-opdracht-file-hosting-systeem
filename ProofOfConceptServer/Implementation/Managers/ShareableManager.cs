@@ -10,18 +10,18 @@ using System.Linq;
 
 namespace ProofOfConceptServer.Repositories.Models
 {
-    public class ShareableModel
+    public class ShareableManager
     {
         private woefiedatabaseContext _context;
 
-        public ShareableModel()
+        public ShareableManager()
         {
             _context = new woefiedatabaseContext();
         }
 
-        private BlobItemModel GetBlobModel()
+        private BlobItemManager GetBlobModel()
         {
-            return new BlobItemModel();
+            return new BlobItemManager();
         }
 
         private bool DoesBlobIdExists(int blobId)

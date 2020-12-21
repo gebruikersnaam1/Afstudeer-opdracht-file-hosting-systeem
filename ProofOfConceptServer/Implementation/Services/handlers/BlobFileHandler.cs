@@ -9,11 +9,11 @@ namespace ProofOfConceptServer.Services.Handlers
 {
     public class BlobFileHandler
     {
-        private BlobItemModel model;
+        private BlobItemManager model;
 
         public BlobFileHandler()
         {
-            model = new BlobItemModel();
+            model = new BlobItemManager();
         }
 
 

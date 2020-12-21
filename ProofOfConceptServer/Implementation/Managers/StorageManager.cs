@@ -12,9 +12,9 @@ using ProofOfConceptServer.Repositories.interfaces;
 using ProofOfConceptServer.Repositories.entities.Factory;
 namespace ProofOfConceptServer.Repositories.Models
 {
-    public class StorageModel
+    public class StorageManager
     {
-        private string PathUpload = Path.Combine(System.IO.Directory.GetCurrentDirectory(), "repositories/uploads");
+        private string PathUpload = Path.Combine(System.IO.Directory.GetCurrentDirectory(), "uploads");
 
         public async Task<bool> IsFileNameAvailable(string fileName)
         {

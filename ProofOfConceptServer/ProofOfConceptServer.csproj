@@ -8,12 +8,16 @@
 
   <ItemGroup>
     <Compile Remove="handlers\**" />
+    <Compile Remove="packages\**" />
     <Compile Remove="validators\**" />
     <Content Remove="handlers\**" />
+    <Content Remove="packages\**" />
     <Content Remove="validators\**" />
     <EmbeddedResource Remove="handlers\**" />
+    <EmbeddedResource Remove="packages\**" />
     <EmbeddedResource Remove="validators\**" />
     <None Remove="handlers\**" />
+    <None Remove="packages\**" />
     <None Remove="validators\**" />
   </ItemGroup>
 
@@ -42,7 +46,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Repositories\entities\Configurations\" />
+    <Folder Include="Implementation\entities\Configurations\" />
   </ItemGroup>
 
 

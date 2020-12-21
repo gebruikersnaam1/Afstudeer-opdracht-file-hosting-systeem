@@ -3,8 +3,6 @@ import { fileData, FileId,FileInformation, FileSharingData,SharedFileInfo } from
 import { CreateFolderData,ExplorerData, FolderStructure, Folder, ChangeFolder } from '../interfaces/folder';
 
 import { HttpClient } from '@angular/common/http';
-import { AuthService } from '../../auth/shared/auth.service';
-
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +10,7 @@ import { AuthService } from '../../auth/shared/auth.service';
 export class CloudService {
   url: string = "https://localhost:44368/api/";
 
-  constructor(private client: HttpClient, private authService : AuthService) { }
+  constructor(private client: HttpClient) { }
 
 
   private fileIdsToParams(fileIds: FileId[]){

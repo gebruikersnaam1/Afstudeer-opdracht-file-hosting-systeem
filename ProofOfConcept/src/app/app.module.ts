@@ -30,8 +30,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
       redirectUri: window.location.origin,
         httpInterceptor: {
           allowedList: [
-      
-           // Using an absolute URIhttps://woefie.eu.auth0.com/api/v2/
             {
               uri: 'https://localhost:44368/*',
               tokenOptions: {
